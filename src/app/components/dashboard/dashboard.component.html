@@ -1,1 +1,6 @@
-<p>dashboard works!</p>
+<gridster [options]="options">
+    <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
+      <button (click)="layoutService.deleteItem(item.id)">Delete Item</button>    
+      <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent"></app-parent-dynamic>
+    </gridster-item>
+  </gridster>

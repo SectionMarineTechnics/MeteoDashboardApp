@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { GridsterModule } from 'angular-gridster2';
+
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -18,6 +20,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { WeatherComponent } from './components/weather/weather.component';
+import { ParentDynamicComponent } from './components/dashboard/parent-dynamic/parent-dynamic.component';
+import { TimeSeriesChartComponent } from './components/frames/time-series-chart/time-series-chart.component';
 
 
 
@@ -26,12 +30,15 @@ import { WeatherComponent } from './components/weather/weather.component';
     AppComponent,
     NavbarComponent,
     DashboardComponent,
-    WeatherComponent
+    WeatherComponent,
+    ParentDynamicComponent,
+    TimeSeriesChartComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    GridsterModule, 
     MatMenuModule,
     MatToolbarModule,
     MatSidenavModule,
