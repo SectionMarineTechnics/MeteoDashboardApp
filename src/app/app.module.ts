@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,6 +44,7 @@ import { TimeSeriesChartComponent } from './components/frames/time-series-chart/
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
+    MatSelectModule,
     MatIconModule,
     MatButtonModule,
     FlexLayoutModule

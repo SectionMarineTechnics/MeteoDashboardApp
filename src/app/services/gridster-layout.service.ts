@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { GridsterConfig, GridsterItem, DisplayGrid, GridType } from 'angular-gridster2';
 import { UUID } from 'angular2-uuid';
 import { Lspi } from '../models/Lspi';
@@ -44,8 +44,8 @@ export class GridsterLayoutService {
     outerMarginLeft: null,    
     gridType: GridType.Fit
   };
-  public layout: GridsterItem[] = [];
 
+  public layout: GridsterItem[] = [];
   public components: IComponent[] = [];
   dropId: string;
 
@@ -67,7 +67,7 @@ export class GridsterLayoutService {
       rows: 30,
       x: 0,
       y: 0,
-      type: 'widgetExample3',
+      type: 'widgetTimeSeriesChart',
       serieList: getGetijSeriesData
     });
 

@@ -8,6 +8,7 @@
 
             <div fxShow="true" fxHide.lt-md="true">
                 <!-- The following menu items will be hidden on both SM and XS screen sizes -->
+                <!--
                 <button mat-button routerLink="/Dashboard">
                     <mat-icon>dashboard</mat-icon>
                     Dashboard
@@ -16,9 +17,9 @@
                     <mat-icon>show_chart</mat-icon>
                     Weather
                 </button>
-
+                -->
                 <mat-menu #addItemToLayoutMenu="matMenu">
-                    <button mat-menu-item>Chart</button>
+                    <button mat-menu-item (click)="layoutService.addItem()">Chart</button>
                     <button mat-menu-item>Status</button>
                   </mat-menu>
 
@@ -26,21 +27,29 @@
                     <mat-icon>add_box</mat-icon>
                 </button>                
                 <button mat-button> 
-                    <mat-icon>chevron_left</mat-icon>
+                    <mat-icon (click)="goBackward()">chevron_left</mat-icon>
                 </button>                
                 <button mat-button> 
                     <mat-icon>access_time</mat-icon>
+                    {{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}
                 </button>                
                 <button mat-button> 
-                    <mat-icon>chevron_right</mat-icon>
+                    <mat-icon (click)="goForward()">chevron_right</mat-icon>
                 </button>                
                 <button mat-button> 
-                    <mat-icon>zoom_in</mat-icon>
+                    <mat-icon (click)="zoomIn()">zoom_in</mat-icon>
                 </button>                
                 <button mat-button> 
-                    <mat-icon>zoom_out</mat-icon>
+                    <mat-icon (click)="zoomOut()">zoom_out</mat-icon>
+                </button>    
+                <button mat-button (click)="mySelect.open()" matTooltip="History">
+                    <mat-icon>history</mat-icon>
+                    Last Two hours
                 </button>                
-
+                
+                <mat-select style="visibility:hidden;width: 0" #mySelect multiple>
+                    <mat-option *ngFor="let timeInterval of timeIntervals" [value]="timeInterval">{{ timeInterval }}</mat-option>
+                </mat-select>
             </div>
 
             <span class="menu-spacer"></span>
@@ -54,6 +63,9 @@
                     <mat-icon>account_box</mat-icon>
                     My Account
                 </button>
+
+                <button mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon>Log In</button>
+                <button mat-button (click)="auth.logout()" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>                
             </div>
 
         </mat-toolbar-row>
@@ -80,7 +92,8 @@
             </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content fxFlexFill>
-            <router-outlet></router-outlet>
+            <!--<router-outlet></router-outlet>-->
+            <app-dashboard [updateTimeEvent]="updateTimeEvent"></app-dashboard>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
