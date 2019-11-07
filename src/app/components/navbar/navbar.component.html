@@ -23,26 +23,26 @@
                     <button mat-menu-item>Status</button>
                   </mat-menu>
 
-                <button mat-icon-button [matMenuTriggerFor]="addItemToLayoutMenu"> 
+                <button mat-icon-button [matMenuTriggerFor]="addItemToLayoutMenu" *ngIf="isDashboardView()"> 
                     <mat-icon>add_box</mat-icon>
                 </button>                
-                <button mat-button> 
-                    <mat-icon (click)="goBackward()">chevron_left</mat-icon>
+                <button mat-button *ngIf="isDashboardView()"> 
+                    <mat-icon (click)="layoutService.goBackward()">chevron_left</mat-icon>
                 </button>                
-                <button mat-button> 
+                <button mat-button *ngIf="isDashboardView()"> 
                     <mat-icon>access_time</mat-icon>
-                    {{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}
+                    <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->
                 </button>                
-                <button mat-button> 
-                    <mat-icon (click)="goForward()">chevron_right</mat-icon>
+                <button mat-button *ngIf="isDashboardView()"> 
+                    <mat-icon (click)="layoutService.goForward()">chevron_right</mat-icon>
                 </button>                
-                <button mat-button> 
-                    <mat-icon (click)="zoomIn()">zoom_in</mat-icon>
+                <button mat-button *ngIf="isDashboardView()">
+                    <mat-icon (click)="layoutService.zoomIn()">zoom_in</mat-icon>
                 </button>                
-                <button mat-button> 
-                    <mat-icon (click)="zoomOut()">zoom_out</mat-icon>
+                <button mat-button *ngIf="isDashboardView()"> 
+                    <mat-icon (click)="layoutService.zoomOut()">zoom_out</mat-icon>
                 </button>    
-                <button mat-button (click)="mySelect.open()" matTooltip="History">
+                <button mat-button (click)="mySelect.open()" matTooltip="History" *ngIf="isDashboardView()">
                     <mat-icon>history</mat-icon>
                     Last Two hours
                 </button>                
@@ -92,8 +92,8 @@
             </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content fxFlexFill>
-            <!--<router-outlet></router-outlet>-->
-            <app-dashboard [updateTimeEvent]="updateTimeEvent"></app-dashboard>
+            <router-outlet></router-outlet>
+            <!--<app-dashboard [updateTimeEvent]="updateTimeEvent"></app-dashboard>-->
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

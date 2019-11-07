@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { GridsterLayoutService, IComponent  } from '../../services/gridster-layout.service';
@@ -11,10 +11,7 @@ import { GridsterLayoutService, IComponent  } from '../../services/gridster-layo
 export class DashboardComponent implements OnInit, OnDestroy {
   resizeEvent: EventEmitter<any> = new EventEmitter();
 
-  @Input() updateTimeEvent: EventEmitter<any>; 
-
-  startTime: Date = new Date(2019, 8, 26, 0, 0, 0);
-  endTime: Date = new Date(2019, 8, 28, 0, 0, 0);
+  updateTimeEvent: EventEmitter<any>; 
 
   get options(): GridsterConfig {
     return this.layoutService.options;
@@ -29,6 +26,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.layoutService.options.itemResizeCallback = this.itemResize;    
+    this.updateTimeEvent = this.layoutService.updateTimeEvent;
   }
 
   ngOnDestroy() {

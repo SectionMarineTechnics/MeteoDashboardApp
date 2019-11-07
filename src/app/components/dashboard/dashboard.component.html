@@ -1,6 +1,26 @@
 <gridster [options]="options">
-    <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
-      <button (click)="layoutService.deleteItem(item.id)">Delete Item</button>    
-      <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent"></app-parent-dynamic>
-    </gridster-item>
-  </gridster>
+  <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
+    <span class="dragHandleHeader">
+      <div class="custom">
+      <mat-toolbar color="primary">
+        <mat-toolbar-row style="font-size: 4px;height: 4px;"></mat-toolbar-row>
+        <mat-toolbar-row>
+          <span>Custom Toolbar</span>
+          <span class="toolbar-spacer"></span>
+          <button mat-icon-button>
+            <mat-icon>help</mat-icon>
+          </button>          
+          <button mat-icon-button>
+            <mat-icon>minimize</mat-icon>
+          </button>
+          <button mat-icon-button (click)="layoutService.deleteItem(item.id)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-toolbar-row>
+      </mat-toolbar>
+    </div>
+    </span>
+    <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent">
+    </app-parent-dynamic>
+  </gridster-item>
+</gridster>

@@ -1,0 +1,31 @@
+ 
+.toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+.material-icons{
+    font-family: 'Material Icons' !important;
+}
+
+.custom mat-toolbar {
+    min-height: 26px;
+    vertical-align: middle;
+}
+
+.custom mat-toolbar-row {
+      font-size: 16px;
+      height: 16px;
+      vertical-align: middle;      
+}
+
+.mat-icon {
+    font-size: 16px;
+    width: 10px;
+    vertical-align: middle;
+}
+
+.mat-icon-button {
+    font-size: 20px;
+    width: 24px;
+    vertical-align: middle;
+}

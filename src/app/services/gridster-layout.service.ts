@@ -17,7 +17,7 @@ export class GridsterLayoutService {
     draggable: {
       enabled: true,
       ignoreContent: true,
-      dragHandleClass: 'headerTest'
+      dragHandleClass: 'dragHandleHeader'
     },
     pushItems: true,
     resizable: {
@@ -49,6 +49,10 @@ export class GridsterLayoutService {
   public components: IComponent[] = [];
   dropId: string;
 
+  startTime: Date = new Date(2019, 8, 26, 0, 0, 0);
+  endTime: Date = new Date(2019, 8, 28, 0, 0, 0);  
+  public updateTimeEvent: EventEmitter<any> = new EventEmitter();
+
   constructor( ) { }
 
   addItem(): void {
@@ -73,10 +77,6 @@ export class GridsterLayoutService {
 
     console.log('addItem:' + newId);
   }
-
-  goBackward(): void {
-
-  } 
 
   deleteItem(id: string): void {
     console.log('deleteItem:' + id);
@@ -105,4 +105,42 @@ export class GridsterLayoutService {
     const comp = this.components.find(c => c.id === id);
     return comp ? comp.componentRef : null;
   }  
+
+  goBackward(){
+    let timeDiff = (this.endTime.getTime() - this.startTime.getTime());
+    this.startTime = new Date(this.startTime.getTime() - timeDiff);
+    this.endTime = new Date(this.endTime.getTime() - timeDiff);
+    this.updateTime();
+  }  
+
+  goForward(){
+    let timeDiff = (this.endTime.getTime() - this.startTime.getTime());
+    this.startTime = new Date(this.startTime.getTime() + timeDiff);
+    this.endTime = new Date(this.endTime.getTime() + timeDiff);
+    this.updateTime();
+  }
+
+  zoomIn(){
+    let timeDiff = (this.endTime.getTime() - this.startTime.getTime());
+    this.startTime = new Date(this.startTime.getTime() + timeDiff/4);
+    this.endTime = new Date(this.endTime.getTime() - timeDiff/4);
+    this.startTime.setSeconds(0);
+    this.endTime.setSeconds(0);
+    this.updateTime();
+  }
+
+  zoomOut(){
+    let timeDiff = (this.endTime.getTime() - this.startTime.getTime());
+    this.startTime = new Date(this.startTime.getTime() - timeDiff/2);
+    this.endTime = new Date(this.endTime.getTime() + timeDiff/2);
+    this.startTime.setSeconds(0);
+    this.endTime.setSeconds(0);
+    this.updateTime();
+  }
+
+  updateTime() {
+    let startTime = this.startTime;
+    let endTime = this.endTime;
+    this.updateTimeEvent.emit( {startTime, endTime} );
+  }   
 }
