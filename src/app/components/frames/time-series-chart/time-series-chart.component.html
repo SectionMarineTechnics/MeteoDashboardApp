@@ -1,1 +1,9 @@
 <p>time-series-chart works!</p>
+<button mat-icon-button (click)="dataService.getLSPIList()">TEST GET LSPI<mat-icon>close</mat-icon>
+</button>
+
+<mat-select>
+    <mat-option *ngFor="let lspi of dataService.lspis" [value]="lspi">
+      {{lspi.Name()}}
+    </mat-option>
+  </mat-select>

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-time-series-chart',
@@ -12,7 +13,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy {
   @Input() updateTimeEvent: EventEmitter<any>;  
   updateTimeSubsription: Subscription;
 
-  constructor() { }
+  constructor(private dataService: DataService ) { }
 
   ngOnInit() {
     if(this.updateTimeEvent != undefined){

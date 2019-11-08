@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { WeatherComponent } from './components/weather/weather.component';
 
-
 const routes: Routes = [
   { path: '', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'Dashboard', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },

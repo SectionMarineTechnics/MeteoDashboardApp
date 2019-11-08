@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { GridsterModule } from 'angular-gridster2';
 
@@ -23,7 +24,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { WeatherComponent } from './components/weather/weather.component';
 import { ParentDynamicComponent } from './components/dashboard/parent-dynamic/parent-dynamic.component';
 import { TimeSeriesChartComponent } from './components/frames/time-series-chart/time-series-chart.component';
-
+import { InterceptorService } from './services/interceptor.service';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { TimeSeriesChartComponent } from './components/frames/time-series-chart/
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     GridsterModule, 
     MatMenuModule,
     MatToolbarModule,
@@ -49,7 +51,8 @@ import { TimeSeriesChartComponent } from './components/frames/time-series-chart/
     MatButtonModule,
     FlexLayoutModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

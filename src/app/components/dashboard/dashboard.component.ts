@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
-
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
 import { GridsterLayoutService, IComponent  } from '../../services/gridster-layout.service';
 

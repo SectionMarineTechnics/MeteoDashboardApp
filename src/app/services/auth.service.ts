@@ -13,8 +13,8 @@ export class AuthService {
     createAuth0Client({
       domain: "dev-m9vba4g9.eu.auth0.com",
       client_id: "ceBB3eZIur3kmxrllSz91SYvhpLcctif",
-      redirect_uri: `${window.location.origin}`/*,
-      audience: "https://MeteoSettingsWebAPI/api"*/
+      redirect_uri: `${window.location.origin}`,
+      audience: "https://MeteoSettingsWebAPI/api"
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
