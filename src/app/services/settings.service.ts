@@ -37,7 +37,7 @@ export class SettingsService {
   }
 
   getPage(pageID: number) {
-    console.log('settingsService:getUser()', 'GET ' + this.settingsUrl + '/SELECT_Page');
+    console.log('settingsService:getPage()', 'GET ' + this.settingsUrl + '/SELECT_Page');
     return this.httpClient.get<Page>(this.settingsUrl + '/SELECT_Page?pageid=' + pageID);
   }
 

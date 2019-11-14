@@ -1,7 +1,7 @@
 export class Frame_Element {
     constructor(
       public id: number,
-      public frame_id: number,
+      public fame_id: number,
 
       public LSPI_location: string,
       public LSPI_sensor: string,

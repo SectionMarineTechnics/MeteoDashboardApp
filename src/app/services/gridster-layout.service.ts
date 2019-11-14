@@ -22,6 +22,8 @@ export interface IComponent {
   providedIn: 'root'
 })
 export class GridsterLayoutService {
+  static instance: GridsterLayoutService;
+
   public options: GridsterConfig = {
     draggable: {
       enabled: true,
@@ -66,8 +68,7 @@ export class GridsterLayoutService {
   auth0_profile: any;  
 
   currentUser: User;
-  currentPage: Page;
-
+  public currentPage: Page;
 
   constructor( public settingsService: SettingsService, public auth: AuthService ) {
     this.auth.userProfile$.subscribe(profile => {
@@ -94,11 +95,62 @@ export class GridsterLayoutService {
             }else{
               this.currentPage = this.currentUser.Page[0];
             }
+            console.log('Current page set to: ', this.currentPage );
+
+            this.RebuildLayout(this.currentPage);
           });
         }
       }
     });
+
+    return GridsterLayoutService.instance = GridsterLayoutService.instance || this;
   }
+
+  RebuildLayout(page: Page){
+    page.Frame.forEach(frame => {
+      let newId: string = frame.name;
+      let getGetijSeriesData: Array<Serie> = new Array<Serie>();
+
+      frame.Frame_Element.forEach(frameElement => {
+        getGetijSeriesData.push(new Serie(
+                                      new Lspi(frameElement.LSPI_location, frameElement.LSPI_sensor, frameElement.LSPI_parameter, frameElement.LSPI_interval),
+                                      frameElement.start_time, frameElement.stop_time));
+      });
+
+      this.layout.push({
+        cols: frame.width,
+        id: newId,
+        rows: frame.height,
+        x: frame.X,
+        y: frame.Y,
+        type: 'widgetTimeSeriesChart',
+        serieList: getGetijSeriesData
+      });
+    });
+  }
+
+  ChangeCallback(gridsterItem: any, gridsterItemComponent: any){
+      console.log("GridsterLayoutService ChangeCallback event: ");
+      console.log("gridsterItem: ", gridsterItem);
+      console.log("gridsterItemComponent: ", gridsterItemComponent);
+      console.log("this: ", this);
+
+      let frame: Frame = this.currentPage.Frame.find(x => x.name == gridsterItem.id);
+      
+      console.log("frame before: ", frame);
+      if(frame)
+      {
+        frame.X = gridsterItem.x;
+        frame.Y = gridsterItem.y;
+        frame.width = gridsterItem.cols;
+        frame.height = gridsterItem.rows;
+
+        console.log("frame send: ", frame);
+        
+        this.settingsService.updateFrame(frame).subscribe();        
+      }
+  }
+
 
   UpdateCurrentUser(){
     this.settingsService.getUser(this.currentUser.id).subscribe(user => { 
@@ -136,11 +188,15 @@ export class GridsterLayoutService {
 
     let newFrameElements: Frame_Element[] = new Array<Frame_Element>();
     
-    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 0, 0 )).subscribe( () => { 
+    /* Add new frame to page: */
+    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 40, 30 )).subscribe( () => { 
       this.settingsService.getPage(this.currentPage.page_id).subscribe(page => { 
         this.currentPage = page;
+        console.log('added new frame to page with ID: ', newId, this.currentPage);
+
         let frameId: number = this.currentPage.Frame.find(x => x.name == newId).frame_id;
 
+        console.log('add 3 Frame_elements with frame ID:', frameId);
         this.settingsService.updateFrame_Element(new Frame_Element(0, frameId, 'OKG', 'VL1', 'WS0', 10, new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0), true, 60, 1, 1)).subscribe( () => { this.UpdateCurrentPage() } );
         this.settingsService.updateFrame_Element(new Frame_Element(0, frameId, 'NPT', 'VL1', 'WS0', 10, new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0), true, 60, 1, 1)).subscribe( () => { this.UpdateCurrentPage() } );
         this.settingsService.updateFrame_Element(new Frame_Element(0, frameId, 'ZLD', 'VL1', 'WS0', 10, new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0), true, 60, 1, 1)).subscribe( () => { this.UpdateCurrentPage() } );                

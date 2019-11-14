@@ -28,6 +28,7 @@ import { InterceptorService } from './services/interceptor.service';
 
 import { SettingsService } from './services/settings.service';
 import { AuthService } from './services/auth.service';
+import { GridsterLayoutService } from './services/gridster-layout.service';
 
 
 @NgModule({
@@ -54,7 +55,7 @@ import { AuthService } from './services/auth.service';
     MatButtonModule,
     FlexLayoutModule
   ],
-  providers: [ SettingsService, AuthService,
+  providers: [ SettingsService, AuthService, GridsterLayoutService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })

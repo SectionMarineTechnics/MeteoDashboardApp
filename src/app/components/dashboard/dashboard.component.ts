@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.layoutService.options.itemResizeCallback = this.itemResize;    
+    this.layoutService.options.itemChangeCallback = this.ChangeCallback;    
     this.updateTimeEvent = this.layoutService.updateTimeEvent;
   }
 
@@ -33,5 +34,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   itemResize = (gridsterItem: any, gridsterItemComponent: any) => {
     this.resizeEvent.emit( {gridsterItem, gridsterItemComponent} );
+  }
+
+  ChangeCallback = (gridsterItem: any, gridsterItemComponent: any) => {
+    this.layoutService.ChangeCallback(gridsterItem, gridsterItemComponent);
   }
 }
