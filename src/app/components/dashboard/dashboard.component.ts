@@ -9,7 +9,6 @@ import { GridsterLayoutService, IComponent  } from '../../services/gridster-layo
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   resizeEvent: EventEmitter<any> = new EventEmitter();
-
   updateTimeEvent: EventEmitter<any>; 
 
   get options(): GridsterConfig {

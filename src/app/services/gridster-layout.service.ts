@@ -4,6 +4,15 @@ import { UUID } from 'angular2-uuid';
 import { Lspi } from '../models/Lspi';
 import { Serie } from '../models/Serie';
 
+import { AuthService } from 'src/app/services/auth.service';
+
+import { SettingsService } from '../services/settings.service'
+import { User } from '../models/User'
+import { UserShort } from '../models/UserShort'
+import { Page } from '../models/Page'
+import { Frame } from '../models/Frame'
+import { Frame_Element } from '../models/Frame_Element'
+
 export interface IComponent {
   id: string;
   componentRef: string;
@@ -53,7 +62,55 @@ export class GridsterLayoutService {
   endTime: Date = new Date(2019, 8, 28, 0, 0, 0);  
   public updateTimeEvent: EventEmitter<any> = new EventEmitter();
 
-  constructor( ) { }
+  usersShortList: UserShort[];
+  auth0_profile: any;  
+
+  currentUser: User;
+  currentPage: Page;
+
+
+  constructor( public settingsService: SettingsService, public auth: AuthService ) {
+    this.auth.userProfile$.subscribe(profile => {
+      this.auth0_profile = profile;
+    })
+
+    this.settingsService.getUsers().subscribe(users => {
+      console.log('GridsterLayoutService:getUsers', 'received users: ', users);
+      this.usersShortList = users;
+      if(this.auth0_profile){
+        let currentUserId: number = this.usersShortList.find(x => x.name == this.auth0_profile.name).id;
+        if(currentUserId){
+          this.settingsService.getUser(currentUserId).subscribe(user => { 
+            this.currentUser = user;
+            console.log('GridsterLayoutService this.currentUser:  ', this.currentUser );
+            console.log('Update this.currentUser login_time to now: ', this.currentUser );
+            this.currentUser.login_time = new Date();
+            this.currentUser.login_count++;
+            this.settingsService.updateUser(this.currentUser).subscribe();
+
+            /* Check if already pages exist: */
+            if(this.currentUser.Page.length == 0){
+              this.settingsService.updatePage(new Page(0, [], this.currentUser.id, 'Page 1')).subscribe( () => { this.UpdateCurrentUser(); } ); /* Add empty frame for user */
+            }else{
+              this.currentPage = this.currentUser.Page[0];
+            }
+          });
+        }
+      }
+    });
+  }
+
+  UpdateCurrentUser(){
+    this.settingsService.getUser(this.currentUser.id).subscribe(user => { 
+    this.currentUser = user;
+    });
+  }
+
+  UpdateCurrentPage(){
+    this.settingsService.getPage(this.currentPage.page_id).subscribe(page => { 
+    this.currentPage = page;
+    });
+  }
 
   addItem(): void {
     var newId: string;
@@ -76,6 +133,19 @@ export class GridsterLayoutService {
     });
 
     console.log('addItem:' + newId);
+
+    let newFrameElements: Frame_Element[] = new Array<Frame_Element>();
+    
+    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 0, 0 )).subscribe( () => { 
+      this.settingsService.getPage(this.currentPage.page_id).subscribe(page => { 
+        this.currentPage = page;
+        let frameId: number = this.currentPage.Frame.find(x => x.name == newId).frame_id;
+
+        this.settingsService.updateFrame_Element(new Frame_Element(0, frameId, 'OKG', 'VL1', 'WS0', 10, new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0), true, 60, 1, 1)).subscribe( () => { this.UpdateCurrentPage() } );
+        this.settingsService.updateFrame_Element(new Frame_Element(0, frameId, 'NPT', 'VL1', 'WS0', 10, new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0), true, 60, 1, 1)).subscribe( () => { this.UpdateCurrentPage() } );
+        this.settingsService.updateFrame_Element(new Frame_Element(0, frameId, 'ZLD', 'VL1', 'WS0', 10, new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0), true, 60, 1, 1)).subscribe( () => { this.UpdateCurrentPage() } );                
+      });
+     });
   }
 
   deleteItem(id: string): void {
@@ -84,7 +154,9 @@ export class GridsterLayoutService {
     const item = this.layout.find(d => d.id === id);
     this.layout.splice(this.layout.indexOf(item), 1);
     const comp = this.components.find(c => c.id === id);
-    this.components.splice(this.components.indexOf(comp), 1);    
+    this.components.splice(this.components.indexOf(comp), 1);
+
+    this.settingsService.deleteFrame(this.currentPage.Frame.find(x => x.name == id).frame_id).subscribe();
   } 
 
   setDropId(dropId: string): void {

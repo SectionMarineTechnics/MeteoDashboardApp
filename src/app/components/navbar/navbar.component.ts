@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     const source = timer( 1000, 1000);
-    //const subscribe = source.subscribe(val => this.refreshTimer(val));    
+    //const subscribe = source.subscribe(val => this.refreshTimer(val));
   }
 
   isDashboardView() {

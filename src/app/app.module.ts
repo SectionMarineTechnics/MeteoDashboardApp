@@ -26,6 +26,9 @@ import { ParentDynamicComponent } from './components/dashboard/parent-dynamic/pa
 import { TimeSeriesChartComponent } from './components/frames/time-series-chart/time-series-chart.component';
 import { InterceptorService } from './services/interceptor.service';
 
+import { SettingsService } from './services/settings.service';
+import { AuthService } from './services/auth.service';
+
 
 @NgModule({
   declarations: [
@@ -51,7 +54,7 @@ import { InterceptorService } from './services/interceptor.service';
     MatButtonModule,
     FlexLayoutModule
   ],
-  providers: [
+  providers: [ SettingsService, AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
