@@ -1,34 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MAT_EXPANSION_PANEL_DEFAULT_OPTIONS } from '@angular/material';
+import { HttpClient } from '@angular/common/http';
 
 import { Lspi } from '../models/Lspi';
 import { Serie } from '../models/Serie';
-import { DataPoint } from '../models/DataPoint';
-
-
-class chartData {
-  constructor(
-    public ColumnNames: string[],
-    public Data: Array<Array<any>>
-  ) {}
-}
-
-interface IDataPoints {
-  [key: number]: number;
-};
-
-class dataCacheLine {
-  constructor(
-    public Lspi: Lspi, 
-    public LastUpdate: Date, 
-    public StartTime: Date, 
-    public EndTime: Date, 
-    public MostRecentDataPointTime: Date,     
-    public Data: IDataPoints
-  ) {}
-}
-
+import { DataCacheLine } from '../models/DataCacheLine';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +16,7 @@ export class DataService {
   lspis: Lspi[] = [];
   loading: boolean;
 
-  dataCache: dataCacheLine[] = [];
+  dataCache: DataCacheLine[] = [];
 
   constructor(private httpClient: HttpClient) { 
     this.lspis = [];
@@ -51,19 +26,14 @@ export class DataService {
 
   ClearCache(){
     let now: Date = new Date();
-
-    this.dataCache.forEach( (cacheLine, cacheIndex) => { 
-      if( (now.getTime() - cacheLine.LastUpdate.getTime()) > 1000 * 60 * 60 ){
-
-      }
-    });
+    this.dataCache = this.dataCache.filter( element => (now.getTime() - element.LastUpDate.getTime()) < 1000 * 60 * 60);
   }
 
   GetData(widget: any, Version: number, StartTime: Date, EndTime: Date, SerieList: Serie[]) 
   {
-    let completeCacheLines: dataCacheLine[] = [];
-    let inCompleteCacheLines: dataCacheLine[] = [];
-    let emptyCacheLines: dataCacheLine[] = [];
+    let completeCacheLines: DataCacheLine[] = [];
+    let inCompleteCacheLines: DataCacheLine[] = [];
+    let emptyCacheLines: DataCacheLine[] = [];
 
     let ChartData: Array<Array<any>>;
     let ColumnNames: string[];
@@ -71,12 +41,7 @@ export class DataService {
     console.log("GetData();", Version, StartTime, EndTime, SerieList);
 
     SerieList.forEach( (serie, index) => { 
-
-      //console.log("SerieList.forEach.serie;", serie);
-
-      let cacheLines: dataCacheLine[] = this.dataCache.filter( element => element.Lspi.LspiName() == serie.Lspi.LspiName() )
-
-      //console.log("Found cacheLines", cacheLines);
+      let cacheLines: DataCacheLine[] = this.dataCache.filter( element => element.Lspi.LspiName() == serie.Lspi.LspiName() )
 
       let found:boolean = false;
       cacheLines.forEach( (cacheLine, cacheIndex) => { 
@@ -86,22 +51,22 @@ export class DataService {
             // Check if all data is avaible ? 
             if( cacheLine.EndTime.getTime() >= serie.EndTime.getTime() ){ 
               // Reqeusted data was already completely requested from database and put in the cache 
-              if( (cacheLine.MostRecentDataPointTime.getTime() < serie.EndTime.getTime()) && (Date.now() - cacheLine.LastUpdate.getTime()) > 30000 ){   
+              if( (cacheLine.MostRecentDataPointTime.getTime() < serie.EndTime.getTime()) && (Date.now() - cacheLine.LastUpDate.getTime()) > 30000 ){   
                 // Still missing some datapoints from requested time region:
-                cacheLine.LastUpdate = new Date(Date.now()); // Update time stamp
+                cacheLine.LastUpDate = new Date(Date.now()); // Update time stamp
                 inCompleteCacheLines.push(cacheLine);
               }
               else
               {
                 // All requested data is available:
-                cacheLine.LastUpdate = new Date(Date.now()); // Update time stamp
+                cacheLine.LastUpDate = new Date(Date.now()); // Update time stamp
                 completeCacheLines.push(cacheLine);
               }
               found = true;
             }
             else{ 
               // Some of the requested data is missing in the cache:
-              cacheLine.LastUpdate = new Date(Date.now()); // Update time stamp
+              cacheLine.LastUpDate = new Date(Date.now()); // Update time stamp
               inCompleteCacheLines.push(cacheLine);
               found = true;
             }
@@ -110,7 +75,7 @@ export class DataService {
       });
       if(!found){
         // Reqeuested data is missing in the cache:
-        emptyCacheLines.push(new dataCacheLine(serie.Lspi, new Date(Date.now()), StartTime, EndTime, StartTime, [] ));
+        emptyCacheLines.push(new DataCacheLine(serie.Lspi, new Date(Date.now()), StartTime, EndTime, StartTime, [] ));
       }
     });
 
@@ -131,10 +96,10 @@ export class DataService {
 
     if(inCompleteCacheLines.length > 0 || emptyCacheLines.length > 0){
       if(emptyCacheLines.length == 0){
-        this.loadDataFromServerInDataCache(widget, 1, startTimeInCompleteCacheLines, EndTime, SerieList, inCompleteCacheLines.concat(completeCacheLines), ChartData, ColumnNames, []); 
+        this.loadDataFromServerInDataCache(widget, 0, startTimeInCompleteCacheLines, EndTime, SerieList, inCompleteCacheLines.concat(completeCacheLines), ChartData, ColumnNames, []); 
       } else {
-        let linesToUpdate: dataCacheLine[] = emptyCacheLines.concat(inCompleteCacheLines).concat(completeCacheLines);
-        this.loadDataFromServerInDataCache(widget, 1, StartTime, EndTime, SerieList, linesToUpdate, ChartData, ColumnNames, emptyCacheLines);   
+        let linesToUpdate: DataCacheLine[] = emptyCacheLines.concat(inCompleteCacheLines).concat(completeCacheLines);
+        this.loadDataFromServerInDataCache(widget, 0, StartTime, EndTime, SerieList, linesToUpdate, ChartData, ColumnNames, emptyCacheLines);   
       }
     }
     else
@@ -143,7 +108,7 @@ export class DataService {
     }
   }
 
-  updateChartFromCache(widget: any, StartTime: Date, EndTime: Date, SerieList: Serie[], DataCache: dataCacheLine[], ChartData: Array<Array<any>>, ColumnNames: string[]){
+  updateChartFromCache(widget: any, StartTime: Date, EndTime: Date, SerieList: Serie[], DataCache: DataCacheLine[], ChartData: Array<Array<any>>, ColumnNames: string[]){
     ColumnNames = [];
     ChartData = [];
 
@@ -154,7 +119,7 @@ export class DataService {
     //ChartData.push([]);
     //ChartData[0].push({label: 'Time', id: 'Time', type: 'date'});
     
-    let cacheLines: dataCacheLine[] = [];
+    let cacheLines: DataCacheLine[] = [];
 
     SerieList.forEach( (serie, index) => { 
       ColumnNames.push(serie.Lspi.LspiName());
@@ -196,7 +161,7 @@ export class DataService {
     console.log("ChartData: ", ChartData);    
   }  
 
-  loadDataFromServerInDataCache(widget: any, Version: number, StartTime: Date, EndTime: Date, SerieList: Serie[], DataCache: dataCacheLine[], ChartData: Array<Array<any>>, ColumnNames: string[], DataCacheLinesToAdd: dataCacheLine[]) 
+  loadDataFromServerInDataCache(widget: any, Version: number, StartTime: Date, EndTime: Date, SerieList: Serie[], DataCache: DataCacheLine[], ChartData: Array<Array<any>>, ColumnNames: string[], DataCacheLinesToAdd: DataCacheLine[]) 
   {
     let lspiList: Lspi[] = [];
 
@@ -208,6 +173,9 @@ export class DataService {
 
     if(lspiList.length > 0){
       this.getDataFrameWithLspiList(Version, StartTime, EndTime, lspiList).then((dataFrame: any) => { 
+          if(typeof dataFrame == 'string'){
+            dataFrame = JSON.parse(dataFrame);
+          }
           dataFrame.forEach( (arrayItem, index) => {
             //console.log("loadDataFromServerInDataCache: dataFrame.forEach: ", arrayItem);
             let time: Date;
@@ -218,7 +186,7 @@ export class DataService {
               }
               else{
                 //console.log("loadDataFromServerInDataCache: value: ", arrayItem[key]);
-                let line: dataCacheLine = DataCache.find(element => element.Lspi.LspiName() == key);
+                let line: DataCacheLine = DataCache.find(element => element.Lspi.LspiName() == key);
                 //console.log("loadDataFromServerInDataCache update cachline: ", line);
 
                 // Put datapoint in cache if it didn't already exist:
@@ -247,7 +215,7 @@ export class DataService {
   }
 
   getDataFrameWithLspiList( Version: number, StartTime: Date, EndTime: Date, LspiList: Lspi[]){
-    let apiRequest:string = 'https://localhost:44395/api/DataPoints?';
+    let apiRequest:string = 'http://localhost:8090/GTSACQ/GetDataPoints?';
     
     LspiList.forEach( (lspi, index) => { 
       apiRequest += 'lspis=' + lspi.LspiName() + '&'; 
@@ -255,9 +223,6 @@ export class DataService {
 
     let formatted_startTime = StartTime.getFullYear() + "-" + this.padZeroes((StartTime.getMonth() + 1), 2) + "-" + this.padZeroes(StartTime.getDate(),2) + " " + this.padZeroes(StartTime.getHours(),2) + ":" + this.padZeroes(StartTime.getMinutes(),2) + ":" + this.padZeroes(StartTime.getSeconds(),2);
     let formatted_endTime = EndTime.getFullYear() + "-" + this.padZeroes((EndTime.getMonth() + 1), 2) + "-" + this.padZeroes(EndTime.getDate(),2) + " " + this.padZeroes(EndTime.getHours(),2) + ":" + this.padZeroes(EndTime.getMinutes(),2) + ":" + this.padZeroes(EndTime.getSeconds(),2);
-
-    //console.log("getDataFrameWithLspiList: startTime: ", StartTime, formatted_startTime);
-    //console.log("getDataFrameWithLspiList: endTime: ", EndTime, formatted_endTime);
 
     apiRequest += 'startTime=' + formatted_startTime + '&endTime=' + formatted_endTime + '&version=' + Version;
 
@@ -268,23 +233,11 @@ export class DataService {
 
   getLSPIList(){
     let promise = new Promise((resolve, reject) => {
-      /*let apiRequest: string = 'https://localhost:44395/api/LSPIS';*/
       let apiRequest: string = 'http://localhost:8090/GTSACQ/GetLSPIS';
-      /*let apiRequest: string = 'http://localhost:8090/Dashboard/SELECT_User_list';*/
       console.log("Get LSPI list from API: " + apiRequest);
 
-      /*
-      const httpOptions = {
-        headers: new HttpHeaders({ 
-          'Access-Control-Allow-Origin':'*',
-          'Authorization':'authkey',
-          'userid':'1'
-        })
-      };
-      */
-
       this.httpClient
-        .get(apiRequest/*, httpOptions*/)
+        .get(apiRequest)
         .toPromise()
         .then(
           (res: any) => { console.log("res: ", res);

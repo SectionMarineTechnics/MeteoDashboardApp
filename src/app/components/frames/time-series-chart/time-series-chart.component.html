@@ -1,9 +1,7 @@
-<p>time-series-chart works!</p>
-<button mat-icon-button (click)="dataService.getLSPIList()">TEST GET LSPI<mat-icon>close</mat-icon>
-</button>
-
 <mat-select>
     <mat-option *ngFor="let lspi of dataService.lspis" [value]="lspi">
       {{lspi.Name()}}
     </mat-option>
-  </mat-select>
+</mat-select>
+
+<google-chart #GoogleChart class="chart" type="Line" [data]="myChartData" [columnNames]="myColumnNames" title="TEST" id='chartIdRef' style="width: 100%;height: 100%"></google-chart>

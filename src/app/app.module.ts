@@ -30,6 +30,9 @@ import { SettingsService } from './services/settings.service';
 import { AuthService } from './services/auth.service';
 import { GridsterLayoutService } from './services/gridster-layout.service';
 
+import { GoogleChartsModule } from 'angular-google-charts';
+import { SourceSelectorComponent } from './components/source-selector/source-selector.component';
+
 
 @NgModule({
   declarations: [
@@ -38,7 +41,8 @@ import { GridsterLayoutService } from './services/gridster-layout.service';
     DashboardComponent,
     WeatherComponent,
     ParentDynamicComponent,
-    TimeSeriesChartComponent
+    TimeSeriesChartComponent,
+    SourceSelectorComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,8 @@ import { GridsterLayoutService } from './services/gridster-layout.service';
     MatSelectModule,
     MatIconModule,
     MatButtonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    GoogleChartsModule.forRoot()
   ],
   providers: [ SettingsService, AuthService, GridsterLayoutService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],

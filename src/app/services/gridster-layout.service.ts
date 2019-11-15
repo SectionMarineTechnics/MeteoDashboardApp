@@ -112,6 +112,15 @@ export class GridsterLayoutService {
       let getGetijSeriesData: Array<Serie> = new Array<Serie>();
 
       frame.Frame_Element.forEach(frameElement => {
+
+        if (typeof frameElement.start_time == 'string') {
+          frameElement.start_time = new Date(frameElement.start_time);
+        }
+
+        if (typeof frameElement.stop_time == 'string') {
+          frameElement.stop_time = new Date(frameElement.stop_time);
+        }
+
         getGetijSeriesData.push(new Serie(
                                       new Lspi(frameElement.LSPI_location, frameElement.LSPI_sensor, frameElement.LSPI_parameter, frameElement.LSPI_interval),
                                       frameElement.start_time, frameElement.stop_time));
@@ -214,6 +223,10 @@ export class GridsterLayoutService {
 
     this.settingsService.deleteFrame(this.currentPage.Frame.find(x => x.name == id).frame_id).subscribe();
   } 
+
+  ChangeSettings(id: string): void {
+    console.log('ChangeSettings:' + id);
+  }
 
   setDropId(dropId: string): void {
     this.dropId = dropId;

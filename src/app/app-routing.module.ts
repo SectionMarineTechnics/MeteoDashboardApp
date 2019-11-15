@@ -3,9 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { WeatherComponent } from './components/weather/weather.component';
+import { SourceSelectorComponent } from './components/source-selector/source-selector.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },
+  { path: 'SourceSelector', component: SourceSelectorComponent },
   { path: 'Dashboard', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'Weather', component: WeatherComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'login', component: WeatherComponent },
