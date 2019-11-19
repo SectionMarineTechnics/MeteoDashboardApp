@@ -38,6 +38,7 @@ import { GridsterLayoutService } from './services/gridster-layout.service';
 
 import { GoogleChartsModule } from 'angular-google-charts';
 import { SourceSelectorComponent } from './components/source-selector/source-selector.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { SourceSelectorComponent } from './components/source-selector/source-sel
     WeatherComponent,
     ParentDynamicComponent,
     TimeSeriesChartComponent,
-    SourceSelectorComponent
+    SourceSelectorComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
