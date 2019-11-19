@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { DataService } from 'src/app/services/data.service';
 import { Lspi } from 'src/app/models/Lspi';
 import { PanelType } from 'src/app/models/PanelType';
+import { ActivatedRoute } from '@angular/router';
+import { GridsterLayoutService } from 'src/app/services/gridster-layout.service';
 
 @Component({
   selector: 'app-source-selector',
@@ -19,11 +22,13 @@ export class SourceSelectorComponent implements OnInit {
 
   serieInfo_form: FormGroup;
 
+  frameId: string = "";
+
   options: Lspi[] = [];
   selectedLspis: Lspi[] = [];
   filteredOptions: Observable<Lspi[]>;
 
-  constructor(private dataService: DataService, private formBuilder: FormBuilder) { 
+  constructor(private dataService: DataService, private layoutService: GridsterLayoutService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) { 
     this.panelTypes = [
       {value: 'chart', viewValue: 'Grafiek'},
       {value: 'value', viewValue: 'Waarde'},
@@ -45,6 +50,25 @@ export class SourceSelectorComponent implements OnInit {
           .then(result => {
             this.setInitialValue();
           });
+
+    this.route.params.subscribe(params => {
+      this.frameId = params['id'];      
+      console.log("SourceSelectorComponent route parameter: ", this.frameId)
+
+      this.layoutService.layout
+
+      let gridsterItem = this.layoutService.layout.find(d => d.id === this.frameId);
+      if(gridsterItem != undefined){
+        console.log("gridsterItem.type: ", gridsterItem.type);
+
+        gridsterItem.serieList.forEach(item => {
+          this.selectedLspis.push(item.Lspi)
+        });
+
+        this.serieInfo_form.get("Titel").setValue(gridsterItem.title);
+
+      }
+    });
   }
 
   setInitialValue(){
@@ -81,5 +105,14 @@ export class SourceSelectorComponent implements OnInit {
 
   lspiElementsSelected(){
       return this.selectedLspis.length > 0;
+  }
+
+  closeForm(){
+    this.router.navigateByUrl('/');
+  }
+
+  submit(){
+    this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Titel").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
+    this.router.navigateByUrl('/');
   }
 }

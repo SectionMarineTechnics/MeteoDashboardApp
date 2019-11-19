@@ -12,6 +12,7 @@ import { UserShort } from '../models/UserShort'
 import { Page } from '../models/Page'
 import { Frame } from '../models/Frame'
 import { Frame_Element } from '../models/Frame_Element'
+import { PanelType } from '../models/PanelType';
 
 export interface IComponent {
   id: string;
@@ -126,13 +127,34 @@ export class GridsterLayoutService {
                                       frameElement.start_time, frameElement.stop_time));
       });
 
+      let gridsterType: string = '';
+      switch(frame.frame_type) { 
+        case 1: { 
+           gridsterType = 'widgetTimeSeriesChart';
+           break; 
+        } 
+        case 2: { 
+           gridsterType = 'widgetTimeSeriesChart';
+           break; 
+        } 
+        case 3: {
+           gridsterType = 'widgetTimeSeriesChart';
+           break;
+        }
+        default: { 
+           gridsterType = 'widgetTimeSeriesChart'; 
+           break; 
+        } 
+      } 
+
       this.layout.push({
         cols: frame.width,
         id: newId,
         rows: frame.height,
         x: frame.X,
         y: frame.Y,
-        type: 'widgetTimeSeriesChart',
+        type: gridsterType,
+        title: frame.name,
         serieList: getGetijSeriesData
       });
     });
@@ -160,7 +182,6 @@ export class GridsterLayoutService {
       }
   }
 
-
   UpdateCurrentUser(){
     this.settingsService.getUser(this.currentUser.id).subscribe(user => { 
     this.currentUser = user;
@@ -173,15 +194,66 @@ export class GridsterLayoutService {
     });
   }
 
+  updateItem(frameGUID: string, title: string, lspiList: Lspi[], type: PanelType){
+    console.log('updateItem: ', frameGUID, title, lspiList);
+
+    let startTime:Date = new Date(2019, 8, 26, 0, 0, 0);
+    let endTime:Date = new Date(2019, 8, 28, 0, 0, 0);
+
+    let frameItem: Frame = this.currentPage.Frame.find(x => x.name == frameGUID);
+    let gridsterItem = this.layout.find(d => d.id === frameGUID);
+
+    console.log('frameItem: ', frameItem);
+    console.log('gridsterItem: ', gridsterItem);
+
+    /* Update widget: */
+    gridsterItem.title = title;
+    let serieList: Serie[] = new Array<Serie>();
+    lspiList.forEach(lspi => {
+      serieList.push(new Serie(lspi, startTime, endTime));
+    });
+    gridsterItem.serieList = serieList;
+    let frame_type: number = 0;
+    switch(type.value) { 
+      case 'chart': { 
+         gridsterItem.type = 'widgetTimeSeriesChart';
+         frame_type = 1;
+         break; 
+      } 
+      case 'value': { 
+         gridsterItem.type = 'widgetTimeSeriesChart';
+         frame_type = 2;
+         break; 
+      } 
+      case 'table': {
+         gridsterItem.type = 'widgetTimeSeriesChart';
+         frame_type = 3;
+         break;
+      }
+      default: { 
+         gridsterItem.type = 'widgetTimeSeriesChart'; 
+         frame_type = 4;
+         break; 
+      } 
+    } 
+    
+    /* Update settings: */
+    //frameItem.name = title;
+    frameItem.frame_type = frame_type;
+    frameItem.Frame_Element.forEach(frameElement => {
+      this.settingsService.deleteFrame_Element(frameElement.id).subscribe( () => { this.UpdateCurrentPage() });
+    });
+    lspiList.forEach(lspi => {
+      this.settingsService.updateFrame_Element(new Frame_Element(0, frameItem.frame_id, lspi.Location, lspi.Sensor, lspi.Parameter, lspi.Interval, startTime, endTime, true, 60, 1, 1)).subscribe( () => { this.UpdateCurrentPage() } );
+    });
+    this.settingsService.updateFrame(frameItem).subscribe( () => { this.UpdateCurrentPage() });
+  }
+
   addItem(): void {
     var newId: string;
     newId = UUID.UUID();
 
-    let getGetijSeriesData: Array<Serie> = [
-      new Serie( new Lspi('OKG', 'VL1', 'WS0', 10), new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0) ),
-      new Serie( new Lspi('NPT', 'VL1', 'WS0', 10), new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0) ),
-      new Serie( new Lspi('ZLD', 'VL1', 'WS0', 10), new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0) )
-    ]
+    let getGetijSeriesData: Array<Serie> = [ ]
 
     this.layout.push({
       cols: 40,
@@ -190,7 +262,8 @@ export class GridsterLayoutService {
       x: 0,
       y: 0,
       type: 'widgetTimeSeriesChart',
-      serieList: getGetijSeriesData
+      serieList: getGetijSeriesData,
+      title: 'nieuw frame'
     });
 
     console.log('addItem:' + newId);

@@ -17,6 +17,12 @@
     width: 100%;
   }
 
+.close-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
 mat-icon {
    cursor: pointer;
 }  

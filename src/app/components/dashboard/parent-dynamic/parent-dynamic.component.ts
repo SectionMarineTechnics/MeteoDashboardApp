@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Serie } from 'src/app/models/Serie';
 
 @Component({
   selector: 'app-parent-dynamic',

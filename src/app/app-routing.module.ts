@@ -7,7 +7,7 @@ import { SourceSelectorComponent } from './components/source-selector/source-sel
 
 const routes: Routes = [
   { path: '', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },
-  { path: 'SourceSelector', component: SourceSelectorComponent },
+  { path: 'SourceSelector/:id', component: SourceSelectorComponent },
   { path: 'Dashboard', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'Weather', component: WeatherComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'login', component: WeatherComponent },

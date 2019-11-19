@@ -15,7 +15,9 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy {
   @Input() resizeEvent: EventEmitter<any>;
   @Input() updateTimeEvent: EventEmitter<any>;  
 
-  serieList: Serie[];
+  @Input() serieList: Serie[];
+  @Input() title: string;  
+
   @Input() chartTitle: string;
   @Input() chartSubTitle: string;
 

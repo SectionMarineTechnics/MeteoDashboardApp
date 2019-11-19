@@ -1,6 +1,10 @@
 <div [formGroup]="serieInfo_form" class="wrapper" fxLayout="column" fxLayoutAlign="start stretch">
-    <mat-label><h1>Configuratie panel</h1></mat-label>
-    
+    <mat-icon class="close-button" (click)=closeForm()>cancel</mat-icon>        
+
+    <mat-label>
+        <h2>Configuratie panel</h2>
+    </mat-label>
+
     <mat-form-field class="field-full-width">
         <input type="text" placeholder="Titel" aria-label="Titel" matInput formControlName="Titel">
     </mat-form-field>
@@ -22,7 +26,6 @@
         </mat-autocomplete>
     </mat-form-field>
 
-
     <button mat-raised-button (click)="addLspi()">Voeg bron toe</button>
 
     <mat-list>
@@ -35,5 +38,5 @@
         </mat-list-item>
     </mat-list>
 
-    <button mat-raised-button="submit" [disabled]="!serieInfo_form.valid || !lspiElementsSelected()">Bevestig</button>
+    <button mat-raised-button (click)="submit()" [disabled]="!serieInfo_form.valid || !lspiElementsSelected()">Bevestig</button>
 </div>
