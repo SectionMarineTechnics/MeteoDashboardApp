@@ -1,1 +1,39 @@
-<p>source-selector works!</p>
+<div [formGroup]="serieInfo_form" class="wrapper" fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-label><h1>Configuratie panel</h1></mat-label>
+    
+    <mat-form-field class="field-full-width">
+        <input type="text" placeholder="Titel" aria-label="Titel" matInput formControlName="Titel">
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+        <mat-select name="type" placeholder="Type" aria-label="Type" [(value)]="selectedType.viewValue" matInput formControlName="Type">
+            <mat-option *ngFor="let type of panelTypes" [value]="type.value">
+                {{type.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="field-full-width">
+        <input type="text" placeholder="Bron data" aria-label="Bron data" [matAutocomplete]="auto" matInput formControlName="LspiSelector">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                {{option.Name()}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+
+    <button mat-raised-button (click)="addLspi()">Voeg bron toe</button>
+
+    <mat-list>
+        <mat-list-item *ngFor="let lspi of selectedLspis">
+            <h3 mat-line>{{lspi.Name()}}</h3>
+            <p mat-line>
+                <span> </span>
+            </p>
+            <mat-icon (click)="deleteLspi(lspi)" style="cursor: hand">delete</mat-icon>
+        </mat-list-item>
+    </mat-list>
+
+    <button mat-raised-button="submit" [disabled]="!serieInfo_form.valid || !lspiElementsSelected()">Bevestig</button>
+</div>
