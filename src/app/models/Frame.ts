@@ -10,6 +10,11 @@ export class Frame {
       public X: number,
       public Y: number,
       public width: number,
-      public height: number
+      public height: number,
+
+      public title: string,
+      public sub_title: string,
+      public x_axis_title: string,
+      public y_axis_title: string
     ) {}
   }

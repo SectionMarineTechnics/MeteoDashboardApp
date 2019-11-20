@@ -154,7 +154,7 @@ export class GridsterLayoutService {
         x: frame.X,
         y: frame.Y,
         type: gridsterType,
-        title: frame.name,
+        title: frame.title,
         serieList: getGetijSeriesData
       });
     });
@@ -238,7 +238,7 @@ export class GridsterLayoutService {
     } 
     
     /* Update settings: */
-    //frameItem.name = title;
+    frameItem.title = title;
     frameItem.frame_type = frame_type;
     frameItem.Frame_Element.forEach(frameElement => {
       this.settingsService.deleteFrame_Element(frameElement.id).subscribe( () => { this.UpdateCurrentPage() });
@@ -271,7 +271,7 @@ export class GridsterLayoutService {
     let newFrameElements: Frame_Element[] = new Array<Frame_Element>();
     
     /* Add new frame to page: */
-    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 40, 30 )).subscribe( () => { 
+    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 40, 30, "nieuw frame", "", "", "" )).subscribe( () => { 
       this.settingsService.getPage(this.currentPage.page_id).subscribe(page => { 
         this.currentPage = page;
         console.log('added new frame to page with ID: ', newId, this.currentPage);
