@@ -12,6 +12,10 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   timeIntervals: String[] = [ "Custom", "2 hours", "4 hours" ];
+  refreshStates: String[] = [ "Aan", "Uit" ];
+
+  refreshState: string = "Aan";
+  timeInterval: string = "4 hours";
 
   constructor(public layoutService: GridsterLayoutService, public auth: AuthService, private router: Router) { }
 
@@ -24,5 +28,10 @@ export class NavbarComponent implements OnInit {
     // return true if the current page is home
     //console.log("isDashboardView(): ", this.router.url);
     return this.router.url.match('^/$') || this.router.url.match('^/Dashboard$');
+  }
+
+  ShowOtaryWebSite(){
+    let url:string = "https://www.otary.be"
+    window.open(url, "_blank");
   }
 }

@@ -2,3 +2,19 @@
 .menu-spacer {
     flex: 1 1 auto;
 }
+
+.toolbar{
+    display: flex;
+}
+
+.toolbarContainer {
+    display: flex;
+}
+
+.timeFrameButton{
+    justify-content: center;
+}
+
+.settingsButton{
+    justify-content: flex-end;
+}

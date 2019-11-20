@@ -79,12 +79,10 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy {
     console.log("ngAfterViewInit() Resize event: ", this.resizeEvent);
     if(this.resizeEvent != undefined){
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
-        if (event.gridsterItem === this.widget) { 
+        if (event.gridsterItem === this.widget) {
           console.log("Resize event");
           console.log("gridsterItem: ", event.gridsterItem);
           console.log("gridsterItemComponent: ", event.gridsterItemComponent);
-
-          const wrapper = this.chartHandle.wrapper;
 
           this.gridsterItemComponent_height = event.gridsterItemComponent.height;
           this.gridsterItemComponent_width =  event.gridsterItemComponent.width;
@@ -124,12 +122,14 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy {
 
     console.log("ngAfterViewInit: this.chartHandle: ", this.chartHandle);
     
+    /*
     this.dataService.getLSPIList()
           .then(_ => (this.loading = false) )
           .then(result => {
             this.setInitialValue();
           });
-    
+    */
+
     //this.loadData(0);
   }
 
@@ -176,7 +176,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy {
     console.log("this.myChartData: ", this.myChartData);
     console.log("this.myColumnNames: ", this.myColumnNames);
 
-    console.log("this.dataService.lspis: ", this.dataService.lspis);
+    /*console.log("this.dataService.lspis: ", this.dataService.lspis);*/
 
     console.log("this.loading: ", this.loading);
 
@@ -191,6 +191,10 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy {
     lspiList.push( new Lspi("ZLD","VL1","WS0",10));*/
 
     this.dataService.getDataFrameWithLspiList( 0, new Date(2019, 8, 26, 0, 0, 0), new Date(2019, 8, 28, 0, 0, 0),  lspiList);
+  }
+
+  showData(){
+    return (this.serieList.length > 0);
   }
 
 }

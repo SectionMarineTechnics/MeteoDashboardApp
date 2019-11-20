@@ -1,10 +1,14 @@
 <div style="height: 100vh;">
-    <mat-toolbar color="primary">
-        <mat-toolbar-row>
+    <mat-toolbar class="toolbar" color="primary" fxflex>
+        <mat-toolbar-row class="toolbarContainer">
             <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
                 <mat-icon>menu</mat-icon>
             </button>
-            <span>Dashboard</span>
+
+            <img src="assets/img/logo-otary.svg" width="80" height="60" (click)="ShowOtaryWebSite()">
+
+    
+            <span fxFlex></span>
 
             <div fxShow="true" fxHide.lt-md="true">
                 <!-- The following menu items will be hidden on both SM and XS screen sizes -->
@@ -18,54 +22,50 @@
                     Weather
                 </button>
                 -->
-                <mat-menu #addItemToLayoutMenu="matMenu">
-                    <button mat-menu-item (click)="layoutService.addItem()">Chart</button>
-                    <button mat-menu-item>Status</button>
-                  </mat-menu>
 
-                <button mat-icon-button [matMenuTriggerFor]="addItemToLayoutMenu" matTooltip="Voeg nieuw frame toe" *ngIf="isDashboardView()"> 
-                    <mat-icon>add_box</mat-icon>
+                <button class="timeFrameButton" mat-button matTooltip="Voeg nieuw frame toe" *ngIf="isDashboardView()"> 
+                    <mat-icon (click)="layoutService.addItem()">add_box</mat-icon>
                 </button>                
-                <button mat-button matTooltip="Shuif tijdsvenster terug" *ngIf="isDashboardView()"> 
+                <button class="timeFrameButton" mat-button matTooltip="Shuif tijdsvenster terug" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="layoutService.goBackward()">chevron_left</mat-icon>
-                </button>                
-                <button mat-button matTooltip="Stel tijdsvenster in" *ngIf="isDashboardView()"> 
+                </button>
+                <button class="timeFrameButton" mat-button matTooltip="Stel tijdsvenster in" *ngIf="isDashboardView()">
                     <mat-icon>access_time</mat-icon>
                     <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->
-                </button>                
-                <button mat-button matTooltip="Shuif tijdsvenster vooruit" *ngIf="isDashboardView()"> 
+                </button>
+                <button class="timeFrameButton" mat-button matTooltip="Shuif tijdsvenster vooruit" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="layoutService.goForward()">chevron_right</mat-icon>
                 </button>                
-                <button mat-button matTooltip="Verklein tijdsvenster" *ngIf="isDashboardView()">
+                <button class="timeFrameButton" mat-button matTooltip="Verklein tijdsvenster" *ngIf="isDashboardView()">
                     <mat-icon (click)="layoutService.zoomIn()">zoom_in</mat-icon>
                 </button>                
-                <button mat-button matTooltip="Vergroot tijdsvenster" *ngIf="isDashboardView()"> 
+                <button class="timeFrameButton" mat-button matTooltip="Vergroot tijdsvenster" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="layoutService.zoomOut()">zoom_out</mat-icon>
                 </button>    
-                <button mat-button matTooltip="Stel scherm-verversing in" (click)="mySelect.open()" *ngIf="isDashboardView()">
-                    <mat-icon matTooltip="History">history</mat-icon>
-                    Last Two hours
-                </button>                
-                
-                <mat-select style="visibility:hidden;width: 0" #mySelect multiple>
-                    <mat-option *ngFor="let timeInterval of timeIntervals" [value]="timeInterval">{{ timeInterval }}</mat-option>
+                <button class="timeFrameButton" mat-button matTooltip="Stel scherm-verversing in: {{ refreshState }}" (click)="mySelect.open()" *ngIf="isDashboardView()">
+                    <mat-icon>loop</mat-icon>
+                </button>    
+               
+                <mat-select style="visibility:hidden;width: 0" #mySelect single>
+                    <mat-option *ngFor="let refreshState of refreshStates" [value]="refreshState">{{ refreshState }}</mat-option>
                 </mat-select>
             </div>
 
-            <span class="menu-spacer"></span>
+            <!--<span class="menu-spacer"></span>-->
+            <span fxFlex></span>
 
             <div fxShow="true" fxHide.lt-md="true">
-                <button mat-button matTooltip="Wijzig look and feel van de applicatie">
+                <button class="settingsButton" mat-button matTooltip="Wijzig look and feel van de applicatie">
                     <mat-icon>palette</mat-icon>
                 </button>
 
-                <button mat-button matTooltip="Gebruikersinstellingen" routerLink="/profile"> 
+                <button class="settingsButton" mat-button matTooltip="Gebruikersinstellingen" routerLink="/profile"> 
                     <mat-icon>account_box</mat-icon>
                     My Account
                 </button>
 
-                <button mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon>Log In</button>
-                <button mat-button (click)="auth.logout()" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>                
+                <button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon>Log In</button>
+                <button class="settingsButton" mat-button (click)="auth.logout()" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>                
             </div>
 
         </mat-toolbar-row>

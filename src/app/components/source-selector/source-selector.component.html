@@ -1,16 +1,17 @@
 <div [formGroup]="serieInfo_form" class="wrapper" fxLayout="column" fxLayoutAlign="start stretch">
-    <mat-icon class="close-button" (click)=closeForm()>cancel</mat-icon>        
-
-    <mat-label>
-        <h2>Configuratie panel</h2>
-    </mat-label>
+    <div class="containerHeader">
+        <mat-label class="header"><h2>Configuratie panel</h2></mat-label>
+        <span fxFlex></span>
+        <mat-icon class="close-button" (click)=closeForm()>cancel</mat-icon>
+    </div>
 
     <mat-form-field class="field-full-width">
         <input type="text" placeholder="Titel" aria-label="Titel" matInput formControlName="Titel">
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
-        <mat-select name="type" placeholder="Type" aria-label="Type" [(value)]="selectedType.viewValue" matInput formControlName="Type">
+        <mat-select name="type" placeholder="Type" aria-label="Type" [(value)]="selectedType.viewValue" matInput
+            formControlName="Type">
             <mat-option *ngFor="let type of panelTypes" [value]="type.value">
                 {{type.viewValue}}
             </mat-option>
@@ -18,7 +19,8 @@
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
-        <input type="text" placeholder="Bron data" aria-label="Bron data" [matAutocomplete]="auto" matInput formControlName="LspiSelector">
+        <input type="text" placeholder="Bron data" aria-label="Bron data" [matAutocomplete]="auto" matInput
+            formControlName="LspiSelector">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                 {{option.Name()}}
@@ -38,5 +40,6 @@
         </mat-list-item>
     </mat-list>
 
-    <button mat-raised-button (click)="submit()" [disabled]="!serieInfo_form.valid || !lspiElementsSelected()">Bevestig</button>
+    <button mat-raised-button (click)="submit()"
+        [disabled]="!serieInfo_form.valid || !lspiElementsSelected()">Bevestig</button>
 </div>
