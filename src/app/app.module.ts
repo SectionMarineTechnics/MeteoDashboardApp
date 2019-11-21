@@ -25,7 +25,9 @@ import { MatInputModule  } from '@angular/material/input';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { WeatherComponent } from './components/weather/weather.component';
@@ -41,7 +43,7 @@ import { GoogleChartsModule } from 'angular-google-charts';
 import { SourceSelectorComponent } from './components/source-selector/source-selector.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
-
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [
@@ -73,13 +75,17 @@ import { TimeSelectorComponent } from './components/time-selector/time-selector.
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatSlideToggleModule,
+
+    MatDatepickerModule,
+    MatMomentDateModule,
+
     MatTooltipModule,    
     FlexLayoutModule,
     GoogleChartsModule.forRoot()
   ],
   providers: [ SettingsService, AuthService, GridsterLayoutService,
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

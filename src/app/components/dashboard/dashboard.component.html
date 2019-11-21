@@ -2,23 +2,23 @@
   <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
     <span class="dragHandleHeader">
       <div class="custom">
-      <mat-toolbar color="primary">
-        <mat-toolbar-row style="font-size: 4px;height: 4px;"></mat-toolbar-row>
-        <mat-toolbar-row>
-          <span>{{ item.title }}</span>
-          <span class="toolbar-spacer"></span>
-          <button matTooltip="Frameinstellingen" mat-icon-button [routerLink]="['/SourceSelector', item.id]">
-            <mat-icon>settings</mat-icon>
-          </button>          
-          <button matTooltip="Verkleinen" mat-icon-button>
-            <mat-icon>minimize</mat-icon>
-          </button>
-          <button matTooltip="Verwijder frame" mat-icon-button (click)="layoutService.deleteItem(item.id)">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-toolbar-row>
-      </mat-toolbar>
-    </div>
+        <mat-toolbar color="primary">
+          <mat-toolbar-row style="font-size: 4px;height: 4px;"></mat-toolbar-row>
+          <mat-toolbar-row style="cursor: pointer">
+            <span>{{ item.title }}</span>
+            <span class="toolbar-spacer"></span>
+            <button matTooltip="Frameinstellingen" mat-icon-button [routerLink]="['/SourceSelector', item.id]">
+              <mat-icon>settings</mat-icon>
+            </button>
+            <button matTooltip="Verkleinen" mat-icon-button>
+              <mat-icon>minimize</mat-icon>
+            </button>
+            <button matTooltip="Verwijder frame" mat-icon-button (click)="layoutService.deleteItem(item.id)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-toolbar-row>
+        </mat-toolbar>
+      </div>
     </span>
     <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent">
     </app-parent-dynamic>

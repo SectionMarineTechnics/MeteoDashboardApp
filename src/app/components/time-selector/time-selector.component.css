@@ -1,0 +1,38 @@
+.containerHeader{
+    display: flex;
+}
+
+.header{
+    display: flex;
+    justify-content: flex-left;
+}
+
+.close-button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flexboxContainer
+{
+    display: flex;
+}
+
+.right-field
+{
+    display: flex;
+    justify-content: flex-end;    
+    flex-flow: row wrap;
+    margin: 10px;
+}
+
+.left-field
+{
+    display: flex;
+    justify-content: flex-start;        
+    flex-flow: row wrap;    
+    margin: 10px;    
+}
+
+mat-icon {
+    cursor: pointer;
+ }  

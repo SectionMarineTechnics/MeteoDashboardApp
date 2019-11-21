@@ -1,9 +1,11 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { GridsterLayoutService } from 'src/app/services/gridster-layout.service';
 import { timer } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { Page } from 'src/app/models/Page';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-navbar',
@@ -11,16 +13,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  timeIntervals: String[] = [ "Custom", "2 hours", "4 hours" ];
-  refreshStates: String[] = [ "Aan", "Uit" ];
+  timeIntervals: String[] = ["Custom", "1 hour", "2 hours", "4 hours", "6 hours", "8 hours", "16 hours", "24 hours"];
+  refreshStates: String[] = ["Aan", "Uit"];
+  pages: String[] = [];
+
 
   refreshState: string = "Aan";
+  SelectedRefreshState: string = "Aan";
   timeInterval: string = "4 hours";
+
+  page: string = "";
+  SelectedPage: string = "";
+
+  @ViewChild('myPageSelect', { static: true }) myPageSelect: MatSelect;
 
   constructor(public layoutService: GridsterLayoutService, public auth: AuthService, private router: Router) { }
 
   ngOnInit() {
-    const source = timer( 1000, 1000);
+    const source = timer(1000, 1000);
     //const subscribe = source.subscribe(val => this.refreshTimer(val));
   }
 
@@ -30,8 +40,47 @@ export class NavbarComponent implements OnInit {
     return this.router.url.match('^/$') || this.router.url.match('^/Dashboard$');
   }
 
-  ShowOtaryWebSite(){
-    let url:string = "https://www.otary.be"
+  padZeroes(input: number, length: number) {
+    return String("0").repeat(Math.abs(length - input.toString().length)) + input.toString();
+  }
+
+  timeToStr(time: Date): string {
+    return this.padZeroes(time.getUTCDate(), 2) + '/' + this.padZeroes((time.getUTCMonth() + 1), 2) + '/' + time.getUTCFullYear() + ' ' + this.padZeroes(time.getUTCHours(), 2) + ':' + this.padZeroes(time.getUTCMinutes(), 2) + ':' + this.padZeroes(time.getUTCSeconds(), 2);
+  }
+
+  ShowOtaryWebSite() {
+    let url: string = "https://www.otary.be"
     window.open(url, "_blank");
+  }
+
+  UpdateRefreshState() {
+    console.log("UpdateRefreshState()");
+
+    if (this.SelectedRefreshState == "Aan") {
+      this.layoutService.refreshTimerActive = true;
+    } else {
+      this.layoutService.refreshTimerActive = false;
+    }
+  }
+
+  UpdatePage() {
+    console.log("UpdatePage(): ", this.SelectedPage);
+  }
+
+  loadpages() {
+    console.log("loadpages(): ");
+
+    this.pages = [];
+
+    this.layoutService.currentUser.Page.forEach((page: Page) => {
+      this.pages.push(page.name);
+    });
+
+    if (this.SelectedPage == "") {
+      this.page = this.layoutService.currentUser.Page[0].name;
+      this.SelectedPage = this.page;
+    }
+
+    this.myPageSelect.open();
   }
 }

@@ -23,13 +23,22 @@
                 </button>
                 -->
 
+                <button class="timeFrameButton" mat-button matTooltip="Selecteer pagina:" (click)="loadpages()" *ngIf="isDashboardView()">
+                    <mat-icon>description</mat-icon>
+                </button>    
+               
+                <mat-select style="visibility:hidden;width: 0" #myPageSelect single [(ngModel)]="SelectedPage" (selectionChange)="UpdatePage()">
+                    <mat-option *ngFor="let page of pages" [value]="page">{{ page }}</mat-option>
+                </mat-select>
+
+
                 <button class="timeFrameButton" mat-button matTooltip="Voeg nieuw frame toe" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="layoutService.addItem()">add_box</mat-icon>
                 </button>                
                 <button class="timeFrameButton" mat-button matTooltip="Shuif tijdsvenster terug" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="layoutService.goBackward()">chevron_left</mat-icon>
                 </button>
-                <button class="timeFrameButton" mat-button matTooltip="Stel tijdsvenster in" *ngIf="isDashboardView()">
+                <button class="timeFrameButton" mat-button matTooltip="{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}" routerLink="/TimeSelector" *ngIf="isDashboardView()">
                     <mat-icon>access_time</mat-icon>
                     <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->
                 </button>
@@ -42,11 +51,11 @@
                 <button class="timeFrameButton" mat-button matTooltip="Vergroot tijdsvenster" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="layoutService.zoomOut()">zoom_out</mat-icon>
                 </button>    
-                <button class="timeFrameButton" mat-button matTooltip="Stel scherm-verversing in: {{ refreshState }}" (click)="mySelect.open()" *ngIf="isDashboardView()">
+                <button class="timeFrameButton" mat-button matTooltip="Stel scherm-verversing in: {{ SelectedRefreshState }}" (click)="mySelect.open()" *ngIf="isDashboardView()">
                     <mat-icon>loop</mat-icon>
                 </button>    
                
-                <mat-select style="visibility:hidden;width: 0" #mySelect single>
+                <mat-select style="visibility:hidden;width: 0" #mySelect single [(ngModel)]="SelectedRefreshState" (selectionChange)="UpdateRefreshState()">
                     <mat-option *ngFor="let refreshState of refreshStates" [value]="refreshState">{{ refreshState }}</mat-option>
                 </mat-select>
             </div>
