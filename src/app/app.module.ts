@@ -44,6 +44,7 @@ import { SourceSelectorComponent } from './components/source-selector/source-sel
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { PageSelectorComponent } from './components/page-selector/page-selector.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     TimeSeriesChartComponent,
     SourceSelectorComponent,
     UserProfileComponent,
-    TimeSelectorComponent
+    TimeSelectorComponent,
+    PageSelectorComponent
   ],
   imports: [
     BrowserModule,

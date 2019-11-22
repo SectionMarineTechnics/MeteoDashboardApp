@@ -65,6 +65,9 @@ export class NavbarComponent implements OnInit {
 
   UpdatePage() {
     console.log("UpdatePage(): ", this.SelectedPage);
+    if(this.SelectedPage == "Pagina instellingen"){
+      this.router.navigateByUrl('/PageSettings');
+    }
   }
 
   loadpages() {
@@ -75,6 +78,7 @@ export class NavbarComponent implements OnInit {
     this.layoutService.currentUser.Page.forEach((page: Page) => {
       this.pages.push(page.name);
     });
+    this.pages.push("Pagina instellingen");
 
     if (this.SelectedPage == "") {
       this.page = this.layoutService.currentUser.Page[0].name;
