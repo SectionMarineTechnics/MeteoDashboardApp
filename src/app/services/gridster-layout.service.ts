@@ -133,6 +133,8 @@ export class GridsterLayoutService {
   }
 
   RebuildLayout(page: Page) {
+    this.layout = [];
+    
     page.Frame.forEach(frame => {
       let newId: string = frame.name;
       let getGetijSeriesData: Array<Serie> = new Array<Serie>();

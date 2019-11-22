@@ -15,11 +15,13 @@ import { MatSelect } from '@angular/material/select';
 export class NavbarComponent implements OnInit {
   timeIntervals: String[] = ["Custom", "1 hour", "2 hours", "4 hours", "6 hours", "8 hours", "16 hours", "24 hours"];
   refreshStates: String[] = ["Aan", "Uit"];
+  addActions: String[] = ["Voeg frame toe", "Voeg pagina toe"];
   pages: String[] = [];
 
 
   refreshState: string = "Aan";
   SelectedRefreshState: string = "Aan";
+  SelectedAction: string = "Voeg frame toe";
   timeInterval: string = "4 hours";
 
   page: string = "";
@@ -63,16 +65,21 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  UpdatePage() {
-    console.log("UpdatePage(): ", this.SelectedPage);
-    if(this.SelectedPage == "Pagina instellingen"){
+  UpdateAction() {
+    if (this.SelectedAction == "Voeg frame toe") {
+      this.layoutService.addItem();
+    } else {
       this.router.navigateByUrl('/PageSettings');
     }
+  }  
+
+  UpdatePage() {
+    console.log("UpdatePage(): ", this.SelectedPage);
+    this.layoutService.currentPage = this.layoutService.currentUser.Page.find(x => x.name == this.SelectedPage);
+    this.layoutService.RebuildLayout(this.layoutService.currentPage);
   }
 
   loadpages() {
-    console.log("loadpages(): ");
-
     this.pages = [];
 
     let sortedPages = this.layoutService.currentUser.Page.sort( function(a, b) { 
@@ -81,7 +88,6 @@ export class NavbarComponent implements OnInit {
     sortedPages.forEach((page: Page) => {
       this.pages.push(page.name);
     });
-    this.pages.push("Pagina instellingen");
 
     if (this.SelectedPage == "") {
       this.page = this.layoutService.currentUser.Page[0].name;
