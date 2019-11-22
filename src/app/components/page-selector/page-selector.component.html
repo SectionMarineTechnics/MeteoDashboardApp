@@ -1,1 +1,31 @@
-<p>page-selector works!</p>
+<div [formGroup]="pageInfo_form" class="wrapper" fxLayout="column" fxLayoutAlign="start stretch">
+    <div class="containerHeader">
+        <mat-label class="header">
+            <h2>Configuratie pagina's</h2>
+        </mat-label>
+        <span fxFlex></span>
+        <mat-icon class="close-button" (click)=closeForm()>cancel</mat-icon>
+    </div>
+
+    <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+        <div *ngIf="this.currentUser">
+            <div class="example-box" *ngFor="let page of pages" cdkDrag>
+                <div class="header">{{ page.name }}</div>
+                <span fxFlex></span>
+                <mat-icon class="close-button" (click)=deletePage(page)>cancel</mat-icon>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <mat-form-field class="field-full-width">
+        <input type="text" placeholder="Pagina naam" aria-label="Pagina naam" matInput formControlName="NewPageName">
+    </mat-form-field>
+
+    <button mat-raised-button (click)="addNewPage()" [disabled]="!pageInfo_form.valid||pageExist()">Voeg pagina toe</button>
+
+    <br>
+
+    <button mat-raised-button (click)="submit()">Bevestig</button>
+</div>

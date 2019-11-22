@@ -4,7 +4,7 @@ export class Page {
       public page_id: number,
       public Frame: Frame[],
       public user_id: number,
-
-      public name: string
+      public name: string,
+      public position: number
     ) {}
   }

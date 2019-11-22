@@ -117,7 +117,7 @@ export class GridsterLayoutService {
 
             /* Check if already pages exist: */
             if (this.currentUser.Page.length == 0) {
-              this.settingsService.updatePage(new Page(0, [], this.currentUser.id, 'Page 1')).subscribe(() => { this.UpdateCurrentUser(); }); /* Add empty frame for user */
+              this.settingsService.updatePage(new Page(0, [], this.currentUser.id, 'Page 1', this.getNexPagePosition())).subscribe(() => { this.UpdateCurrentUser(); }); /* Add empty frame for user */
             } else {
               this.currentPage = this.currentUser.Page[0];
             }
@@ -299,8 +299,9 @@ export class GridsterLayoutService {
     frameItem.Frame_Element.forEach(frameElement => {
       this.settingsService.deleteFrame_Element(frameElement.id).subscribe(() => { this.UpdateCurrentPage() });
     });
+    let position: number = 1;
     lspiList.forEach(lspi => {
-      this.settingsService.updateFrame_Element(new Frame_Element(0, frameItem.frame_id, lspi.Location, lspi.Sensor, lspi.Parameter, lspi.Interval, this.startTime, this.endTime, true, 60, 1, 1)).subscribe(() => { this.UpdateCurrentPage() });
+      this.settingsService.updateFrame_Element(new Frame_Element(0, frameItem.frame_id, lspi.Location, lspi.Sensor, lspi.Parameter, lspi.Interval, this.startTime, this.endTime, true, 60, 1, 1, position++)).subscribe(() => { this.UpdateCurrentPage() });
     });
     this.settingsService.updateFrame(frameItem).subscribe(() => { this.UpdateCurrentPage() });
   }
@@ -327,7 +328,7 @@ export class GridsterLayoutService {
     let newFrameElements: Frame_Element[] = new Array<Frame_Element>();
 
     /* Add new frame to page: */
-    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 40, 30, "nieuw frame", "", "", "")).subscribe(() => {
+    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 40, 30, "nieuw frame", "", "", "", this.getNexFramePosition())).subscribe(() => {
       this.settingsService.getPage(this.currentPage.page_id).subscribe(page => {
         this.currentPage = page;
         console.log('added new frame to page with ID: ', newId, this.currentPage);
@@ -422,5 +423,35 @@ export class GridsterLayoutService {
     });
     
     this.updateTimeEvent.emit({ startTime, endTime });
+  }
+
+  getNexPagePosition(): number{
+    if(this.currentUser){
+      if(this.currentUser.Page){
+        let highestPosition: number = 0;
+        this.currentUser.Page.forEach( page => {
+          if(page.position > highestPosition){
+            highestPosition = page.position;
+          } 
+        });
+        return (highestPosition + 1);
+      }
+    }
+    return 1;
+  }
+
+  getNexFramePosition(): number{
+    if(this.currentPage){
+      if(this.currentPage.Frame){
+        let highestPosition: number = 0;
+        this.currentPage.Frame.forEach( frame => {
+          if(frame.position > highestPosition){
+            highestPosition = frame.position;
+          } 
+        });
+        return (highestPosition + 1);
+      }
+    }
+    return 1;
   }
 }

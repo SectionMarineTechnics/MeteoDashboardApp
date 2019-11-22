@@ -46,6 +46,8 @@ import { TimeSelectorComponent } from './components/time-selector/time-selector.
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { PageSelectorComponent } from './components/page-selector/page-selector.component';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,7 +85,8 @@ import { PageSelectorComponent } from './components/page-selector/page-selector.
 
     MatTooltipModule,    
     FlexLayoutModule,
-    GoogleChartsModule.forRoot()
+    GoogleChartsModule.forRoot(),
+    DragDropModule
   ],
   providers: [ SettingsService, AuthService, GridsterLayoutService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

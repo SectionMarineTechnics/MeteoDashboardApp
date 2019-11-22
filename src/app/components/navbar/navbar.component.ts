@@ -75,7 +75,10 @@ export class NavbarComponent implements OnInit {
 
     this.pages = [];
 
-    this.layoutService.currentUser.Page.forEach((page: Page) => {
+    let sortedPages = this.layoutService.currentUser.Page.sort( function(a, b) { 
+      return a.position - b.position;
+    });
+    sortedPages.forEach((page: Page) => {
       this.pages.push(page.name);
     });
     this.pages.push("Pagina instellingen");

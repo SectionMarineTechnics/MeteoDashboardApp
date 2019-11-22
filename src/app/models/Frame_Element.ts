@@ -12,6 +12,8 @@ export class Frame_Element {
       public auto_refresh_active: boolean,
       public auto_refresh_interval: number,
       public line_color: number,
-      public line_type: number
+      public line_type: number,
+
+      public position: number      
     ) {}
   }

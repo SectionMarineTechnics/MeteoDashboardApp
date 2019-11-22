@@ -15,6 +15,8 @@ export class Frame {
       public title: string,
       public sub_title: string,
       public x_axis_title: string,
-      public y_axis_title: string
+      public y_axis_title: string,
+
+      public position: number,
     ) {}
   }
