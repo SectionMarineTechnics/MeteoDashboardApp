@@ -161,11 +161,11 @@ export class GridsterLayoutService {
           break;
         }
         case 2: {
-          gridsterType = 'widgetTimeSeriesChart';
+          gridsterType = 'widgetValue';
           break;
         }
         case 3: {
-          gridsterType = 'widgetTimeSeriesChart';
+          gridsterType = 'widgetTable';
           break;
         }
         default: {
@@ -255,8 +255,8 @@ export class GridsterLayoutService {
     });
   }
 
-  updateItem(frameGUID: string, title: string, lspiList: Lspi[], type: PanelType) {
-    console.log('updateItem: ', frameGUID, title, lspiList);
+  updateItem(frameGUID: string, title: string, lspiList: Lspi[], type: string) {
+    console.log('updateItem: ', frameGUID, title, lspiList, type);
 
     let frameItem: Frame = this.currentPage.Frame.find(x => x.name == frameGUID);
     let gridsterItem = this.layout.find(d => d.id === frameGUID);
@@ -272,19 +272,20 @@ export class GridsterLayoutService {
     });
     gridsterItem.serieList = serieList;
     let frame_type: number = 0;
-    switch (type.value) {
+
+    switch (type) {
       case 'chart': {
         gridsterItem.type = 'widgetTimeSeriesChart';
         frame_type = 1;
         break;
       }
       case 'value': {
-        gridsterItem.type = 'widgetTimeSeriesChart';
+        gridsterItem.type = 'widgetValue';
         frame_type = 2;
         break;
       }
       case 'table': {
-        gridsterItem.type = 'widgetTimeSeriesChart';
+        gridsterItem.type = 'widgetTable';
         frame_type = 3;
         break;
       }

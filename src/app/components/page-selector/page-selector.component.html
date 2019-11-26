@@ -9,10 +9,14 @@
 
     <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
         <div *ngIf="this.currentUser">
-            <div class="example-box" *ngFor="let page of pages" cdkDrag>
-                <div class="header">{{ page.name }}</div>
+            <div class="example-box" *ngFor="let page of pages;let index = index;" cdkDrag>
+                <!--<div class="header">{{ page.name }}</div>-->
+                <mat-form-field class="field-full-width" floatLabel="never">
+                    <input matInput [value]="pages[index].name" (input)="pages[index].name = $event.target.value" formControlName="EditPageName">
+                </mat-form-field>
+
                 <span fxFlex></span>
-                <mat-icon class="close-button" (click)=deletePage(page)>cancel</mat-icon>
+                <mat-icon class="button" (click)=deletePage(page)>cancel</mat-icon>
             </div>
         </div>
     </div>

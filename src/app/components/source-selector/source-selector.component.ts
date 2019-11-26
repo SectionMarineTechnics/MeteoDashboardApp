@@ -67,9 +67,17 @@ export class SourceSelectorComponent implements OnInit {
 
         this.serieInfo_form.get("Titel").setValue(gridsterItem.title);
 
-        switch(gridsterItem.value) { 
+        switch(gridsterItem.type) { 
           case 'widgetTimeSeriesChart': { 
             this.serieInfo_form.get("Type").setValue('chart');
+            break; 
+          } 
+          case 'widgetTable': { 
+            this.serieInfo_form.get("Type").setValue('table');
+            break; 
+          } 
+          case 'widgetValue': { 
+            this.serieInfo_form.get("Type").setValue('value');
             break; 
           } 
           default: { 

@@ -10,7 +10,7 @@ import { Serie } from 'src/app/models/Serie';
   templateUrl: './time-series-chart.component.html',
   styleUrls: ['./time-series-chart.component.css']
 })
-export class TimeSeriesChartComponent implements OnInit, OnDestroy {
+export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() widget;
   @Input() resizeEvent: EventEmitter<any>;
   @Input() updateTimeEvent: EventEmitter<any>;

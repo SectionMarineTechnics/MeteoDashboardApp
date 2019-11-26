@@ -1,6 +1,7 @@
-<!--
-<app-example1 *ngIf="widget.type === 'widgetExample1'" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-example1>
-<app-example2 *ngIf="widget.type === 'widgetExample2'" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-example2> -->
+<app-table-frame *ngIf="widget.type === 'widgetTable'" 
+    [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-table-frame>
+<app-value-frame *ngIf="widget.type === 'widgetValue'" 
+    [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-value-frame>
 <app-time-series-chart *ngIf="widget.type === 'widgetTimeSeriesChart'" 
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget" showInputSelector="true">
 </app-time-series-chart>

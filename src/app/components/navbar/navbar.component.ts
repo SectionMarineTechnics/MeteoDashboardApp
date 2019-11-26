@@ -47,7 +47,7 @@ export class NavbarComponent implements OnInit {
   }
 
   timeToStr(time: Date): string {
-    return this.padZeroes(time.getUTCDate(), 2) + '/' + this.padZeroes((time.getUTCMonth() + 1), 2) + '/' + time.getUTCFullYear() + ' ' + this.padZeroes(time.getUTCHours(), 2) + ':' + this.padZeroes(time.getUTCMinutes(), 2) + ':' + this.padZeroes(time.getUTCSeconds(), 2);
+    return this.padZeroes(time.getDate(), 2) + '/' + this.padZeroes((time.getMonth() + 1), 2) + '/' + time.getFullYear() + ' ' + this.padZeroes(time.getHours(), 2) + ':' + this.padZeroes(time.getMinutes(), 2) + ':' + this.padZeroes(time.getSeconds(), 2);
   }
 
   ShowOtaryWebSite() {

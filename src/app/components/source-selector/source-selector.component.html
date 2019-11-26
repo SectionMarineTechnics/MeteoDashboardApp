@@ -10,7 +10,7 @@
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
-        <mat-select name="type" placeholder="Type" aria-label="Type" [(value)]="selectedType.viewValue" matInput
+        <mat-select name="type" placeholder="Type" aria-label="Type" [(value)]="selectedType.value" matInput
             formControlName="Type">
             <mat-option *ngFor="let type of panelTypes" [value]="type.value">
                 {{type.viewValue}}

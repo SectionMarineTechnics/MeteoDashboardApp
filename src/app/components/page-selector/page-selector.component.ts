@@ -16,14 +16,21 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 export class PageSelectorComponent implements OnInit {
   currentUser: User;
   pages: Page[];
+  activeEditPage: Page;
 
   pageInfo_form: FormGroup;
 
   constructor(public settingsService: SettingsService, private layoutService: GridsterLayoutService, private router: Router, public auth: AuthService, private formBuilder: FormBuilder) {
     this.pageInfo_form = this.formBuilder.group({
       NewPageName: new FormControl("", Validators.required),
+      EditPageName: new FormControl("", null),
     });
     this.pages = [];
+    this.activeEditPage = null;
+  }
+
+  trackByIndex(index: number, obj: any): any {
+    return index;
   }
 
   ngOnInit() {
@@ -61,6 +68,10 @@ export class PageSelectorComponent implements OnInit {
 
   submit() {
     //this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Titel").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
+
+    this.currentUser.Page.forEach(page => {
+      this.settingsService.updatePage(page).subscribe();
+    });
     this.layoutService.currentUser = this.currentUser;
 
     this.router.navigateByUrl('/');
@@ -73,7 +84,7 @@ export class PageSelectorComponent implements OnInit {
   }
 
   deletePage(page: Page){
-    console.log("deletepage()");
+    console.log("deletePage()");
     
     const index: number = this.currentUser.Page.indexOf(page);
     if (index !== -1) {
@@ -83,6 +94,15 @@ export class PageSelectorComponent implements OnInit {
       this.UpdatePages();      
     } 
   }
+
+  changePage(page: Page){
+    console.log("changePage()");
+  }
+
+  editPage(page: Page){
+    console.log("editPage()");
+    this.activeEditPage = page;
+ }
 
   addNewPage() {
     let newPage: Page = new Page(0, [], this.layoutService.currentUser.id, this.pageInfo_form.get("NewPageName").value, this.layoutService.getNexPagePosition());

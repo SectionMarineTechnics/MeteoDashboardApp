@@ -1,0 +1,6 @@
+<!--<svg class="valueView" viewBox="0 0 5 8" *ngIf="showData()">
+    <text x="0" y="15">{{ lastValue() }}</text>
+</svg>-->
+<div class="valueView" *ngIf="showData()">{{ lastValue() }}</div>
+<div class="timeView" *ngIf="showData()">{{ lastTime() }}</div>
+<div *ngIf="!showData()">NO DATA</div>

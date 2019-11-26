@@ -26,6 +26,8 @@ import { MatInputModule  } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
+import { MatTableModule } from '@angular/material/table';
+
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -47,6 +49,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { PageSelectorComponent } from './components/page-selector/page-selector.component';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ValueFrameComponent } from './components/frames/value-frame/value-frame.component';
+import { TableFrameComponent } from './components/frames/table-frame/table-frame.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +63,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     SourceSelectorComponent,
     UserProfileComponent,
     TimeSelectorComponent,
-    PageSelectorComponent
+    PageSelectorComponent,
+    ValueFrameComponent,
+    TableFrameComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +85,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
+    MatTableModule,
 
     MatDatepickerModule,
     MatMomentDateModule,
