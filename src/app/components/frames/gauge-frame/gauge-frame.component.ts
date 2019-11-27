@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, AfterViewInit, EventEmitter, OnDestroy } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { Serie } from 'src/app/models/Serie';
+import { Subscription } from 'rxjs';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
-  selector: 'app-value-frame',
-  templateUrl: './value-frame.component.html',
-  styleUrls: ['./value-frame.component.css']
+  selector: 'app-gauge-frame',
+  templateUrl: './gauge-frame.component.html',
+  styleUrls: ['./gauge-frame.component.css']
 })
-export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
+export class GaugeFrameComponent implements OnInit {
   @Input() widget;
   @Input() resizeEvent: EventEmitter<any>;
   @Input() updateTimeEvent: EventEmitter<any>;
@@ -24,20 +24,22 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private dataService: DataService) {
     dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
-        console.log("ValueFrameComponent updateChartDataEvent(value): value = ", value);
-        this.myChartData = value.ChartData;
-        this.myColumnNames = value.ColumnNames;
+        console.log("GaugeFrameComponent updateChartDataEvent(value): value = ", value);
+
+        let realValue: number = Number(value.ChartData[value.ChartData.length-1][1].toFixed(2));
+       
+        this.myChartData = [ ['Waarde', realValue] ];
       }
     });
   }
 
   ngOnInit() {
-    console.log("ValueFrameComponent ngOnInit");
+    console.log("GaugeFrameComponent ngOnInit");
     if (this.updateTimeEvent != undefined) {
       this.updateTimeSubsription = this.updateTimeEvent.subscribe((event) => {
-        console.log("ValueFrameComponent updateTimeEvent event started from ngOnInit");
-        console.log("ValueFrameComponent updateTimeEvent startTime: ", event.startTime);
-        console.log("ValueFrameComponent updateTimeEvent endTime: ", event.endTime);
+        console.log("GaugeFrameComponent updateTimeEvent event started from ngOnInit");
+        console.log("GaugeFrameComponent updateTimeEvent startTime: ", event.startTime);
+        console.log("GaugeFrameComponent updateTimeEvent endTime: ", event.endTime);
 
         this.loadData();
       });
@@ -49,15 +51,15 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngAfterViewInit() {
     /*this.RedrawChart();*/
 
-    console.log("ValueFrameComponent ngAfterViewInit()");
+    console.log("GaugeFrameComponent ngAfterViewInit()");
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
 
-        console.log("ValueFrameComponent Resize event", event);
+        console.log("GaugeFrameComponent Resize event", event);
         if (event.gridsterItem === this.widget) {
-          console.log("ValueFrameComponent Resize event");
-          console.log("ValueFrameComponent gridsterItem: ", event.gridsterItem);
-          console.log("ValueFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);
+          console.log("GaugeFrameComponent Resize event");
+          console.log("GaugeFrameComponent gridsterItem: ", event.gridsterItem);
+          console.log("GaugeFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);
 
           this.loadData();
         }
@@ -66,12 +68,12 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadData() {
-    console.log("ValueFrameComponent loadData()");
+    console.log("GaugeFrameComponent loadData()");
     this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
   }  
 
   ngOnDestroy() {
-    console.log("ValueComponent ngOnDestroy()");
+    console.log("GaugeFrameComponent ngOnDestroy()");
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
   }
 
@@ -95,5 +97,4 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   timeToStr(time: Date): string {
     return this.padZeroes(time.getDate(), 2) + '/' + this.padZeroes((time.getMonth() + 1), 2) + '/' + time.getFullYear() + ' ' + this.padZeroes(time.getHours(), 2) + ':' + this.padZeroes(time.getMinutes(), 2) + ':' + this.padZeroes(time.getSeconds(), 2);
-  }  
-}
+  }  }

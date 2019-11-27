@@ -51,6 +51,7 @@ import { PageSelectorComponent } from './components/page-selector/page-selector.
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ValueFrameComponent } from './components/frames/value-frame/value-frame.component';
 import { TableFrameComponent } from './components/frames/table-frame/table-frame.component';
+import { GaugeFrameComponent } from './components/frames/gauge-frame/gauge-frame.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { TableFrameComponent } from './components/frames/table-frame/table-frame
     TimeSelectorComponent,
     PageSelectorComponent,
     ValueFrameComponent,
-    TableFrameComponent
+    TableFrameComponent,
+    GaugeFrameComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,8 @@
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-table-frame>
 <app-value-frame *ngIf="widget.type === 'widgetValue'" 
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-value-frame>
+ <app-gauge-frame *ngIf="widget.type === 'widgetGauge'" 
+    [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-gauge-frame>
 <app-time-series-chart *ngIf="widget.type === 'widgetTimeSeriesChart'" 
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget" showInputSelector="true">
 </app-time-series-chart>

@@ -1,22 +1,12 @@
-<p>table-frame works!</p>
+<div *ngIf="showData()" class="table-container mat-elevation-z8">
+    <table mat-table [dataSource]="myChartData">
+        <ng-container [matColumnDef]="column" *ngFor="let column of myColumnNames">
+            <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+            <td mat-cell *matCellDef="let element">{{ showDataValue(element[column]) }}</td>
+        </ng-container>
 
-<table *ngIf="showData()" mat-table [dataSource]="myChartData" class="mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
-    <!-- Position Column -->
-    <ng-container matColumnDef="Time">
-        <th mat-header-cell *matHeaderCellDef> Time </th>
-        <td mat-cell *matCellDef="let element"> {{element.Time}} </td>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="Value">
-        <th mat-header-cell *matHeaderCellDef> Value </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-
-</table>
-
-<div *ngIf="!showData()">NO DATA</div>
+        <tr mat-header-row *matHeaderRowDef="myColumnNames; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: myColumnNames;"></tr>
+    </table>
+</div>
+<div *ngIf="!showData()">Geen data beschikbaar!</div>

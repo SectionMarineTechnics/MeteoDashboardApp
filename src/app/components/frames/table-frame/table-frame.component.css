@@ -1,0 +1,11 @@
+table {
+    width: 100%;
+    align-self: center;
+  }
+
+.table-container {
+    align-self: center;
+    height: 100%;
+    overflow: auto;
+  }
+  

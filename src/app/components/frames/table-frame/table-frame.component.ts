@@ -2,12 +2,14 @@ import { Component, OnInit, Input, EventEmitter, OnDestroy, AfterViewInit } from
 import { Serie } from 'src/app/models/Serie';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { DataPoint } from 'src/app/models/DataPoint';
 
 @Component({
   selector: 'app-table-frame',
   templateUrl: './table-frame.component.html',
   styleUrls: ['./table-frame.component.css']
 })
+
 export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() widget;
   @Input() resizeEvent: EventEmitter<any>;
@@ -18,15 +20,34 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   updateTimeSubsription: Subscription;
   resizeSubsription: Subscription;
 
-  myChartData: Array<Array<any>>;
+  /*myChartData: Array<Array<any>>;*/
+  /*myChartData: Array<DataPoint>;*/
+  myChartData: Array<Object>;
   myColumnNames: string[];
 
   constructor(private dataService: DataService) {
     dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
         console.log("TableFrameComponent updateChartDataEvent(value): value = ", value);
-        this.myChartData = value.ChartData;
+
+        /* Convert chartdata from value array to object array for mat-table compability: */
+        value.ColumnNames.forEach((column, index) => {
+          if (column == 'Time') value.ColumnNames[index] = 'Tijd';
+        });
+        this.myChartData = new Array<DataPoint>();
+        value.ChartData.forEach(element => {
+          let obj: Object = new Object();
+          let index: number = 0;
+          value.ColumnNames.forEach(column => {
+            obj[column] = element[index];
+            index++;
+          });
+          this.myChartData.push(obj);
+        });
         this.myColumnNames = value.ColumnNames;
+
+        console.log("this.myChartData: ", this.myChartData);
+        console.log("this.myColumnNames: ", this.myColumnNames);
       }
     });
   }
@@ -77,5 +98,32 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showData() {
     return (this.myChartData != undefined);
+  }
+
+  padZeroes(input: number, length: number) {
+    return String("0").repeat(Math.abs(length - input.toString().length)) + input.toString();
+  }
+
+  timeToStr(time: Date): string {
+    return this.padZeroes(time.getDate(), 2) + '/' + this.padZeroes((time.getMonth() + 1), 2) + '/' + time.getFullYear() + ' ' + this.padZeroes(time.getHours(), 2) + ':' + this.padZeroes(time.getMinutes(), 2) + ':' + this.padZeroes(time.getSeconds(), 2);
+  }
+
+  showDataValue(value: any) {
+    if (typeof value == 'number') {
+      let numberValue: number = value;
+      return numberValue.toFixed(2);
+    }
+    else if (typeof value == 'string') {
+      let stringValue: string = value;
+      return value;
+    }
+    else if (value != null) {
+      if (value.__proto__ != null) {
+        if (value.__proto__.constructor.name == "Date") {
+          let dateValue: Date = value;
+          return this.timeToStr(dateValue);
+        }
+      }
+    }
   }
 }

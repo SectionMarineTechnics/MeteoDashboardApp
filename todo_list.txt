@@ -1,0 +1,20 @@
+- probleem met datacache bij doorschuiven start time
+- probleem met datacache bij ontbrekende punten
+- grid rooster fijner maken?
+- grid rechter scroll down probleem
+- optimalisatie snelheid, production versie, disable logging
+- testen foutmelding als web api down gaat
+- verbeteren user info scherm
+- testen op smartphone
+- smartphone mode menu afwerken
+- UI verbeteringen, zeker page selectie en page configuratie oproepen kan beter
+- windroos frame
+- scaling value frame
+- tabel frame
+- look and feel selectie
+- fijne border rond frames met evt. lichte afronding
+- default frames automatisch toevoegen bij nieuwe user
+- table frame scrollbars in combinatie met frame resize handlers.
+- table frame resize gaat te traag
+- Bron selector: knop voeg bron toe moet disable zijn als geen bron data geselecteerd
+- Bron selector: soms tekst over mekaar in selectie veld bron data

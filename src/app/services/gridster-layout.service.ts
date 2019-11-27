@@ -168,6 +168,10 @@ export class GridsterLayoutService {
           gridsterType = 'widgetTable';
           break;
         }
+        case 4: {
+          gridsterType = 'widgetGauge';
+          break;
+        }
         default: {
           gridsterType = 'widgetTimeSeriesChart';
           break;
@@ -289,9 +293,14 @@ export class GridsterLayoutService {
         frame_type = 3;
         break;
       }
+      case 'gauge': {
+        gridsterItem.type = 'widgetGauge';
+        frame_type = 4;
+        break;
+      }
       default: {
         gridsterItem.type = 'widgetTimeSeriesChart';
-        frame_type = 4;
+        frame_type = 1;
         break;
       }
     }

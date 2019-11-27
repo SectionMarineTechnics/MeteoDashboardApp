@@ -32,7 +32,8 @@ export class SourceSelectorComponent implements OnInit {
     this.panelTypes = [
       {value: 'chart', viewValue: 'Grafiek'},
       {value: 'value', viewValue: 'Waarde'},
-      {value: 'table', viewValue: 'Tabel'}
+      {value: 'table', viewValue: 'Tabel'},
+      {value: 'gauge', viewValue: 'Wijzerplaat'},
     ];
 
     this.selectedType = this.panelTypes[0];
@@ -78,6 +79,10 @@ export class SourceSelectorComponent implements OnInit {
           } 
           case 'widgetValue': { 
             this.serieInfo_form.get("Type").setValue('value');
+            break; 
+          } 
+          case 'widgetGauge': { 
+            this.serieInfo_form.get("Type").setValue('gauge');
             break; 
           } 
           default: { 
