@@ -27,6 +27,8 @@ export class NavbarComponent implements OnInit {
   page: string = "";
   SelectedPage: string = "";
 
+  auth0_profile: any = null;
+
   @ViewChild('myPageSelect', { static: true }) myPageSelect: MatSelect;
 
   constructor(public layoutService: GridsterLayoutService, public auth: AuthService, private router: Router) { }
@@ -34,6 +36,23 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     const source = timer(1000, 1000);
     //const subscribe = source.subscribe(val => this.refreshTimer(val));
+
+    this.auth.userProfile$.subscribe(profile => {
+      this.auth0_profile = profile;
+    }) 
+
+    this.layoutService.pagesLoadedEvent.subscribe((event) => {
+        this.loadpages();
+    });
+  }
+
+  getUserName(){
+    if(this.auth0_profile != null){
+      return this.auth0_profile.name;
+    }
+    else{
+      return "";
+    }
   }
 
   isDashboardView() {
@@ -80,6 +99,8 @@ export class NavbarComponent implements OnInit {
   }
 
   loadpages() {
+    
+    console.log("loadpages(): this.layoutService.currentUser.Page: ", this.layoutService.currentUser.Page);
     this.pages = [];
 
     let sortedPages = this.layoutService.currentUser.Page.sort( function(a, b) { 
@@ -89,10 +110,16 @@ export class NavbarComponent implements OnInit {
       this.pages.push(page.name);
     });
 
+    console.log("loadpages(): sortedPages: ", sortedPages);
+
     if (this.SelectedPage == "") {
-      this.page = this.layoutService.currentUser.Page[0].name;
+      /*this.page = this.layoutService.currentUser.Page[0].name;*/
+      this.page = sortedPages[0].name;
       this.SelectedPage = this.page;
     }
+
+
+    console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.page, this.SelectedPage);
 
     this.myPageSelect.open();
   }

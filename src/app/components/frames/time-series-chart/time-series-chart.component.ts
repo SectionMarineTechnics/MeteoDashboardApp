@@ -43,7 +43,15 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
 
 
   constructor(private dataService: DataService) {
-    dataService.updateChartDataEvent.subscribe(value => this.updateChart(value));
+    this.myChartData = [];
+    this.myColumnNames = [];
+
+    dataService.updateChartDataEvent.subscribe(value => {
+      if (value.widget == this.widget) {
+        this.myChartData = value.ChartData;
+        this.myColumnNames = value.ColumnNames;
+      }
+    });
 
     this.chartTitle = "Waterstand";
     this.chartSubTitle = "(Locatie Seastar, cm)";
@@ -59,9 +67,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
     console.log("TimeSeriesChartComponent ngOnInit()");
     if (this.updateTimeEvent != undefined) {
       this.updateTimeSubsription = this.updateTimeEvent.subscribe((event) => {
-        console.log("updateTimeEvent event started from ngOnInit");
-        console.log("updateTimeEvent startTime: ", event.startTime);
-        console.log("updateTimeEvent endTime: ", event.endTime);
+        console.log("TimeSeriesChartComponent UpdateTime event", event, this.chartHandle);
 
         let update: boolean = false;
         this.serieList.forEach((element, index) => {
@@ -80,7 +86,6 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
         }
       });
     }
-
     let lspiList: Lspi[] = [];
 
     this.serieList = this.widget.serieList;
@@ -91,16 +96,10 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   public ngAfterViewInit() {
-    /*this.RedrawChart();*/
-
-    console.log("ngAfterViewInit() Resize event: ", this.resizeEvent);
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
         if (event.gridsterItem === this.widget) {
-          console.log("Resize event");
-          console.log("gridsterItem: ", event.gridsterItem);
-          console.log("gridsterItemComponent: ", event.gridsterItemComponent);
-
+          console.log("TimeSeriesChartComponent Resize event", event, this.chartHandle);
           this.gridsterItemComponent_height = event.gridsterItemComponent.height;
           this.gridsterItemComponent_width = event.gridsterItemComponent.width;
           this.loadData();
@@ -108,9 +107,9 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
       });
     }
 
-    console.log("ngAfterViewInit: this.chartHandle: ", this.chartHandle);
-
-    //this.loadData(0);
+    this.chartHandle.ready.subscribe( (event) => {
+      this.loading = false;
+    });    
   }
 
   protected setInitialValue() {
@@ -121,48 +120,67 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
   }
 
-  updateChart(value) {
-    if (value.widget == this.widget) {
-      this.myChartData = value.ChartData;
-      this.myColumnNames = value.ColumnNames;
-    }
-  }
-
   loadData() {
     /*this.chart.instance.showLoadingIndicator();*/
     if (this.serieList.length > 0) {
       let firstCall: boolean = true;
       let combinedFrame: any;
 
-      let headerHeight: number = 0;
+ console.log("TEST");
 
-      console.log("this.widget.cols; ", this.widget.cols);
-      console.log("this.widget.rows; ", this.widget.rows);
+      this.chartHandle.options = {
+        chart: {
+          /*title: 'Luchtdruk waarde'*/
+        },
+        /*        
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            0: {label: 'Luchtdruk (hPa)'  },
+          },
+          x: { 
+            0: { side: 'bottom', label: 'Tijd' }
+          },
+        },
+        */
+        animation:{
+          duration: 1000,
+          easing: 'out',
+          startup: false
+        },
 
-      this.chartHandle.options = { title: 'TestBed', width: '100%', height: '100%', chartArea: { width: 'auto', height: 'auto' }, curveType: 'none', legend: { position: 'none' } }
+        vAxis: { format:'###.###'} ,
+        hAxis: { format:'dd/MM HH:mm'} ,
+
+        /*title: 'TestBed',*/
+        width: '100%', height: '100%',
+        chartArea:{
+          left:10,
+          right:10, // !!! works !!!
+          bottom:20,  // !!! works !!!
+          top:20,
+          width:"90%",
+          height:"90%"
+        },
+        theme: 'maximized',
+        curveType: 'none',
+        legend: { position: 'bottom' }
+      }
+
+      /*this.chartHandle.options.hAxis.format = "dd/MM/yyyy";*/
+
       if (this.gridsterItemComponent_height != 0) {
-        this.chartHandle.options.height = this.gridsterItemComponent_height - headerHeight;
+        this.chartHandle.options.height = this.gridsterItemComponent_height - 50;
       }
       if (this.gridsterItemComponent_width != 0) {
-        this.chartHandle.options.width = this.gridsterItemComponent_width;
+        //this.chartHandle.options.width = this.gridsterItemComponent_width;
       }
-      this.chartHandle.dynamicResize = true;
+      /*this.chartHandle.dynamicResize = true;*/
 
       if (this.serieList != undefined && this.serieList.length > 0) {
         this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
       }
     }
-  }
-
-  RedrawChart() {
-    console.log("this.myChartData: ", this.myChartData);
-    console.log("this.myColumnNames: ", this.myColumnNames);
-
-    /*console.log("this.dataService.lspis: ", this.dataService.lspis);*/
-
-    console.log("this.loading: ", this.loading);
-
-
   }
 
   showData() {

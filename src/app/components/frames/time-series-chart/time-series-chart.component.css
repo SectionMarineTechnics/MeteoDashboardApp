@@ -1,0 +1,16 @@
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.element {
+    max-width: 50%;
+}
+.top-element{
+    align-self: flex-start;
+}
+.bottom-element{
+    align-self: flex-end;    
+}

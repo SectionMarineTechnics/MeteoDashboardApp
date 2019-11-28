@@ -29,3 +29,7 @@
     width: 24px;
     vertical-align: middle;
 }
+
+.widget-container {
+    padding: 10px;
+}

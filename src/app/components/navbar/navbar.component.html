@@ -66,17 +66,8 @@
             <span fxFlex></span>
 
             <div fxShow="true" fxHide.lt-md="true">
-                <button class="settingsButton" mat-button matTooltip="Wijzig look and feel van de applicatie">
-                    <mat-icon>palette</mat-icon>
-                </button>
-
-                <button class="settingsButton" mat-button matTooltip="Gebruikersinstellingen" routerLink="/profile"> 
-                    <mat-icon>account_box</mat-icon>
-                    My Account
-                </button>
-
                 <button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon>Log In</button>
-                <button class="settingsButton" mat-button (click)="auth.logout()" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>                
+                <button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>                
             </div>
 
         </mat-toolbar-row>
@@ -85,18 +76,47 @@
     <mat-sidenav-container fxFlexFill>
         <mat-sidenav #sidenav>
             <mat-nav-list>
-                <a href="#" mat-list-item routerLink="/Dashboard"> 
-                    <mat-icon>dashboard</mat-icon>
-                    Dashboard
+                <a mat-list-item class="timeFrameButton" (click)="loadpages()" *ngIf="isDashboardView()">
+                    <mat-icon>description</mat-icon> Selecteer pagina
+                </a>    
+                <mat-select style="visibility:hidden;width: 0" #myPageSelect single [(ngModel)]="SelectedPage" (selectionChange)="UpdatePage()">
+                    <mat-option *ngFor="let page of pages" [value]="page">{{ page }}</mat-option>
+                </mat-select>
+
+                <a mat-list-item class="timeFrameButton" (click)="myActionSelect.open()" *ngIf="isDashboardView()">
+                    <mat-icon>add_box</mat-icon> Voeg pagina of frame toe 
+                </a>                
+                <mat-select style="visibility:hidden;width: 0" #myActionSelect single [(ngModel)]="SelectedAction">
+                    <mat-option *ngFor="let action of addActions" [value]="action" (click)="UpdateAction()">{{ action }}</mat-option>
+                </mat-select>
+  
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
+                    <mat-icon (click)="layoutService.goBackward()">chevron_left</mat-icon> Shuif tijdsvenster terug
                 </a>
-                <a href="#" mat-list-item routerLink="/Weather">
-                    <mat-icon>show_chart</mat-icon>
-                    Weather
+                <a mat-list-item class="timeFrameButton" routerLink="/TimeSelector" *ngIf="isDashboardView()">
+                    <mat-icon>access_time</mat-icon>Configureer tijdsvenster ({{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }})
+                    <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->
                 </a>
-                <a href="#" mat-list-item>
-                    <mat-icon>account_box</mat-icon>
-                    My Account
-                </a>
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
+                    <mat-icon (click)="layoutService.goForward()">chevron_right</mat-icon> Shuif tijdsvenster vooruit
+                </a>                
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()">
+                    <mat-icon (click)="layoutService.zoomIn()">zoom_in</mat-icon> Verklein tijdsvenster
+                </a>                
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
+                    <mat-icon (click)="layoutService.zoomOut()">zoom_out</mat-icon> Vergroot tijdsvenster
+                </a>    
+                <a mat-list-item class="timeFrameButton" (click)="mySelect.open()" *ngIf="isDashboardView()">
+                    <mat-icon>loop</mat-icon> Stel scherm-verversing in
+                </a>    
+               
+                <mat-select style="visibility:hidden;width: 0" #mySelect single [(ngModel)]="SelectedRefreshState" (selectionChange)="UpdateRefreshState()">
+                    <mat-option *ngFor="let refreshState of refreshStates" [value]="refreshState">{{ refreshState }}</mat-option>
+                </mat-select>
+
+                <button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon> Log In</button>
+                <button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon> Log Out</button>                
+
                 <a (click)="sidenav.toggle()" mat-list-item>
                     <mat-icon>close</mat-icon> Close
                 </a>

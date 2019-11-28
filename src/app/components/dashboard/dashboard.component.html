@@ -20,7 +20,11 @@
         </mat-toolbar>
       </div>
     </span>
-    <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent">
-    </app-parent-dynamic>
+
+    <div class="widget-container">    
+      <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent">
+      </app-parent-dynamic>
+    </div>
+
   </gridster-item>
 </gridster>

@@ -66,6 +66,8 @@ export class GridsterLayoutService {
   public endTime: Date;
   public updateTimeEvent: EventEmitter<any> = new EventEmitter();
 
+  public pagesLoadedEvent: EventEmitter<any> = new EventEmitter();
+
   public refreshTimerActive: boolean;
 
   usersShortList: UserShort[];
@@ -92,7 +94,7 @@ export class GridsterLayoutService {
     console.log("intial startTime: ", this.startTime);
     console.log("intial endTime: ", this.endTime);
 
-    this.refreshTimerActive = true;
+    this.refreshTimerActive = false;
 
     this.auth.userProfile$.subscribe(profile => {
       this.auth0_profile = profile;
@@ -119,11 +121,16 @@ export class GridsterLayoutService {
             if (this.currentUser.Page.length == 0) {
               this.settingsService.updatePage(new Page(0, [], this.currentUser.id, 'Page 1', this.getNexPagePosition())).subscribe(() => { this.UpdateCurrentUser(); }); /* Add empty frame for user */
             } else {
-              this.currentPage = this.currentUser.Page[0];
+              let sortedPages = this.currentUser.Page.sort( function(a, b) { 
+                return a.position - b.position;
+              });
+              this.currentPage = sortedPages[0];
             }
             console.log('Current page set to: ', this.currentPage);
 
             this.RebuildLayout(this.currentPage);
+
+            this.pagesLoadedEvent.emit();
           });
         }
       }
@@ -399,10 +406,19 @@ export class GridsterLayoutService {
   }
 
   goForward() {
-    let timeDiff = (this.endTime.getTime() - this.startTime.getTime());
-    this.startTime = new Date(this.startTime.getTime() + timeDiff);
-    this.endTime = new Date(this.endTime.getTime() + timeDiff);
-    this.updateTime();
+    /* Calculate current UTC Time: */
+    let currentTime: Date = new Date(Date.now());
+    currentTime.setSeconds(0);
+    currentTime.setMilliseconds(0);
+    currentTime = new Date(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate(), currentTime.getUTCHours(), currentTime.getUTCMinutes(), 0, 0);
+    currentTime = new Date(currentTime.getTime() - 15*60*1000);
+
+    if(this.endTime <= currentTime){
+      let timeDiff = (this.endTime.getTime() - this.startTime.getTime());
+      this.startTime = new Date(this.startTime.getTime() + timeDiff);
+      this.endTime = new Date(this.endTime.getTime() + timeDiff);
+      this.updateTime();
+    }
   }
 
   zoomIn() {
