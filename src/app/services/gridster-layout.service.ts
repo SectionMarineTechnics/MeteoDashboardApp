@@ -49,7 +49,7 @@ export class GridsterLayoutService {
     defaultItemCols: 10,
     defaultItemRows: 10,
     displayGrid: DisplayGrid.None,
-    margin: 10,
+    margin: 7,
     outerMargin: true,
     outerMarginTop: null,
     outerMarginRight: null,

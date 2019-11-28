@@ -7,10 +7,26 @@
 }
 .element {
     max-width: 50%;
+    position: absolute;
 }
+
+.chart {
+    height: 100%;
+    width: 100%;
+    position: static;
+ }
+
 .top-element{
     align-self: flex-start;
 }
 .bottom-element{
     align-self: flex-end;    
 }
+
+.loading-chart{
+    background-color: white;
+}
+
+.hide {
+    display: none;
+ }

@@ -1,7 +1,7 @@
-<gridster [options]="options">
+<gridster [options]="options" class="gridster">
   <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
-    <span class="dragHandleHeader">
-      <div class="custom">
+    <div class="gridster-container">
+      <div class="dragHandleHeader">
         <mat-toolbar color="primary">
           <mat-toolbar-row style="font-size: 4px;height: 4px;"></mat-toolbar-row>
           <mat-toolbar-row style="cursor: pointer">
@@ -19,12 +19,11 @@
           </mat-toolbar-row>
         </mat-toolbar>
       </div>
-    </span>
-
-    <div class="widget-container">    
-      <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent">
-      </app-parent-dynamic>
+      <div class="spacer"></div>
+      <div class="widget-container">
+        <app-parent-dynamic [widget]="item" [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent">
+        </app-parent-dynamic>
+      </div>
     </div>
-
   </gridster-item>
 </gridster>

@@ -107,9 +107,11 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
       });
     }
 
-    this.chartHandle.ready.subscribe( (event) => {
-      this.loading = false;
-    });    
+    if (this.chartHandle != undefined) {
+      this.chartHandle.ready.subscribe((event) => {
+        this.loading = false;
+      });
+    }
   }
 
   protected setInitialValue() {
@@ -126,7 +128,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
       let firstCall: boolean = true;
       let combinedFrame: any;
 
- console.log("TEST");
+      console.log("TEST");
 
       this.chartHandle.options = {
         chart: {
@@ -143,24 +145,24 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
           },
         },
         */
-        animation:{
+        animation: {
           duration: 1000,
           easing: 'out',
           startup: false
         },
 
-        vAxis: { format:'###.###'} ,
-        hAxis: { format:'dd/MM HH:mm'} ,
+        vAxis: { format: '###.###' },
+        hAxis: { format: 'dd/MM HH:mm' },
 
         /*title: 'TestBed',*/
         width: '100%', height: '100%',
-        chartArea:{
-          left:10,
-          right:10, // !!! works !!!
-          bottom:20,  // !!! works !!!
-          top:20,
-          width:"90%",
-          height:"90%"
+        chartArea: {
+          left: 10,
+          right: 10, // !!! works !!!
+          bottom: 20,  // !!! works !!!
+          top: 20,
+          width: "90%",
+          height: "90%"
         },
         theme: 'maximized',
         curveType: 'none',
@@ -170,7 +172,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
       /*this.chartHandle.options.hAxis.format = "dd/MM/yyyy";*/
 
       if (this.gridsterItemComponent_height != 0) {
-        this.chartHandle.options.height = this.gridsterItemComponent_height - 50;
+        /*this.chartHandle.options.height = this.gridsterItemComponent_height - 26;*/
       }
       if (this.gridsterItemComponent_width != 0) {
         //this.chartHandle.options.width = this.gridsterItemComponent_width;
@@ -187,4 +189,16 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
     return (this.serieList.length > 0);
   }
 
+  showNoData() {
+    return (this.serieList.length == 0);
+  }
+
+  showLoading() {
+    if (this.serieList != undefined && this.serieList.length == 0) {
+      return false;
+    }
+    else {
+      return (this.loading);
+    }
+  }
 }

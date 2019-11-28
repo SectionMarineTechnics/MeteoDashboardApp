@@ -1,10 +1,10 @@
-<app-table-frame *ngIf="widget.type === 'widgetTable'" 
+<app-table-frame *ngIf="widget.type === 'widgetTable'" class = "widget-element"
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-table-frame>
-<app-value-frame *ngIf="widget.type === 'widgetValue'" 
+<app-value-frame *ngIf="widget.type === 'widgetValue'" class = "widget-element"
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-value-frame>
- <app-gauge-frame *ngIf="widget.type === 'widgetGauge'" 
+ <app-gauge-frame *ngIf="widget.type === 'widgetGauge'" class = "widget-element"
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget"></app-gauge-frame>
-<app-time-series-chart *ngIf="widget.type === 'widgetTimeSeriesChart'" 
+<app-time-series-chart *ngIf="widget.type === 'widgetTimeSeriesChart'" class = "widget-element"
     [resizeEvent]="resizeEvent" [updateTimeEvent]="updateTimeEvent" [widget]="widget" showInputSelector="true">
 </app-time-series-chart>
 
