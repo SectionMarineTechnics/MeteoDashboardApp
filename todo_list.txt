@@ -1,3 +1,4 @@
+- Toon pagina naam in toolbar of ergens continu op scherm
 - probleem met datacache bij doorschuiven start time
 - probleem met datacache bij ontbrekende punten
 - grid rooster fijner maken?

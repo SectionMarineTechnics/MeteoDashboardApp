@@ -30,10 +30,10 @@
                     <mat-option *ngFor="let page of pages" [value]="page">{{ page }}</mat-option>
                 </mat-select>
 
-                <button class="timeFrameButton" mat-button matTooltip="Voeg nieuw frame of pagina toe" (click)="myActionSelect.open()" *ngIf="isDashboardView()"> 
+                <button class="timeFrameButton" mat-button matTooltip="Voeg nieuw frame of pagina toe" (click)="myActionSelect1.open()" *ngIf="isDashboardView()"> 
                     <mat-icon>add_box</mat-icon>
                 </button>                
-                <mat-select style="visibility:hidden;width: 0" #myActionSelect single [(ngModel)]="SelectedAction">
+                <mat-select style="visibility:hidden;width: 0" #myActionSelect1 single [(ngModel)]="SelectedAction">
                     <mat-option *ngFor="let action of addActions" [value]="action" (click)="UpdateAction()">{{ action }}</mat-option>
                 </mat-select>
   
@@ -83,10 +83,10 @@
                     <mat-option *ngFor="let page of pages" [value]="page">{{ page }}</mat-option>
                 </mat-select>
 
-                <a mat-list-item class="timeFrameButton" (click)="myActionSelect.open()" *ngIf="isDashboardView()">
+                <a mat-list-item class="timeFrameButton" (click)="myActionSelect2.open()" *ngIf="isDashboardView()">
                     <mat-icon>add_box</mat-icon> Voeg pagina of frame toe 
                 </a>                
-                <mat-select style="visibility:hidden;width: 0" #myActionSelect single [(ngModel)]="SelectedAction">
+                <mat-select style="visibility:hidden;width: 0" #myActionSelect2 single [(ngModel)]="SelectedAction">
                     <mat-option *ngFor="let action of addActions" [value]="action" (click)="UpdateAction()">{{ action }}</mat-option>
                 </mat-select>
   
