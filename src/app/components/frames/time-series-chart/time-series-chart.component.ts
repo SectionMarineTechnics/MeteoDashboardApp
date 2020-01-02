@@ -129,10 +129,44 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
       let combinedFrame: any;
 
       console.log("TEST");
+      
+      let hAxisFormat:string = 'dd/MM HH:mm';
+      if(this.serieList != undefined){
+        let startTime: Date = this.serieList[0].StartTime;
+        let endTime: Date = this.serieList[0].EndTime;
+        let duration:number = endTime.getTime() - startTime.getTime();
+
+        let hourInMs: number = 60*60*1000;
+        let dayInMs: number = 24*hourInMs;
+        let weekInMs: number = 7*dayInMs;
+        let monthInMs: number = 4*weekInMs;
+        let yearInMs: number = 52*weekInMs;
+
+        if(duration > 0 && duration <= hourInMs){
+          hAxisFormat = 'mm';
+        }
+        else if(duration > hourInMs && duration <= dayInMs){
+          hAxisFormat = 'HH:mm';
+        }
+        else if(duration > dayInMs && duration <= weekInMs){
+          hAxisFormat = 'dd HH:mm';
+        }
+        else if(duration > weekInMs && duration <= monthInMs){
+          hAxisFormat = 'dd/MM HH:mm';
+        }
+        else if(duration > monthInMs && duration <= yearInMs){
+          hAxisFormat = 'dd/MM';
+        }
+        else if(duration > yearInMs){
+          hAxisFormat = 'dd/MM/YYYY';
+        }
+      }
 
       this.chartHandle.options = {
+        dynamicResize: true,
         chart: {
           /*title: 'Luchtdruk waarde'*/
+          dynamicResize: true,
         },
         /*        
         axes: {
@@ -151,22 +185,51 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
           startup: false
         },
 
-        vAxis: { format: '###.###' },
-        hAxis: { format: 'dd/MM HH:mm' },
+        /*titlePosition: 'out', axisTitlesPosition: 'out',*/
+        vAxis: { format: '###.###'/*, textPosition: 'in'*/,
+                 viewWindowMode: 'maximized',
+                 textStyle: {
+                    fontName: 'Times-Roman',
+                    fontSize: 12,
+                    /*bold: true,*/
+                    /*italic: true,*/
+                    // The color of the text.
+                    /*color: '#871b47',*/
+                    // The color of the text outline.
+                    /*auraColor: '#d799ae',*/
+                    // The transparency of the text.
+                    /*opacity: 0.8*/
+                }},
+
+        hAxis: {  format: hAxisFormat/*, textPosition: 'in'*/,
+                  viewWindowMode: 'maximized',
+                  textStyle: {
+                    fontName: 'Times-Roman',
+                    fontSize: 12,
+                    /*bold: true,*/
+                    /*italic: true,*/
+                    // The color of the text.
+                    /*color: '#871b47',*/
+                    // The color of the text outline.
+                    /*auraColor: '#d799ae',*/
+                    // The transparency of the text.
+                    /*opacity: 0.8*/
+                }},
 
         /*title: 'TestBed',*/
         width: '100%', height: '100%',
         chartArea: {
-          left: 10,
-          right: 10, // !!! works !!!
-          bottom: 20,  // !!! works !!!
+          left: /*10*/40,
+          right: 15, // !!! works !!!
+          bottom: /*20*/60,  // !!! works !!!
           top: 20,
-          width: "90%",
-          height: "90%"
+          width: "100%",
+          height: "100%",
+          dynamicResize: true,
         },
-        theme: 'maximized',
+        /*theme: 'maximized',*/
         curveType: 'none',
-        legend: { position: 'bottom' }
+        legend: { position: 'bottom' },
       }
 
       /*this.chartHandle.options.hAxis.format = "dd/MM/yyyy";*/

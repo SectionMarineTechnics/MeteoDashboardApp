@@ -1,0 +1,17 @@
+.chart-container {
+    height: 100%;
+    width: 100%;    
+    position: static;
+
+    margin: auto;
+    text-align:center;
+ }
+ .google-chart {
+    width: 100%;
+    height: 100%;
+
+    margin: auto;
+    text-align:center;
+ }
+ 
+ 

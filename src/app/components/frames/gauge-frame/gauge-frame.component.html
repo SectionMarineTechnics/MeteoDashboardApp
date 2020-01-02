@@ -1,2 +1,4 @@
-<google-chart #GoogleChart class="chart" type="Gauge" [data]="myChartData" style="width: 100%;height: 100%" *ngIf="showData()"></google-chart>
-<div *ngIf="!showData()">Configureer een data bron</div>
+<div class="chart-container" >
+    <google-chart #GoogleChart class="google-chart" id="chart_div" type="Gauge" [data]="myChartData" *ngIf="showData()" (ready)="chartReady(GoogleChart)"></google-chart>
+    <div *ngIf="!showData()">Configureer een data bron</div>
+</div>

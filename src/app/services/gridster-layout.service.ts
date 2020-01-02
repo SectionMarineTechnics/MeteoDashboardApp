@@ -36,16 +36,19 @@ export class GridsterLayoutService {
     resizable: {
       enabled: true
     },
-    minCols: 50,
-    maxCols: 100,
-    minRows: 50,
-    maxRows: 100,
+    rows: 100,
+    cols: 100,
+
+    minCols: /*50*/100,
+    maxCols: /*100*/100,
+    minRows: /*50*/100,
+    maxRows: /*100*/100,
     maxItemCols: 100,
-    minItemCols: 5,
+    minItemCols: /*5*/10,
     maxItemRows: 100,
-    minItemRows: 5,
+    minItemRows: /*5*/10,
     maxItemArea: 10000,
-    minItemArea: 25,
+    minItemArea: /*25*/100,
     defaultItemCols: 10,
     defaultItemRows: 10,
     displayGrid: DisplayGrid.None,
@@ -55,7 +58,9 @@ export class GridsterLayoutService {
     outerMarginRight: null,
     outerMarginBottom: null,
     outerMarginLeft: null,
-    gridType: GridType.Fit
+    gridType: GridType.Fit,
+    keepFixedHeightInMobile: false,
+    keepFixedWidthInMobile: false
   };
 
   public layout: GridsterItem[] = [];
@@ -332,9 +337,9 @@ export class GridsterLayoutService {
     let getGetijSeriesData: Array<Serie> = []
 
     this.layout.push({
-      cols: 40,
+      cols: /*40*/20,
       id: newId,
-      rows: 30,
+      rows: /*30*/15,
       x: 0,
       y: 0,
       type: 'widgetTimeSeriesChart',

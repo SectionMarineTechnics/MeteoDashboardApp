@@ -1,14 +1,15 @@
-import { Component, OnInit, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Serie } from 'src/app/models/Serie';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
+import { GoogleChartComponent } from 'angular-google-charts';
 
 @Component({
   selector: 'app-gauge-frame',
   templateUrl: './gauge-frame.component.html',
   styleUrls: ['./gauge-frame.component.css']
 })
-export class GaugeFrameComponent implements OnInit {
+export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() widget;
   @Input() resizeEvent: EventEmitter<any>;
   @Input() updateTimeEvent: EventEmitter<any>;
@@ -21,16 +22,39 @@ export class GaugeFrameComponent implements OnInit {
   myChartData: Array<Array<any>>;
   myColumnNames: string[];
 
+  realValue: number = 0;
+
+  private chartHandle: GoogleChartComponent;
+
+  @ViewChild('GoogleChart', { static: false }) set content(content: GoogleChartComponent) {
+    this.chartHandle = content;
+  }
+
   constructor(private dataService: DataService) {
     dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
         console.log("GaugeFrameComponent updateChartDataEvent(value): value = ", value);
 
-        let realValue: number = Number(value.ChartData[value.ChartData.length-1][1].toFixed(2));
+        this.realValue = Number(value.ChartData[value.ChartData.length-1][1].toFixed(2));
        
-        this.myChartData = [ ['Waarde', realValue] ];
+        /*this.myChartData = [ ['Waarde', realValue] ];*/
+        this.drawChart();
       }
     });
+  }
+
+  public chartReady(chart: GoogleChartComponent) {
+    console.log("chartReady");
+    chart.dynamicResize = true;
+    let element:HTMLElement = chart.getChartElement();
+    element.addEventListener('onresize', function(){
+      console.log("chart resize event");
+    });
+  }
+
+  drawChart(){
+    console.log("GaugeFrameComponent drawChart");
+    this.myChartData = [ ['Waarde', this.realValue] ];
   }
 
   ngOnInit() {
@@ -62,6 +86,13 @@ export class GaugeFrameComponent implements OnInit {
           console.log("GaugeFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);
 
           this.loadData();
+
+          /*this.chartHandle.wrapper.draw(this.chartHandle.getChartElement());          */
+          /*
+          window.dispatchEvent(new Event('resize'));
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'))
+          }, 1000);*/
         }
       });
     }
@@ -69,7 +100,28 @@ export class GaugeFrameComponent implements OnInit {
 
   loadData() {
     console.log("GaugeFrameComponent loadData()");
-    this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
+
+    if (this.serieList.length > 0) {
+
+      /*
+      this.chartHandle.options = {
+        dynamicResize: true,
+        chart: {
+          title: 'Luchtdruk waarde'
+        },
+        width: '100%', height: '100%',
+        chartArea: {
+          left: 5,
+          right: 5,
+          bottom: 5,
+          top: 5,
+          width: "100%",
+          height: "100%"
+        },
+      }
+      */
+      this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
+    }
   }  
 
   ngOnDestroy() {
@@ -97,4 +149,5 @@ export class GaugeFrameComponent implements OnInit {
 
   timeToStr(time: Date): string {
     return this.padZeroes(time.getDate(), 2) + '/' + this.padZeroes((time.getMonth() + 1), 2) + '/' + time.getFullYear() + ' ' + this.padZeroes(time.getHours(), 2) + ':' + this.padZeroes(time.getMinutes(), 2) + ':' + this.padZeroes(time.getSeconds(), 2);
-  }  }
+  }  
+}
