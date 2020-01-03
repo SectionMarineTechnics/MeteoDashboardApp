@@ -46,6 +46,13 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     this.serieList = this.widget.serieList;
   }
 
+  ngOnDestroy() {
+    console.log("ValueComponent ngOnDestroy()");
+    if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
+    if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
+    if (this.dataService.updateChartDataEvent != undefined) this.dataService.updateChartDataEvent.unsubscribe();
+  }  
+
   public ngAfterViewInit() {
     /*this.RedrawChart();*/
 
@@ -69,11 +76,6 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log("ValueFrameComponent loadData()");
     this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
   }  
-
-  ngOnDestroy() {
-    console.log("ValueComponent ngOnDestroy()");
-    if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
-  }
 
   showData() {
     return (this.myChartData != undefined);

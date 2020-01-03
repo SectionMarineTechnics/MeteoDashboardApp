@@ -33,7 +33,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private dataService: DataService) {
     dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
-        console.log("GaugeFrameComponent updateChartDataEvent(value): value = ", value);
+        /*console.log("GaugeFrameComponent updateChartDataEvent(value): value = ", value);*/
 
         this.realValue = Number(value.ChartData[value.ChartData.length-1][1].toFixed(2));
        
@@ -44,7 +44,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public chartReady(chart: GoogleChartComponent) {
-    console.log("chartReady");
+    /*console.log("chartReady");*/
     chart.dynamicResize = true;
     let element:HTMLElement = chart.getChartElement();
     element.addEventListener('onresize', function(){
@@ -53,12 +53,12 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   drawChart(){
-    console.log("GaugeFrameComponent drawChart");
+    /*console.log("GaugeFrameComponent drawChart");*/
     this.myChartData = [ ['Waarde', this.realValue] ];
   }
 
   ngOnInit() {
-    console.log("GaugeFrameComponent ngOnInit");
+    /*console.log("GaugeFrameComponent ngOnInit");*/
     if (this.updateTimeEvent != undefined) {
       this.updateTimeSubsription = this.updateTimeEvent.subscribe((event) => {
         console.log("GaugeFrameComponent updateTimeEvent event started from ngOnInit");
@@ -72,6 +72,13 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     this.serieList = this.widget.serieList;
   }
 
+  ngOnDestroy() {
+    console.log("GaugeFrameComponent ngOnDestroy()");
+    if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
+    if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
+    /*if (this.dataService.updateChartDataEvent != undefined) this.dataService.updateChartDataEvent.unsubscribe();*/
+  }  
+
   public ngAfterViewInit() {
     /*this.RedrawChart();*/
 
@@ -79,11 +86,11 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
 
-        console.log("GaugeFrameComponent Resize event", event);
+        /*console.log("GaugeFrameComponent Resize event", event);*/
         if (event.gridsterItem === this.widget) {
-          console.log("GaugeFrameComponent Resize event");
-          console.log("GaugeFrameComponent gridsterItem: ", event.gridsterItem);
-          console.log("GaugeFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);
+          /*console.log("GaugeFrameComponent Resize event");*/
+          /*console.log("GaugeFrameComponent gridsterItem: ", event.gridsterItem);*/
+          /*console.log("GaugeFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);*/
 
           this.loadData();
 
@@ -99,7 +106,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadData() {
-    console.log("GaugeFrameComponent loadData()");
+    /*console.log("GaugeFrameComponent loadData()");*/
 
     if (this.serieList.length > 0) {
 
@@ -123,11 +130,6 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
       this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
     }
   }  
-
-  ngOnDestroy() {
-    console.log("GaugeFrameComponent ngOnDestroy()");
-    if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
-  }
 
   showData() {
     return (this.myChartData != undefined);

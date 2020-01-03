@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, ViewChild } from '@angular/core';
 import { GridsterLayoutService } from 'src/app/services/gridster-layout.service';
 import { timer } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -45,6 +45,11 @@ export class NavbarComponent implements OnInit {
         this.loadpages();
     });
   }
+
+  ngOnDestroy() {
+    console.log("NavbarComponent ngOnDestroy()");
+    if (this.layoutService.pagesLoadedEvent != undefined) this.layoutService.pagesLoadedEvent.unsubscribe();
+  }    
 
   getUserName(){
     if(this.auth0_profile != null){

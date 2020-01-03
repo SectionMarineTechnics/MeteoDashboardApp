@@ -16,6 +16,19 @@
     position: static;
  }
 
+ .LineChart {
+    width: 100%; 
+    height: 100%;
+    position: static;    
+ }
+
+ .LineChart-container {
+    height: 100%;
+    width: 100%;    
+    position: static;
+  } 
+
+
 .top-element{
     align-self: flex-start;
 }

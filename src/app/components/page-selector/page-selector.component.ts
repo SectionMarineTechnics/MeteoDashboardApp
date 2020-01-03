@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { GridsterLayoutService } from 'src/app/services/gridster-layout.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -48,6 +48,10 @@ export class PageSelectorComponent implements OnInit {
       });
     });
   }
+
+  ngOnDestroy() {
+    console.log("PageSelectorComponent ngOnDestroy()");
+  }    
 
   drop(event: CdkDragDrop<string[]>) {
     console.log("drop page position");

@@ -29,7 +29,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.currentUserSubscription.unsubscribe();
   }  
 
   itemResize = (gridsterItem: any, gridsterItemComponent: any) => {

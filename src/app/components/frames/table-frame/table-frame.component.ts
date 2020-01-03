@@ -28,7 +28,7 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private dataService: DataService) {
     dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
-        console.log("TableFrameComponent updateChartDataEvent(value): value = ", value);
+        /*console.log("TableFrameComponent updateChartDataEvent(value): value = ", value);*/
 
         /* Convert chartdata from value array to object array for mat-table compability: */
         value.ColumnNames.forEach((column, index) => {
@@ -46,19 +46,19 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.myColumnNames = value.ColumnNames;
 
-        console.log("this.myChartData: ", this.myChartData);
-        console.log("this.myColumnNames: ", this.myColumnNames);
+        /*console.log("this.myChartData: ", this.myChartData);*/
+        /*console.log("this.myColumnNames: ", this.myColumnNames);*/
       }
     });
   }
 
   ngOnInit() {
-    console.log("TableFrameComponent ngOnInit");
+    /*console.log("TableFrameComponent ngOnInit");*/
     if (this.updateTimeEvent != undefined) {
       this.updateTimeSubsription = this.updateTimeEvent.subscribe((event) => {
-        console.log("TableFrameComponent updateTimeEvent event started from ngOnInit");
-        console.log("TableFrameComponent updateTimeEvent startTime: ", event.startTime);
-        console.log("TableFrameComponent updateTimeEvent endTime: ", event.endTime);
+        /*console.log("TableFrameComponent updateTimeEvent event started from ngOnInit");*/
+        /*console.log("TableFrameComponent updateTimeEvent startTime: ", event.startTime);*/
+        /*console.log("TableFrameComponent updateTimeEvent endTime: ", event.endTime);*/
 
         this.loadData();
       });
@@ -67,6 +67,13 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  ngOnDestroy() {
+    console.log("ValueComponent ngOnDestroy()");
+    if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
+    if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
+    /*if (this.dataService.updateChartDataEvent != undefined) this.dataService.updateChartDataEvent.unsubscribe();*/
+  }  
+
   ngAfterViewInit() {
     /*this.RedrawChart();*/
 
@@ -74,11 +81,11 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
 
-        console.log("ValueFramTableFrameComponenteComponent Resize event", event);
+        /*console.log("ValueFramTableFrameComponenteComponent Resize event", event);*/
         if (event.gridsterItem === this.widget) {
-          console.log("TableFrameComponent Resize event");
-          console.log("TableFrameComponent gridsterItem: ", event.gridsterItem);
-          console.log("TableFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);
+          /*console.log("TableFrameComponent Resize event");*/
+          /*console.log("TableFrameComponent gridsterItem: ", event.gridsterItem);*/
+          /*console.log("TableFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);*/
 
           this.loadData();
         }
@@ -87,13 +94,8 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadData() {
-    console.log("TableFrameComponent loadData()");
+    /*console.log("TableFrameComponent loadData()");*/
     this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
-  }
-
-  ngOnDestroy() {
-    console.log("ValueComponent ngOnDestroy()");
-    if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
   }
 
   showData() {

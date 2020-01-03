@@ -53,6 +53,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ValueFrameComponent } from './components/frames/value-frame/value-frame.component';
 import { TableFrameComponent } from './components/frames/table-frame/table-frame.component';
 import { GaugeFrameComponent } from './components/frames/gauge-frame/gauge-frame.component';
+import { LineChartComponent } from './components/dashboard/line-chart/line-chart.component';
+
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
   declarations: [
@@ -68,7 +71,8 @@ import { GaugeFrameComponent } from './components/frames/gauge-frame/gauge-frame
     PageSelectorComponent,
     ValueFrameComponent,
     TableFrameComponent,
-    GaugeFrameComponent
+    GaugeFrameComponent,
+    LineChartComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +101,9 @@ import { GaugeFrameComponent } from './components/frames/gauge-frame/gauge-frame
     MatTooltipModule,    
     FlexLayoutModule,
     GoogleChartsModule.forRoot(),
-    DragDropModule
+    DragDropModule,
+
+    AngularResizedEventModule
   ],
   providers: [ SettingsService, AuthService, GridsterLayoutService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
