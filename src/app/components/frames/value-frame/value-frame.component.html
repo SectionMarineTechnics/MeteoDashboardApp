@@ -1,7 +1,10 @@
 <!--<svg class="valueView" viewBox="0 0 5 8" *ngIf="showData()">
     <text x="0" y="15">{{ lastValue() }}</text>
 </svg>-->
-<div class="valueView" *ngIf="showData()">{{ lastValue() }}</div>
-<p></p>
-<div class="timeView" *ngIf="showData()">{{ lastTime() }}</div>
-<div *ngIf="!showData()">Configureer een data bron</div>
+<div class="flexcontainter">
+    <div *ngIf="!showData()">Configureer een data bron</div>
+    <div class="valueView" *ngIf="showData()">{{ lastValue() }}</div>
+    <div class="spacer"></div>
+    <div class="timeView" *ngIf="showData()">{{ lastTime() }}</div>
+    <div class="spacer"></div>
+</div>

@@ -215,8 +215,9 @@ export class DataService {
   }
 
   getDataFrameWithLspiList( Version: number, StartTime: Date, EndTime: Date, LspiList: Lspi[]){
-    let apiRequest:string = 'http://localhost:8090/GTSACQ/GetDataPoints?';
-    
+    let apiRequest:string = 'http://localhost:8090/GTSACQ/GetData?';
+    /*let apiRequest:string = 'http://10.176.225.16:8081/GTSACQ/GetData?';*/
+        
     LspiList.forEach( (lspi, index) => { 
       apiRequest += 'lspis=' + lspi.LspiName() + '&'; 
     });
@@ -233,7 +234,10 @@ export class DataService {
 
   getLSPIList(){
     let promise = new Promise((resolve, reject) => {
-      let apiRequest: string = 'http://localhost:8090/GTSACQ/GetLSPIS';
+      /*let apiRequest: string = 'http://localhost:8090/GTSACQ/GetLSPIS';*/
+      let apiRequest: string = 'http://localhost:8090/GTSACQ/GetParameterLocations';
+      /*let apiRequest: string = 'http://10.176.225.16:8081/GTSACQ/GetParameterLocations';*/
+      
       console.log("Get LSPI list from API: " + apiRequest);
 
       this.httpClient
@@ -242,7 +246,7 @@ export class DataService {
         .then(
           (res: any) => { console.log("res: ", res);
             this.lspis = res.data.map(item => {
-                return new Lspi(item.LocationShortName, item.SensorShortName, item.ParameterShortName, item.Interval);
+                return new Lspi(item.PARLOC_LOCATION, item.PARLOC_PARAMETER.substring(0, 3), item.PARLOC_PARAMETER.substring(3, 6), item.PARLOC_PARAMETER.substring(6, 9));
           });
           resolve();
           },

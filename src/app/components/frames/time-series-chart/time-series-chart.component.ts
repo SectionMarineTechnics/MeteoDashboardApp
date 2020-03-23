@@ -107,7 +107,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
         if (event.gridsterItem === this.widget) {
           /*console.log("TimeSeriesChartComponent Gridster Resize event", event);*/
           this.chartConfig.width = event.gridsterItemComponent.width;
-          this.chartConfig.height = event.gridsterItemComponent.height;
+          this.chartConfig.height = event.gridsterItemComponent.height - 26;
           this.loadData();
         }
       });

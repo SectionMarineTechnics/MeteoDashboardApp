@@ -25,6 +25,9 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   myChartData: Array<Object>;
   myColumnNames: string[];
 
+  tableWidth: Number;
+  tableHeight: Number;
+
   constructor(private dataService: DataService) {
     dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
@@ -87,6 +90,8 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
           /*console.log("TableFrameComponent gridsterItem: ", event.gridsterItem);*/
           /*console.log("TableFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);*/
 
+          this.tableWidth = event.gridsterItemComponent.width;
+          this.tableHeight = event.gridsterItemComponent.Height - 26;
           this.loadData();
         }
       });

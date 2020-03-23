@@ -9,6 +9,6 @@ export class Lspi {
       return this.Location + " " +  this.Sensor + " " + this.Parameter + " " +  String("0").repeat(Math.abs(3 - this.Interval.toString().length)) + this.Interval;
     };  
     public LspiName() {
-      return this.Location + this.Sensor + this.Parameter + this.Interval;
+      return this.Location + this.Sensor + this.Parameter + String("0").repeat(Math.abs(3 - this.Interval.toString().length)) + this.Interval;
     };  
   }
