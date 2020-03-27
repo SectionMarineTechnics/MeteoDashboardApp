@@ -1,5 +1,6 @@
 <gridster [options]="options" class="gridster">
   <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
+    <div class="gridster-item-container">
     <div class="gridster-container">
       <div class="dragHandleHeader">
         <mat-toolbar color="primary">
@@ -25,5 +26,6 @@
         </app-parent-dynamic>
       </div>
     </div>
+  </div>
   </gridster-item>
 </gridster>

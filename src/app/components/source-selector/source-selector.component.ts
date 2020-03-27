@@ -51,59 +51,65 @@ export class SourceSelectorComponent implements OnInit {
           .then(result => {
             this.setInitialValue();
           });
-
-    this.route.params.subscribe(params => {
-      this.frameId = params['id'];      
-      console.log("SourceSelectorComponent route parameter: ", this.frameId)
-
-      this.layoutService.layout
-
-      let gridsterItem = this.layoutService.layout.find(d => d.id === this.frameId);
-      if(gridsterItem != undefined){
-        console.log("gridsterItem.type: ", gridsterItem.type);
-
-        gridsterItem.serieList.forEach(item => {
-          this.selectedLspis.push(item.Lspi)
-        });
-
-        this.serieInfo_form.get("Titel").setValue(gridsterItem.title);
-
-        switch(gridsterItem.type) { 
-          case 'widgetTimeSeriesChart': { 
-            this.serieInfo_form.get("Type").setValue('chart');
-            break; 
-          } 
-          case 'widgetTable': { 
-            this.serieInfo_form.get("Type").setValue('table');
-            break; 
-          } 
-          case 'widgetValue': { 
-            this.serieInfo_form.get("Type").setValue('value');
-            break; 
-          } 
-          case 'widgetGauge': { 
-            this.serieInfo_form.get("Type").setValue('gauge');
-            break; 
-          } 
-          default: { 
-            this.serieInfo_form.get("Type").setValue('chart');
-            break; 
-          } 
-        } 
-      }
-    });
   }
 
   setInitialValue(){
-    
     console.log("this.dataService.lspis: ", this.dataService.lspis);
+
+    this.options = [];
+    this.dataService.lspis.forEach(lspi => {
+      if(lspi.Interval > 1) this.options.push(lspi);
+    });  
 
     this.filteredOptions = this.serieInfo_form.get("LspiSelector").valueChanges
       .pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : value.name),
         map(name => name ? this._filter(name) : this.options.slice())
-      );       
+      );    
+      
+      this.route.params.subscribe(params => {
+        this.frameId = params['id'];      
+        console.log("SourceSelectorComponent route parameter: ", this.frameId)
+  
+        let gridsterItem = this.layoutService.layout.find(d => d.id === this.frameId);
+        if(gridsterItem != undefined){
+          console.log("gridsterItem.type: ", gridsterItem.type);
+  
+          gridsterItem.serieList.forEach(item => {
+            console.log("SourceSelectorComponent lookup LSPI: ", item, this.options);
+            let lspiLookup: Lspi = this.options.find(function(lspi) { return(lspi.Name() == item.Name()) }); 
+            console.log("SourceSelectorComponent lspiLookup: ", lspiLookup);
+            if(lspiLookup != undefined) this.selectedLspis.push(lspiLookup)
+            else this.selectedLspis.push(item.Lspi)
+          });
+   
+          this.serieInfo_form.get("Titel").setValue(gridsterItem.title);
+  
+          switch(gridsterItem.type) { 
+            case 'widgetTimeSeriesChart': { 
+              this.serieInfo_form.get("Type").setValue('chart');
+              break; 
+            } 
+            case 'widgetTable': { 
+              this.serieInfo_form.get("Type").setValue('table');
+              break; 
+            } 
+            case 'widgetValue': { 
+              this.serieInfo_form.get("Type").setValue('value');
+              break; 
+            } 
+            case 'widgetGauge': { 
+              this.serieInfo_form.get("Type").setValue('gauge');
+              break; 
+            } 
+            default: { 
+              this.serieInfo_form.get("Type").setValue('chart');
+              break; 
+            } 
+          } 
+        }
+      });      
   }
 
   displayFn(lspi?: Lspi): string | undefined {
@@ -135,6 +141,7 @@ export class SourceSelectorComponent implements OnInit {
   }
 
   submit(){
+    console.log("SourceSelectorComponent submit: ", this.selectedLspis);
     this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Titel").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
     this.router.navigateByUrl('/');
   }

@@ -99,7 +99,7 @@ export class GridsterLayoutService {
     console.log("intial startTime: ", this.startTime);
     console.log("intial endTime: ", this.endTime);
 
-    this.refreshTimerActive = false;
+    this.refreshTimerActive = true;
 
     this.auth.userProfile$.subscribe(profile => {
       this.auth0_profile = profile;
@@ -162,7 +162,7 @@ export class GridsterLayoutService {
         }
 
         getGetijSeriesData.push(new Serie(
-          new Lspi(frameElement.LSPI_location, frameElement.LSPI_sensor, frameElement.LSPI_parameter, frameElement.LSPI_interval),
+          new Lspi(frameElement.LSPI_location, frameElement.LSPI_sensor, frameElement.LSPI_parameter, frameElement.LSPI_interval, "", "", ""),
           this.startTime/*frameElement.start_time*/, this.endTime/*frameElement.stop_time*/));
       });
 

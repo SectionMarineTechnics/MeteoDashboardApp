@@ -19,17 +19,15 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateTimeSubsription: Subscription;
   resizeSubsription: Subscription;
+  updateChartDataSubscription: Subscription;
 
   /*myChartData: Array<Array<any>>;*/
   /*myChartData: Array<DataPoint>;*/
   myChartData: Array<Object>;
   myColumnNames: string[];
 
-  tableWidth: Number;
-  tableHeight: Number;
-
   constructor(private dataService: DataService) {
-    dataService.updateChartDataEvent.subscribe(value => {
+    this.updateChartDataSubscription = dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
         /*console.log("TableFrameComponent updateChartDataEvent(value): value = ", value);*/
 
@@ -74,7 +72,7 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log("ValueComponent ngOnDestroy()");
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
     if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
-    /*if (this.dataService.updateChartDataEvent != undefined) this.dataService.updateChartDataEvent.unsubscribe();*/
+    if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
   }  
 
   ngAfterViewInit() {
@@ -89,9 +87,6 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
           /*console.log("TableFrameComponent Resize event");*/
           /*console.log("TableFrameComponent gridsterItem: ", event.gridsterItem);*/
           /*console.log("TableFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);*/
-
-          this.tableWidth = event.gridsterItemComponent.width;
-          this.tableHeight = event.gridsterItemComponent.Height - 26;
           this.loadData();
         }
       });

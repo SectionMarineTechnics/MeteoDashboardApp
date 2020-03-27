@@ -34,6 +34,7 @@ export class LineChartComponent implements OnInit {
   ngAfterViewInit() {
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
+        console.log("resizeEvent: Width: " + event.newWidth + " Height: " + event.newHeight);
           this.config.width = event.newWidth;
           this.config.height = event.newHeight;
           this.redraw();

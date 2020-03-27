@@ -23,7 +23,7 @@
             formControlName="LspiSelector">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option.Name()}}
+                {{option.LongName()}}
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>
@@ -32,7 +32,7 @@
 
     <mat-list>
         <mat-list-item *ngFor="let lspi of selectedLspis">
-            <h3 mat-line>{{lspi.Name()}}</h3>
+            <h3 mat-line>{{lspi.LongName()}}</h3>
             <p mat-line>
                 <span> </span>
             </p>

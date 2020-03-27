@@ -2,6 +2,7 @@ import { Component, OnInit, Input, AfterViewInit, EventEmitter, OnDestroy } from
 import { DataService } from 'src/app/services/data.service';
 import { Subscription } from 'rxjs';
 import { Serie } from 'src/app/models/Serie';
+import { Lspi } from 'src/app/models/Lspi';
 
 @Component({
   selector: 'app-value-frame',
@@ -17,12 +18,13 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateTimeSubsription: Subscription;
   resizeSubsription: Subscription;
+  updateChartDataSubscription: Subscription;
 
   myChartData: Array<Array<any>>;
   myColumnNames: string[];
 
   constructor(private dataService: DataService) {
-    dataService.updateChartDataEvent.subscribe(value => {
+    this.updateChartDataSubscription = dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
         console.log("ValueFrameComponent updateChartDataEvent(value): value = ", value);
         this.myChartData = value.ChartData;
@@ -50,7 +52,7 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log("ValueComponent ngOnDestroy()");
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
     if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
-    if (this.dataService.updateChartDataEvent != undefined) this.dataService.updateChartDataEvent.unsubscribe();
+    if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
   }  
 
   public ngAfterViewInit() {
@@ -83,6 +85,28 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   lastTime() {
     return this.timeToStr(this.myChartData[this.myChartData.length-1][0]);
+  }
+
+  unit() {
+    
+    
+    let columnName: string = this.myColumnNames[this.myColumnNames.length-1];
+
+
+    if(columnName != undefined)
+    {
+      console.log("ValueFrameComponent lookup unit", columnName, this.dataService.lspis);
+
+      /*if(this.dataService.lspis.length == 0) this.dataService.getLSPIList();*/
+      
+      this.dataService.lspis.forEach(item => {
+        console.log("ValueFrameComponent lookup LSPI: ", this.dataService.lspis, columnName);
+        let lspiLookup: Lspi = this.dataService.lspis.find(function(lspi) { return(lspi.Name() == columnName) }); 
+        console.log("ValueFrameComponent lspiLookup: ", lspiLookup);
+        if(lspiLookup != undefined) return lspiLookup.unit;
+        else return "";
+      });      
+    }
   }
 
   lastValue() {

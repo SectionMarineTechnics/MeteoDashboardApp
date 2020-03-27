@@ -7,10 +7,29 @@ import { LineChartConfig } from '../models/LineChartConfig';
 })
 export class GoogleLineChartService extends GoogleChartsBaseService {
 
-  constructor() { super(); }
+  /*chartFuncMap: Map<string, Object>;*/
+
+  constructor() { super(); /*this.chartFuncMap = new Map<string, Object>();*/ }
 
   public BuildLineChart(elementId: string, data: any[], config: LineChartConfig) : void {  
-    var chartFunc = () => { return new google.visualization.LineChart(document.getElementById(elementId)); };
+    /*console.log("GoogleLineChartService BuildLineChart", elementId, data, config, this.chartFuncMap);*/
+    
+    /*
+    var chartFunc;
+    if(this.chartFuncMap.has(elementId))
+    {  
+      chartFunc = this.chartFuncMap.get(elementId);
+      console.log("GoogleLineChartService BuildLineChart: reused existing LineChart");
+    }
+    else
+    {
+      chartFunc = () => { return new google.visualization.LineChart(document.getElementById(elementId)); };
+      this.chartFuncMap.set(elementId, chartFunc);
+      console.log("GoogleLineChartService BuildLineChart: created new LineChart");
+    }
+    */
+
+   var chartFunc = () => { return new google.visualization.LineChart(document.getElementById(elementId)); };
 
     let hAxisFormat:string = 'dd/MM HH:mm';
     
@@ -30,11 +49,11 @@ export class GoogleLineChartService extends GoogleChartsBaseService {
         height: "100%",
         dynamicResize: true,
       },      
-      animation: {
+      /*animation: {
         duration: 1000,
         easing: 'out',
         startup: false
-      },
+      },*/
       curveType: 'none',
       legend: { position: 'bottom' },
       /*        
@@ -81,6 +100,6 @@ export class GoogleLineChartService extends GoogleChartsBaseService {
       },
     };
 
-    this.buildChart(data, chartFunc, options);
+    this.buildChart(data, chartFunc, options, elementId);
   }  
 }

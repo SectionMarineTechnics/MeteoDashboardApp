@@ -18,6 +18,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateTimeSubsription: Subscription;
   resizeSubsription: Subscription;
+  updateChartDataSubscription: Subscription;
 
   myChartData: Array<Array<any>>;
   myColumnNames: string[];
@@ -31,7 +32,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   constructor(private dataService: DataService) {
-    dataService.updateChartDataEvent.subscribe(value => {
+    this.updateChartDataSubscription = dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
         /*console.log("GaugeFrameComponent updateChartDataEvent(value): value = ", value);*/
 
@@ -76,7 +77,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log("GaugeFrameComponent ngOnDestroy()");
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
     if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
-    /*if (this.dataService.updateChartDataEvent != undefined) this.dataService.updateChartDataEvent.unsubscribe();*/
+    if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
   }  
 
   public ngAfterViewInit() {

@@ -246,7 +246,7 @@ export class DataService {
         .then(
           (res: any) => { console.log("res: ", res);
             this.lspis = res.data.map(item => {
-                return new Lspi(item.PARLOC_LOCATION, item.PARLOC_PARAMETER.substring(0, 3), item.PARLOC_PARAMETER.substring(3, 6), item.PARLOC_PARAMETER.substring(6, 9));
+                return new Lspi(item.PARLOC_LOCATION, item.PARLOC_PARAMETER.substring(0, 3), item.PARLOC_PARAMETER.substring(3, 6), item.PARLOC_PARAMETER.substring(6, 9), item.LOC_DESCRIPTION, item.PAR_DESCRIPTION, item.PAR_UNITS);
           });
           resolve();
           },

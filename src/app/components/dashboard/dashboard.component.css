@@ -1,20 +1,28 @@
+.gridster-item-container {
+    width: 100%;
+    height: 100%;
+}
+
 .gridster-container {
     width: 100%;
     height: 100%;
-    display: -webkit-box;
+
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
 }
 
 .dragHandleHeader {
-    width: 100%;
+    order: 0;
     flex: 0 0 26px;
 }
 
 .widget-container {
-    width: 100%;
-    flex: auto;
+    order: 1;
+    flex: 1 1 auto;
+    height: 100%; 
 }
 
 .mat-toolbar {
