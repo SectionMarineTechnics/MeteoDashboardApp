@@ -77,11 +77,17 @@ export class SourceSelectorComponent implements OnInit {
           console.log("gridsterItem.type: ", gridsterItem.type);
   
           gridsterItem.serieList.forEach(item => {
+            
+            /*
             console.log("SourceSelectorComponent lookup LSPI: ", item, this.options);
             let lspiLookup: Lspi = this.options.find(function(lspi) { return(lspi.Name() == item.Name()) }); 
             console.log("SourceSelectorComponent lspiLookup: ", lspiLookup);
             if(lspiLookup != undefined) this.selectedLspis.push(lspiLookup)
             else this.selectedLspis.push(item.Lspi)
+            */
+            this.selectedLspis.push(item.Lspi)
+
+
           });
    
           this.serieInfo_form.get("Titel").setValue(gridsterItem.title);

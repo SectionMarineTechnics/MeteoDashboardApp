@@ -88,24 +88,10 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   unit() {
-    
-    
-    let columnName: string = this.myColumnNames[this.myColumnNames.length-1];
-
-
-    if(columnName != undefined)
+    let lspi: Lspi = this.serieList[0].Lspi;
+    if(lspi != undefined)
     {
-      console.log("ValueFrameComponent lookup unit", columnName, this.dataService.lspis);
-
-      /*if(this.dataService.lspis.length == 0) this.dataService.getLSPIList();*/
-      
-      this.dataService.lspis.forEach(item => {
-        console.log("ValueFrameComponent lookup LSPI: ", this.dataService.lspis, columnName);
-        let lspiLookup: Lspi = this.dataService.lspis.find(function(lspi) { return(lspi.Name() == columnName) }); 
-        console.log("ValueFrameComponent lspiLookup: ", lspiLookup);
-        if(lspiLookup != undefined) return lspiLookup.unit;
-        else return "";
-      });      
+      return lspi.unit;
     }
   }
 
@@ -113,6 +99,14 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
     /*let value: number = Math.trunc( this.myChartData[this.myChartData.length-1][1] * 100);*/
     /*return value / 100;*/
     return this.myChartData[this.myChartData.length-1][1].toFixed(2);
+  }
+
+  lastValueWithUnit(){
+    return this.lastValue() + " " + this.unit() /*+ " (" + this.lastTime() + ")"*/;
+  }
+
+  numberOfCharInlastValueWithUnit(){
+    return "0 0 "+ this.lastValueWithUnit().length * 9 + " 18";
   }
 
   padZeroes(input: number, length: number) {

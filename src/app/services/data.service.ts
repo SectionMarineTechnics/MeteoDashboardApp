@@ -122,7 +122,7 @@ export class DataService {
     let cacheLines: DataCacheLine[] = [];
 
     SerieList.forEach( (serie, index) => { 
-      ColumnNames.push(serie.Lspi.LspiName());
+      ColumnNames.push(serie.Lspi.LspiName() + " (" + serie.Lspi.Unit() + ")");
       //ChartData[0].push({label: serie.Lspi.LspiName(), id: serie.Lspi.LspiName(), type: 'number'});
       cacheLines.push(DataCache.find( element => element.Lspi.LspiName() == serie.Lspi.LspiName()));
     });
@@ -257,5 +257,12 @@ export class DataService {
         );
     });
     return promise;
+  }
+
+  lookupLspi(lspiRequested: Lspi, lspiList: Lspi[]): Lspi
+  {
+    let lspiLookup: Lspi = lspiList.find(function(lspi) { return(lspi.Name() == lspiRequested.Name()) }); 
+    if(lspiLookup != undefined) return lspiLookup;
+    else return lspiRequested;
   }
 }

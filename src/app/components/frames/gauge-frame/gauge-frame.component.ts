@@ -3,6 +3,7 @@ import { Serie } from 'src/app/models/Serie';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { GoogleChartComponent } from 'angular-google-charts';
+import { Lspi } from 'src/app/models/Lspi';
 
 @Component({
   selector: 'app-gauge-frame',
@@ -55,7 +56,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   drawChart(){
     /*console.log("GaugeFrameComponent drawChart");*/
-    this.myChartData = [ ['Waarde', this.realValue] ];
+    this.myChartData = [ [this.unit(), this.realValue] ];
   }
 
   ngOnInit() {
@@ -138,6 +139,14 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   lastTime() {
     return this.timeToStr(this.myChartData[this.myChartData.length-1][0]);
+  }
+
+  unit() {
+    let lspi: Lspi = this.serieList[0].Lspi;
+    if(lspi != undefined)
+    {
+      return lspi.unit;
+    }
   }
 
   lastValue() {

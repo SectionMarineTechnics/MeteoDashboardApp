@@ -14,6 +14,7 @@ import { Frame } from '../models/Frame'
 import { Frame_Element } from '../models/Frame_Element'
 import { PanelType } from '../models/PanelType';
 import { timer } from 'rxjs';
+import { DataService } from './data.service';
 
 export interface IComponent {
   id: string;
@@ -81,7 +82,9 @@ export class GridsterLayoutService {
   currentUser: User;
   public currentPage: Page;
 
-  constructor(public settingsService: SettingsService, public auth: AuthService) {
+  lspis: Lspi[];
+
+  constructor(public settingsService: SettingsService, public auth: AuthService, public dataService: DataService) {
     /* Get current time, set seconds to 0: */
     this.endTime = new Date(Date.now());
     this.endTime.setSeconds(0);
@@ -145,6 +148,14 @@ export class GridsterLayoutService {
   }
 
   RebuildLayout(page: Page) {
+    this.dataService.getLSPIList()
+          .then(_ => (this.lspis = this.dataService.lspis) )
+          .then(result => {
+            this.RebuildLayoutStep2(page);
+          });
+  }
+
+  RebuildLayoutStep2(page: Page) {
     this.layout = [];
     
     page.Frame.forEach(frame => {
@@ -161,9 +172,11 @@ export class GridsterLayoutService {
           frameElement.stop_time = new Date(frameElement.stop_time);
         }
 
-        getGetijSeriesData.push(new Serie(
-          new Lspi(frameElement.LSPI_location, frameElement.LSPI_sensor, frameElement.LSPI_parameter, frameElement.LSPI_interval, "", "", ""),
-          this.startTime/*frameElement.start_time*/, this.endTime/*frameElement.stop_time*/));
+        let lspi: Lspi = new Lspi(frameElement.LSPI_location, frameElement.LSPI_sensor, frameElement.LSPI_parameter, frameElement.LSPI_interval, "", "", "");
+        lspi = this.dataService.lookupLspi(lspi, this.lspis);
+
+        getGetijSeriesData.push(new Serie(lspi, this.startTime/*frameElement.start_time*/, this.endTime/*frameElement.stop_time*/));
+
       });
 
       let gridsterType: string = '';
