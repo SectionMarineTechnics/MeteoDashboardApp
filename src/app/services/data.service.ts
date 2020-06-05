@@ -215,8 +215,8 @@ export class DataService {
   }
 
   getDataFrameWithLspiList( Version: number, StartTime: Date, EndTime: Date, LspiList: Lspi[]){
-    let apiRequest:string = 'http://localhost:8090/GTSACQ/GetData?';
-    /*let apiRequest:string = 'http://10.176.225.16:8081/GTSACQ/GetData?';*/
+    /*let apiRequest:string = 'http://localhost:8090/GTSACQ/GetData?';*/
+    let apiRequest:string = 'http://10.176.225.16:8090/GTSACQ/GetData?';
         
     LspiList.forEach( (lspi, index) => { 
       apiRequest += 'lspis=' + lspi.LspiName() + '&'; 
@@ -235,8 +235,8 @@ export class DataService {
   getLSPIList(){
     let promise = new Promise((resolve, reject) => {
       /*let apiRequest: string = 'http://localhost:8090/GTSACQ/GetLSPIS';*/
-      let apiRequest: string = 'http://localhost:8090/GTSACQ/GetParameterLocations';
-      /*let apiRequest: string = 'http://10.176.225.16:8081/GTSACQ/GetParameterLocations';*/
+      /*let apiRequest: string = 'http://localhost:8090/GTSACQ/GetParameterLocations';*/
+      let apiRequest: string = 'http://10.176.225.16:8090/GTSACQ/GetParameterLocations';
       
       console.log("Get LSPI list from API: " + apiRequest);
 

@@ -115,36 +115,66 @@ export class GridsterLayoutService {
       console.log('GridsterLayoutService:getUsers', 'received users: ', users);
       this.usersShortList = users;
       if (this.auth0_profile) {
-        let currentUserId: number = this.usersShortList.find(x => x.name == this.auth0_profile.name).id;
-        if (currentUserId) {
-          this.settingsService.getUser(currentUserId).subscribe(user => {
+        let currentUser: UserShort = this.usersShortList.find(x => x.name == this.auth0_profile.name);
+        
+        if (currentUser != undefined) {
+          this.settingsService.getUser(currentUser.id).subscribe(user => {
             this.currentUser = user;
             console.log('GridsterLayoutService this.currentUser:  ', this.currentUser);
-            console.log('Update this.currentUser login_time to now: ', this.currentUser);
-            this.currentUser.login_time = new Date();
-            this.currentUser.login_count++;
-            this.settingsService.updateUser(this.currentUser).subscribe();
 
-            /* Check if already pages exist: */
-            if (this.currentUser.Page.length == 0) {
-              this.settingsService.updatePage(new Page(0, [], this.currentUser.id, 'Page 1', this.getNexPagePosition())).subscribe(() => { this.UpdateCurrentUser(); }); /* Add empty frame for user */
-            } else {
-              let sortedPages = this.currentUser.Page.sort( function(a, b) { 
-                return a.position - b.position;
+            this.UpdateUserInfoAndPages();
+          });
+        }
+        else
+        {
+          let newUser: User = new User(0, [], this.auth0_profile.name, new Date(), 1);
+          this.settingsService.updateUser(newUser).subscribe();
+          this.settingsService.getUsers().subscribe(updateUsers => {
+            this.usersShortList = users;
+            let currentUser: UserShort = this.usersShortList.find(x => x.name == this.auth0_profile.name);
+            if (currentUser != undefined) {
+              this.settingsService.getUser(currentUser.id).subscribe(user => {
+                this.currentUser = user;
+                console.log('GridsterLayoutService added new user!, this.currentUser:  ', this.currentUser);
+                this.settingsService.setUserToDefault(this.currentUser).subscribe();
+                this.settingsService.getUser(currentUser.id).subscribe(user => { this.currentUser = user; });
+                this.UpdateUserInfoAndPages();
               });
-              this.currentPage = sortedPages[0];
             }
-            console.log('Current page set to: ', this.currentPage);
-
-            this.RebuildLayout(this.currentPage);
-
-            this.pagesLoadedEvent.emit();
           });
         }
       }
     });
 
     return GridsterLayoutService.instance = GridsterLayoutService.instance || this;
+  }
+
+  UpdateUserInfoAndPages() {
+    console.log('Update this.currentUser login_time to now: ', this.currentUser);
+    this.currentUser.login_time = new Date();
+    this.currentUser.login_count++;
+    this.settingsService.updateUser(this.currentUser).subscribe();
+
+    /* Check if already pages exist: */
+    if (this.currentUser.Page.length == 0) {
+          /*this.settingsService.updatePage(new Page(0, [], this.currentUser.id, 'Page 1', this.getNexPagePosition())).subscribe(() => { this.UpdateCurrentUser(); });*/ /* Add empty frame for user */
+          this.settingsService.setUserToDefault(this.currentUser).subscribe();
+          this.settingsService.getUser(this.currentUser.id).subscribe(user => { this.currentUser = user; });
+    } 
+    
+    if (this.currentUser.Page.length > 0)
+    {
+      let sortedPages = this.currentUser.Page.sort( function(a, b) { 
+        return a.position - b.position;
+      });
+      this.currentPage = sortedPages[0];
+    }
+
+    console.log('Current page set to: ', this.currentPage);
+
+    this.RebuildLayout(this.currentPage);
+
+    this.pagesLoadedEvent.emit();
   }
 
   RebuildLayout(page: Page) {

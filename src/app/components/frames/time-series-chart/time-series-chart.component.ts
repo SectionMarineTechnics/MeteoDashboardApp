@@ -178,6 +178,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
         }
       }
       this.chartConfig.hAxisFormat = hAxisFormat;
+      
 
       if (this.serieList != undefined && this.serieList.length > 0) {
         this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);

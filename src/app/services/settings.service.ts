@@ -13,8 +13,8 @@ import { Observable } from 'rxjs';
 export class SettingsService {
   public Users: User[] = new Array<User>(0);
 
-  settingsUrl: string = 'http://localhost:8090/Dashboard';
-  /*settingsUrl: string = 'http://10.176.225.16:8081/Dashboard';*/
+  /*settingsUrl: string = 'http://localhost:8090/Dashboard';*/
+  settingsUrl: string = 'http://10.176.225.16:8090/Dashboard';
 
   constructor(private httpClient: HttpClient) 
   { 
@@ -26,7 +26,6 @@ export class SettingsService {
     console.log('settingsService:getUsers()', 'GET ' + this.settingsUrl + '/SELECT_User_list');
     return this.httpClient.get<User[]>(this.settingsUrl + '/SELECT_User_list');
   }*/
-
   getUsers() {
     console.log('settingsService:getUsers()', 'GET ' + this.settingsUrl + '/SELECT_User_list');
     return this.httpClient.get<UserShort[]>(this.settingsUrl + '/SELECT_User_list');
@@ -51,6 +50,13 @@ export class SettingsService {
     console.log('settingsService:getUser()', 'GET ' + this.settingsUrl + '/SELECT_Frame_Element');
     return this.httpClient.get<Frame_Element>(this.settingsUrl + '/SELECT_Frame_Element?frameElementid=' + frameElementID);
   }
+
+
+  setUserToDefault(user: User) {
+    console.log('settingsService:SetUserToDefault()', 'UPDATE ' + this.settingsUrl + '/SET_User_default');
+    return this.httpClient.post(this.settingsUrl + '/SET_User_default', user);  
+  }
+
 
   updateUser(user: User){
     console.log('settingsService:updateUser()', 'UPDATE ' + this.settingsUrl + '/UPDATE_User');
