@@ -14,7 +14,9 @@ export class SettingsService {
   public Users: User[] = new Array<User>(0);
 
   /*settingsUrl: string = 'http://localhost:8090/Dashboard';*/
-  settingsUrl: string = 'http://10.176.225.16:8090/Dashboard';
+  /*settingsUrl: string = 'http://10.176.225.16:8090/Dashboard';*/
+  settingsUrl: string = 'https://10.176.225.16/Dashboard';
+
 
   constructor(private httpClient: HttpClient) 
   { 
