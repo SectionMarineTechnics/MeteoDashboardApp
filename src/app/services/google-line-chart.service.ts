@@ -36,9 +36,11 @@ export class GoogleLineChartService extends GoogleChartsBaseService {
     var options = {
       width: config.width,
       height: config.height,
+      interpolateNulls: true,
       chart: {
         title: config.title,
         dynamicResize: true,
+        interpolateNulls: true,
       },
       chartArea: {
         left: /*10*/40,

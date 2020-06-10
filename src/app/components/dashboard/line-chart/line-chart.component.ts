@@ -34,7 +34,7 @@ export class LineChartComponent implements OnInit {
   ngAfterViewInit() {
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
-        console.log("resizeEvent: Width: " + event.newWidth + " Height: " + event.newHeight);
+        /*console.log("resizeEvent: Width: " + event.newWidth + " Height: " + event.newHeight);*/
           this.config.width = event.newWidth;
           this.config.height = event.newHeight;
           this.redraw();
@@ -55,14 +55,14 @@ export class LineChartComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log("LineChartComponent ngOnDestroy()");
+    /*console.log("LineChartComponent ngOnDestroy()");*/
     if (this.readySubsription != undefined) this.readySubsription.unsubscribe();
     if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
     if (this.updateSubsription != undefined) this.updateSubsription.unsubscribe();
   }
 
   public redraw() {
-    console.log("LineChartComponent redraw");
+    /*console.log("LineChartComponent redraw");*/
     this._lineChartService.BuildLineChart(this.elementId, this.data, this.config); 
   }
 

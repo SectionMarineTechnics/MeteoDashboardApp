@@ -40,6 +40,7 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
           let obj: Object = new Object();
           let index: number = 0;
           value.ColumnNames.forEach(column => {
+            if(element[index] == -9999 || element[index] == -999) element[index] = null; 
             obj[column] = element[index];
             index++;
           });
@@ -78,7 +79,7 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     /*this.RedrawChart();*/
 
-    console.log("TableFrameComponent ngAfterViewInit()");
+    /*console.log("TableFrameComponent ngAfterViewInit()");*/
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
 

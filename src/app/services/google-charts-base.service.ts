@@ -15,7 +15,7 @@ export class GoogleChartsBaseService {
 
   protected buildChart(data: any[], chartFunc: any, options: any, elementId: string) : void {
     var func = (chartFunc, options) => {
-      console.log("GoogleChartsBaseService draw()", this.chartMap);
+      /*console.log("GoogleChartsBaseService draw()", this.chartMap);*/
       
       
 
@@ -27,29 +27,47 @@ export class GoogleChartsBaseService {
       {
         myChart = chartFunc();
         this.chartMap.set(elementId, myChart);
-        console.log("GoogleChartsBaseService buildChart: elementId has no child nodes ==> created new LineChart");
+        /*console.log("GoogleChartsBaseService buildChart: elementId has no child nodes ==> created new LineChart");*/
       }
       else
       {
         myChart = this.chartMap.get(elementId);
-        console.log("GoogleChartsBaseService buildChart: reused existing LineChart");
+        /*console.log("GoogleChartsBaseService buildChart: reused existing LineChart");*/
       }
     }
     else
     {
       myChart = chartFunc();
       this.chartMap.set(elementId, myChart);
-      console.log("GoogleChartsBaseService buildChart: created new LineChart");
+      /*console.log("GoogleChartsBaseService buildChart: created new LineChart");*/
     }
-      
-      
-      /*var myChart = chartFunc();*/
-      
-      
       
       google.visualization.events.addListener(myChart, 'ready', this.readyhandler.bind(this));
       
-      var datatable = google.visualization.arrayToDataTable(data);
+      /*var datatable = google.visualization.arrayToDataTable(data);*/
+      var datatable = new google.visualization.DataTable();
+      datatable.addColumn('date', data[0][0]);
+      for(let columnIndex = 1; columnIndex < data[0].length; columnIndex++)
+      {
+        datatable.addColumn('number', data[0][columnIndex]);
+      }
+
+      for(let rowIndex = 1; rowIndex < data.length; rowIndex++)
+      {
+        var dataRow = data[rowIndex];
+
+        for(let columnIndex = 1; columnIndex < dataRow.length; columnIndex++)
+        {
+          if(dataRow[columnIndex] == -9999 || dataRow[columnIndex] == -999) dataRow[columnIndex] = null;
+        }
+
+        datatable.addRow(dataRow);
+      }
+
+      var formatter = new google.visualization.DateFormat({pattern: 'dd/MM/YYYY HH:mm'});
+      formatter.format(datatable, 0);
+
+
       myChart.draw(datatable, options);
     };   
     var callback = () => func(chartFunc, options);
@@ -57,7 +75,7 @@ export class GoogleChartsBaseService {
   }
 
   public readyhandler() {
-    console.log("GoogleChartsBaseService readyNotifyEvent.emit()");
+    /*console.log("GoogleChartsBaseService readyNotifyEvent.emit()");*/
     this.readyEvent.emit();
   }
 }

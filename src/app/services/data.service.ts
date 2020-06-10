@@ -38,7 +38,7 @@ export class DataService {
     let ChartData: Array<Array<any>>;
     let ColumnNames: string[];
 
-    console.log("GetData();", Version, StartTime, EndTime, SerieList);
+    /*console.log("GetData();", Version, StartTime, EndTime, SerieList);*/
 
     SerieList.forEach( (serie, index) => { 
       let cacheLines: DataCacheLine[] = this.dataCache.filter( element => element.Lspi.LspiName() == serie.Lspi.LspiName() )
@@ -87,12 +87,14 @@ export class DataService {
       }
     });
 
+    /*
     console.log("completeCacheLines before dataload: ", completeCacheLines);
     console.log("inCompleteCacheLines before dataload: ", inCompleteCacheLines);
     console.log("emptyCacheLines before dataload: ", emptyCacheLines);
 
     console.log("inCompleteCacheLines.length: ", inCompleteCacheLines.length);
     console.log("emptyCacheLines.length: ", emptyCacheLines.length);
+    */
 
     if(inCompleteCacheLines.length > 0 || emptyCacheLines.length > 0){
       if(emptyCacheLines.length == 0){
@@ -112,8 +114,10 @@ export class DataService {
     ColumnNames = [];
     ChartData = [];
 
+    /*
     console.log("updateChartFromCache -> SerieList: ", SerieList);        
     console.log("updateChartFromCache -> DataCache: ", DataCache);
+    */
 
     ColumnNames.push("Time");
     //ChartData.push([]);
@@ -127,8 +131,10 @@ export class DataService {
       cacheLines.push(DataCache.find( element => element.Lspi.LspiName() == serie.Lspi.LspiName()));
     });
 
+    /*
     console.log("ColumnNames: ", ColumnNames);
     console.log("cacheLines: ", cacheLines);
+    */
 
     let firstCacheLine: boolean = true;
     cacheLines.forEach( (cacheLine, index) => { 
@@ -158,7 +164,7 @@ export class DataService {
     });
 
     this.updateChartDataEvent.emit( { widget, ChartData, ColumnNames } );
-    console.log("ChartData: ", ChartData);    
+    /*console.log("ChartData: ", ChartData);*/    
   }  
 
   loadDataFromServerInDataCache(widget: any, Version: number, StartTime: Date, EndTime: Date, SerieList: Serie[], DataCache: DataCacheLine[], ChartData: Array<Array<any>>, ColumnNames: string[], DataCacheLinesToAdd: DataCacheLine[]) 
@@ -215,9 +221,9 @@ export class DataService {
   }
 
   getDataFrameWithLspiList( Version: number, StartTime: Date, EndTime: Date, LspiList: Lspi[]){
-    /*let apiRequest:string = 'http://localhost:8090/GTSACQ/GetData?';*/
-    /*let apiRequest:string = 'http://10.176.225.16:8090/GTSACQ/GetData?';*/
-    let apiRequest:string = 'https://10.176.225.16/GTSACQ/GetData?';
+    let apiRequest:string = 'http://localhost:8090/GTSACQ/GetData?';
+    /*let apiRequest:string = 'http://10.176.225.16:8090/GTSACQ/GetData?'*/
+    /*let apiRequest:string = 'https://10.176.225.16/GTSACQ/GetData?';*/
         
     LspiList.forEach( (lspi, index) => { 
       apiRequest += 'lspis=' + lspi.LspiName() + '&'; 
@@ -228,7 +234,7 @@ export class DataService {
 
     apiRequest += 'startTime=' + formatted_startTime + '&endTime=' + formatted_endTime + '&version=' + Version;
 
-    console.log("Get data from API: " + apiRequest);
+    /*console.log("Get data from API: " + apiRequest);*/
 
     return this.httpClient.get(apiRequest).toPromise();
   }  
@@ -240,13 +246,14 @@ export class DataService {
       /*let apiRequest: string = 'http://10.176.225.16:8090/GTSACQ/GetParameterLocations';*/
       let apiRequest: string = 'https://10.176.225.16/GTSACQ/GetParameterLocations';
       
-      console.log("Get LSPI list from API: " + apiRequest);
+      /*console.log("Get LSPI list from API: " + apiRequest);*/
 
       this.httpClient
         .get(apiRequest)
         .toPromise()
         .then(
-          (res: any) => { console.log("res: ", res);
+          (res: any) => { 
+            /* console.log("res: ", res); */
             this.lspis = res.data.map(item => {
                 return new Lspi(item.PARLOC_LOCATION, item.PARLOC_PARAMETER.substring(0, 3), item.PARLOC_PARAMETER.substring(3, 6), item.PARLOC_PARAMETER.substring(6, 9), item.LOC_DESCRIPTION, item.PAR_DESCRIPTION, item.PAR_UNITS);
           });

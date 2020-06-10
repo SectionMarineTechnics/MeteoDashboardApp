@@ -47,7 +47,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log("NavbarComponent ngOnDestroy()");
+    /* console.log("NavbarComponent ngOnDestroy()");*/
     if (this.layoutService.pagesLoadedEvent != undefined) this.layoutService.pagesLoadedEvent.unsubscribe();
   }    
 
@@ -80,13 +80,38 @@ export class NavbarComponent implements OnInit {
   }
 
   UpdateRefreshState() {
-    console.log("UpdateRefreshState()");
+    /*console.log("UpdateRefreshState()");*/
 
     if (this.SelectedRefreshState == "Aan") {
       this.layoutService.refreshTimerActive = true;
     } else {
       this.layoutService.refreshTimerActive = false;
     }
+  }
+
+  disableRefresh() {
+    this.SelectedRefreshState = "Uit";
+    this.layoutService.refreshTimerActive = false;
+  } 
+
+  ZoomIn(){
+    this.disableRefresh();
+    this.layoutService.zoomIn();
+  }
+
+  ZoomOut(){
+    this.disableRefresh();    
+    this.layoutService.zoomOut();
+  }
+
+  GoForward(){
+    this.disableRefresh();    
+    this.layoutService.goForward();
+  }
+
+  GoBackward(){
+    this.disableRefresh();    
+    this.layoutService.goBackward();
   }
 
   UpdateAction() {
@@ -99,13 +124,15 @@ export class NavbarComponent implements OnInit {
 
   UpdatePage() {
     console.log("UpdatePage(): ", this.SelectedPage);
+
+    console.log("UpdatePage(): ", this.layoutService.currentPage, this.layoutService.currentUser.Page);
     this.layoutService.currentPage = this.layoutService.currentUser.Page.find(x => x.name == this.SelectedPage);
     this.layoutService.RebuildLayout(this.layoutService.currentPage);
   }
 
   loadpages() {
     
-    console.log("loadpages(): this.layoutService.currentUser.Page: ", this.layoutService.currentUser.Page);
+    /*console.log("loadpages(): this.layoutService.currentUser.Page: ", this.layoutService.currentUser.Page);*/
     this.pages = [];
 
     let sortedPages = this.layoutService.currentUser.Page.sort( function(a, b) { 
@@ -115,7 +142,7 @@ export class NavbarComponent implements OnInit {
       this.pages.push(page.name);
     });
 
-    console.log("loadpages(): sortedPages: ", sortedPages);
+    /*console.log("loadpages(): sortedPages: ", sortedPages);*/
 
     if (this.SelectedPage == "") {
       /*this.page = this.layoutService.currentUser.Page[0].name;*/
@@ -124,7 +151,7 @@ export class NavbarComponent implements OnInit {
     }
 
 
-    console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.page, this.SelectedPage);
+    /*console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.page, this.SelectedPage);*/
 
     this.myPageSelect.open();
   }

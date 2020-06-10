@@ -15,6 +15,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 })
 export class PageSelectorComponent implements OnInit {
   currentUser: User;
+  currentUserId: number;
   pages: Page[];
   activeEditPage: Page;
 
@@ -37,9 +38,9 @@ export class PageSelectorComponent implements OnInit {
     this.auth.userProfile$.subscribe(profile => {
       this.settingsService.getUsers().subscribe(users => {
         if (profile) {
-          let currentUserId: number = users.find(x => x.name == profile.name).id;
-          if (currentUserId) {
-            this.settingsService.getUser(currentUserId).subscribe(user => {
+          this.currentUserId = users.find(x => x.name == profile.name).id;
+          if (this.currentUserId) {
+            this.settingsService.getUser(this.currentUserId).subscribe(user => {
               this.currentUser = user;
               this.UpdatePages();
             });
@@ -106,7 +107,13 @@ export class PageSelectorComponent implements OnInit {
   editPage(page: Page){
     console.log("editPage()");
     this.activeEditPage = page;
- }
+  }
+
+
+  updatePageName(page: Page, name: string){
+    page.name = name;
+    this.settingsService.updatePage(page).subscribe();
+  }
 
   addNewPage() {
     let newPage: Page = new Page(0, [], this.layoutService.currentUser.id, this.pageInfo_form.get("NewPageName").value, this.layoutService.getNexPagePosition());
@@ -119,6 +126,17 @@ export class PageSelectorComponent implements OnInit {
         this.UpdatePages();
       });
     });
+  }
+
+  addDefaultPagesToCurrentUser() {
+    if(confirm("Wens je de default pagina's toe te voegen?")) {
+      this.settingsService.setUserToDefault(this.currentUser).subscribe( data => {
+        this.settingsService.getUser(this.currentUserId).subscribe(user => {
+          this.currentUser = user;
+          this.UpdatePages();
+        }); 
+      });
+    }
   }
 
   pageExist(){

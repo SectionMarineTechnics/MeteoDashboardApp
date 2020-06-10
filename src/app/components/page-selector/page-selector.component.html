@@ -12,7 +12,7 @@
             <div class="example-box" *ngFor="let page of pages;let index = index;" cdkDrag>
                 <!--<div class="header">{{ page.name }}</div>-->
                 <mat-form-field class="field-full-width" floatLabel="never">
-                    <input matInput [value]="pages[index].name" (input)="pages[index].name = $event.target.value" formControlName="EditPageName">
+                    <input matInput [value]="pages[index].name" (input)="updatePageName(pages[index], $event.target.value)" formControlName="EditPageName">
                 </mat-form-field>
 
                 <span fxFlex></span>
@@ -28,6 +28,10 @@
     </mat-form-field>
 
     <button mat-raised-button (click)="addNewPage()" [disabled]="!pageInfo_form.valid||pageExist()">Voeg pagina toe</button>
+
+    <br>
+
+    <button mat-raised-button (click)="addDefaultPagesToCurrentUser()">Voeg default pagina's toe</button>
 
     <br>
 

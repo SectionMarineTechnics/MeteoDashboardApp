@@ -38,10 +38,10 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
   private loading: boolean = true;
 
   constructor(private dataService: DataService) {
-    console.log("TimeSeriesChartComponent constructor()");
+    /*console.log("TimeSeriesChartComponent constructor()");*/
     this.updateChartDataSubscription = dataService.updateChartDataEvent.subscribe(event => {
       if (event.widget == this.widget) {
-        console.log("TimeSeriesChartComponent dataService.updateChartDataEvent", event);
+        /*console.log("TimeSeriesChartComponent dataService.updateChartDataEvent", event);*/
         if(event.ChartData[0][0] != "Time") event.ChartData.unshift(event.ColumnNames);
         this.chartData = event.ChartData;
         this.updateLineChartComponentEvent.emit(this.chartData);
@@ -55,7 +55,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnInit() {
-    console.log("TimeSeriesChartComponent ngOnInit()");
+    /*console.log("TimeSeriesChartComponent ngOnInit()");*/
 
     this.chartData =  [[ ]];
     this.chartConfig = new LineChartConfig(this.widget.id, 0.4, 100, 100, 'dd/MM HH:mm');
@@ -63,7 +63,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
 
     if (this.updateTimeEvent != undefined) {
       this.updateTimeSubsription = this.updateTimeEvent.subscribe((event) => {
-        console.log("TimeSeriesChartComponent updateTimeEvent event", event);
+        /*console.log("TimeSeriesChartComponent updateTimeEvent event", event);*/
 
         let update: boolean = false;
         this.serieList.forEach((element, index) => {
@@ -98,23 +98,23 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   ngOnDestroy() {
-    console.log("TimeSeriesChartComponent ngOnDestroy()");
+    /*console.log("TimeSeriesChartComponent ngOnDestroy()");*/
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
     if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
     if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
   }  
 
   public readyNotifyEventHandler(): void {
-      console.log("TimeSeriesChartComponent readyNotifyEvent event", event);
+      /*console.log("TimeSeriesChartComponent readyNotifyEvent event", event);*/
       this.loading = false;
   }
 
   public ngAfterViewInit() {
-    console.log("TimeSeriesChartComponent ngAfterViewInit()");
+    /*console.log("TimeSeriesChartComponent ngAfterViewInit()");*/
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
         if (event.gridsterItem == this.widget) {
-          console.log("TimeSeriesChartComponent Gridster Resize event", event);
+          /*console.log("TimeSeriesChartComponent Gridster Resize event", event);*/
           
           this.chartConfig.width = event.gridsterItemComponent.width;
           this.chartConfig.height = event.gridsterItemComponent.height - 26;
@@ -128,7 +128,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   public onChartContainerResized(event: ResizedEvent){
-    console.log("onChartContainerResized", event);
+    /*console.log("onChartContainerResized", event);*/
     
     this.chartConfig.width = event.newWidth;
     this.chartConfig.height = event.newHeight;

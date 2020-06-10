@@ -38,20 +38,20 @@
                 </mat-select>
   
                 <button class="timeFrameButton" mat-button matTooltip="Shuif tijdsvenster terug" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="layoutService.goBackward()">chevron_left</mat-icon>
+                    <mat-icon (click)="GoBackward()">chevron_left</mat-icon>
                 </button>
                 <button class="timeFrameButton" mat-button matTooltip="{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}" routerLink="/TimeSelector" *ngIf="isDashboardView()">
                     <mat-icon>access_time</mat-icon>
                     {{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}
                 </button>
                 <button class="timeFrameButton" mat-button matTooltip="Shuif tijdsvenster vooruit" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="layoutService.goForward()">chevron_right</mat-icon>
+                    <mat-icon (click)="GoForward()">chevron_right</mat-icon>
                 </button>                
                 <button class="timeFrameButton" mat-button matTooltip="Verklein tijdsvenster" *ngIf="isDashboardView()">
-                    <mat-icon (click)="layoutService.zoomIn()">zoom_in</mat-icon>
+                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon>
                 </button>                
                 <button class="timeFrameButton" mat-button matTooltip="Vergroot tijdsvenster" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="layoutService.zoomOut()">zoom_out</mat-icon>
+                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon>
                 </button>    
                 <button class="timeFrameButton" mat-button matTooltip="Stel scherm-verversing in: {{ SelectedRefreshState }}" (click)="mySelectToolbar.open()" *ngIf="isDashboardView()">
                     <mat-icon>loop</mat-icon>
@@ -91,20 +91,20 @@
                 </mat-select>
   
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="layoutService.goBackward()">chevron_left</mat-icon> Shuif tijdsvenster terug
+                    <mat-icon (click)="GoBackward()">chevron_left</mat-icon> Shuif tijdsvenster terug
                 </a>
                 <a mat-list-item class="timeFrameButton" routerLink="/TimeSelector" *ngIf="isDashboardView()">
                     <mat-icon>access_time</mat-icon>Configureer tijdsvenster ({{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }})
                     <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->
                 </a>
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="layoutService.goForward()">chevron_right</mat-icon> Shuif tijdsvenster vooruit
+                    <mat-icon (click)="GoForward()">chevron_right</mat-icon> Shuif tijdsvenster vooruit
                 </a>                
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()">
-                    <mat-icon (click)="layoutService.zoomIn()">zoom_in</mat-icon> Verklein tijdsvenster
+                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon> Verklein tijdsvenster
                 </a>                
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="layoutService.zoomOut()">zoom_out</mat-icon> Vergroot tijdsvenster
+                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon> Vergroot tijdsvenster
                 </a>    
                 <a mat-list-item class="timeFrameButton" (click)="mySelect.open()" *ngIf="isDashboardView()">
                     <mat-icon>loop</mat-icon> Stel scherm-verversing in
