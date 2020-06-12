@@ -62,22 +62,22 @@ export class SettingsService {
 
   updateUser(user: User){
     /*console.log('settingsService:updateUser()', 'UPDATE ' + this.settingsUrl + '/UPDATE_User');*/
-    return this.httpClient.post(this.settingsUrl + '/UPDATE_User', user);
+    return this.httpClient.post<number>(this.settingsUrl + '/UPDATE_User', user);
   }
 
   updatePage(page: Page){
     /*console.log('settingsService:updatePage()', 'UPDATE ' + this.settingsUrl + '/UPDATE_Page');*/
-    return this.httpClient.post(this.settingsUrl + '/UPDATE_Page', page);
+    return this.httpClient.post<number>(this.settingsUrl + '/UPDATE_Page', page);
   }
 
   updateFrame(frame: Frame){
     /*console.log('settingsService:updateFrame()', 'UPDATE ' + this.settingsUrl + '/UPDATE_Frame');*/
-    return this.httpClient.post(this.settingsUrl + '/UPDATE_Frame', frame);
+    return this.httpClient.post<number>(this.settingsUrl + '/UPDATE_Frame', frame);
   }
 
   updateFrame_Element(frameElement: Frame_Element){
     /*console.log('settingsService:updateFrame_Element()', 'UPDATE ' + this.settingsUrl + '/UPDATE_Frame_Element');*/
-    return this.httpClient.post(this.settingsUrl + '/UPDATE_Frame_Element', frameElement);
+    return this.httpClient.post<number>(this.settingsUrl + '/UPDATE_Frame_Element', frameElement);
   }
 
   deleteUser(userID: number) {

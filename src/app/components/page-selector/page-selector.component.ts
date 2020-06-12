@@ -14,10 +14,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
   styleUrls: ['./page-selector.component.css']
 })
 export class PageSelectorComponent implements OnInit {
-  currentUser: User;
-  currentUserId: number;
   pages: Page[];
-  activeEditPage: Page;
 
   pageInfo_form: FormGroup;
 
@@ -27,7 +24,6 @@ export class PageSelectorComponent implements OnInit {
       EditPageName: new FormControl("", null),
     });
     this.pages = [];
-    this.activeEditPage = null;
   }
 
   trackByIndex(index: number, obj: any): any {
@@ -35,18 +31,27 @@ export class PageSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("PageSelectorComponent ngOnInit");
     this.auth.userProfile$.subscribe(profile => {
-      this.settingsService.getUsers().subscribe(users => {
-        if (profile) {
-          this.currentUserId = users.find(x => x.name == profile.name).id;
-          if (this.currentUserId) {
-            this.settingsService.getUser(this.currentUserId).subscribe(user => {
-              this.currentUser = user;
-              this.UpdatePages();
-            });
-          }
+      if (profile) {
+        console.log("PageSelectorComponent ngOnInit profile.name: ", profile.name);
+
+
+        /*this.layoutService.InitializeUserInfoWithAuth0ProfileName(profile.name);
+        
+        console.log("PageSelectorComponent ngOnInit InitializeUserInfoWithAuth0ProfileName");*/
+
+        if(this.layoutService.currentUser == undefined)
+        { 
+          this.router.navigateByUrl('/');
         }
-      });
+        else
+        {
+          this.UpdatePages();
+        }
+
+        console.log("PageSelectorComponent ngOnInit UpdatePages");
+      }
     });
   }
 
@@ -56,14 +61,13 @@ export class PageSelectorComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     console.log("drop page position");
-    moveItemInArray(this.currentUser.Page, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.layoutService.currentUser.Page, event.previousIndex, event.currentIndex);
 
     let position: number = 1;
-    this.currentUser.Page.forEach(page => {
+    this.layoutService.currentUser.Page.forEach(page => {
       page.position = position++;
       this.settingsService.updatePage(page).subscribe();
     });
-    this.layoutService.currentUser = this.currentUser;
     this.UpdatePages();
   }
 
@@ -72,43 +76,38 @@ export class PageSelectorComponent implements OnInit {
   }
 
   submit() {
-    //this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Titel").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
-
-    this.currentUser.Page.forEach(page => {
+    this.layoutService.currentUser.Page.forEach(page => {
       this.settingsService.updatePage(page).subscribe();
     });
-    this.layoutService.currentUser = this.currentUser;
+
+    this.layoutService.UpdateNavigationBar();
 
     this.router.navigateByUrl('/');
   }
 
   UpdatePages() {
-    this.pages = this.currentUser.Page.sort(function (a, b) {
+    console.log("UpdatePages: ", this.layoutService.currentUser.Page);
+
+
+    this.pages = this.layoutService.currentUser.Page.sort(function (a, b) {
       return a.position - b.position;
     });
+
+    console.log("UpdatePages: ", this.pages);
   }
 
   deletePage(page: Page){
     console.log("deletePage()");
     
-    const index: number = this.currentUser.Page.indexOf(page);
+    const index: number = this.layoutService.currentUser.Page.indexOf(page);
     if (index !== -1) {
-      this.currentUser.Page.splice(index, 1);
-      this.layoutService.currentUser = this.currentUser;
+      this.layoutService.currentUser.Page.splice(index, 1);
       this.settingsService.deletePage(page.page_id).subscribe();
       this.UpdatePages();      
     } 
-  }
 
-  changePage(page: Page){
-    console.log("changePage()");
+    this.layoutService.UpdateNavigationBar();
   }
-
-  editPage(page: Page){
-    console.log("editPage()");
-    this.activeEditPage = page;
-  }
-
 
   updatePageName(page: Page, name: string){
     page.name = name;
@@ -117,30 +116,26 @@ export class PageSelectorComponent implements OnInit {
 
   addNewPage() {
     let newPage: Page = new Page(0, [], this.layoutService.currentUser.id, this.pageInfo_form.get("NewPageName").value, this.layoutService.getNexPagePosition());
-    this.layoutService.currentUser.Page.push(newPage);
-    this.currentUser = this.layoutService.currentUser;
-    this.settingsService.updatePage(newPage).subscribe( page => {
-      this.settingsService.getUser(this.currentUser.id).subscribe(user => {
-        this.currentUser = user;
-        this.layoutService.currentUser = this.currentUser;
-        this.UpdatePages();
-      });
+    this.settingsService.updatePage(newPage).subscribe(page_id =>{
+      newPage.page_id = page_id;
+      this.layoutService.currentUser.Page.push(newPage);
+      this.UpdatePages();
     });
   }
 
   addDefaultPagesToCurrentUser() {
     if(confirm("Wens je de default pagina's toe te voegen?")) {
-      this.settingsService.setUserToDefault(this.currentUser).subscribe( data => {
-        this.settingsService.getUser(this.currentUserId).subscribe(user => {
-          this.currentUser = user;
+      this.settingsService.setUserToDefault(this.layoutService.currentUser).subscribe( data => {
+        this.settingsService.getUser(this.layoutService.currentUser.id).subscribe(user => { 
+          this.layoutService.currentUser = user;
           this.UpdatePages();
-        }); 
+        });
       });
     }
   }
 
   pageExist(){
     let newPageName: string = this.pageInfo_form.get("NewPageName").value;
-    return this.currentUser.Page.find(x => x.name == newPageName) != undefined;
+    return this.layoutService.currentUser.Page.find(x => x.name == newPageName) != undefined;
   }
 }

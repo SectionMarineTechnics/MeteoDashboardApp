@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
     }) 
 
     this.layoutService.pagesLoadedEvent.subscribe((event) => {
-        this.loadpages();
+        this.reloadpages();
     });
   }
 
@@ -125,13 +125,11 @@ export class NavbarComponent implements OnInit {
   UpdatePage() {
     console.log("UpdatePage(): ", this.SelectedPage);
 
-    console.log("UpdatePage(): ", this.layoutService.currentPage, this.layoutService.currentUser.Page);
     this.layoutService.currentPage = this.layoutService.currentUser.Page.find(x => x.name == this.SelectedPage);
     this.layoutService.RebuildLayout(this.layoutService.currentPage);
   }
 
-  loadpages() {
-    
+  reloadpages() {
     /*console.log("loadpages(): this.layoutService.currentUser.Page: ", this.layoutService.currentUser.Page);*/
     this.pages = [];
 
@@ -150,9 +148,16 @@ export class NavbarComponent implements OnInit {
       this.SelectedPage = this.page;
     }
 
+    if(sortedPages.find(x => x.name == this.SelectedPage) == undefined){
+      this.page = sortedPages[0].name;
+      this.SelectedPage = this.page;      
+    }
 
     /*console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.page, this.SelectedPage);*/
+  }
 
+  loadpages() {
+    this.reloadpages();
     this.myPageSelect.open();
   }
 }

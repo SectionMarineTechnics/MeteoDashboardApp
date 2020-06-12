@@ -40,7 +40,12 @@ export class TimeSelectorComponent implements OnInit {
     
     var hh = this.layoutService.endTime.getHours();
     var mm = this.layoutService.endTime.getMinutes();
-    this.timeInfo_form.get("EndTime").setValue(this.padZeroes(hh,2) + ":" + this.padZeroes(mm,2));    
+    this.timeInfo_form.get("EndTime").setValue(this.padZeroes(hh,2) + ":" + this.padZeroes(mm,2));
+    
+    if(this.layoutService.currentUser == undefined)
+    { 
+      this.router.navigateByUrl('/');
+    }
   }
 
   padZeroes(input: number, length: number)

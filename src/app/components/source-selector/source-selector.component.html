@@ -28,7 +28,7 @@
         </mat-autocomplete>
     </mat-form-field>
 
-    <button mat-raised-button (click)="addLspi()">Voeg bron toe</button>
+    <button mat-raised-button (click)="addLspi()" [disabled]="!LspiSelectorHasValue()">Voeg bron toe</button>
 
     <mat-list>
         <mat-list-item *ngFor="let lspi of selectedLspis">

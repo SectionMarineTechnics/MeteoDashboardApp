@@ -51,6 +51,11 @@ export class SourceSelectorComponent implements OnInit {
           .then(result => {
             this.setInitialValue();
           });
+
+    if(this.layoutService.currentUser == undefined)
+    { 
+      this.router.navigateByUrl('/');
+    }
   }
 
   setInitialValue(){
@@ -137,6 +142,11 @@ export class SourceSelectorComponent implements OnInit {
         this.selectedLspis.splice(index, 1);
     } 
   }
+
+  LspiSelectorHasValue(){
+    return this.serieInfo_form.get("LspiSelector").value != undefined && this.serieInfo_form.get("LspiSelector").value != "";
+  } 
+
 
   lspiElementsSelected(){
       return this.selectedLspis.length > 0;

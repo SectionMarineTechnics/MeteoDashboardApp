@@ -76,10 +76,7 @@ export class GridsterLayoutService {
 
   public refreshTimerActive: boolean;
 
-  usersShortList: UserShort[];
-  auth0_profile: any;
-
-  currentUser: User;
+  public currentUser: User;
   public currentPage: Page;
 
   lspis: Lspi[];
@@ -107,48 +104,45 @@ export class GridsterLayoutService {
     this.refreshTimerActive = true;
 
     this.auth.userProfile$.subscribe(profile => {
-      this.auth0_profile = profile;
+      if (profile) {
+        this.InitializeUserInfoWithAuth0ProfileName(profile.name);        
+      }      
     })
 
     const source = timer(1000, 1000);
     const subscribe = source.subscribe(val => this.refreshTimer(val));
 
-    this.settingsService.getUsers().subscribe(users => {
-      /*console.log('GridsterLayoutService:getUsers', 'received users: ', users);*/
-      this.usersShortList = users;
-      if (this.auth0_profile) {
-        let currentUser: UserShort = this.usersShortList.find(x => x.name == this.auth0_profile.name);
-        
-        if (currentUser != undefined) {
-          this.settingsService.getUser(currentUser.id).subscribe(user => {
-            this.currentUser = user;
-            /*console.log('GridsterLayoutService this.currentUser:  ', this.currentUser);*/
-
-            this.UpdateUserInfoAndPages();
-          });
-        }
-        else
-        {
-          let newUser: User = new User(0, [], this.auth0_profile.name, new Date(), 1);
-          this.settingsService.updateUser(newUser).subscribe();
-          this.settingsService.getUsers().subscribe(updateUsers => {
-            this.usersShortList = users;
-            let currentUser: UserShort = this.usersShortList.find(x => x.name == this.auth0_profile.name);
-            if (currentUser != undefined) {
-              this.settingsService.getUser(currentUser.id).subscribe(user => {
-                this.currentUser = user;
-                /*console.log('GridsterLayoutService added new user!, this.currentUser:  ', this.currentUser);*/
-                this.settingsService.setUserToDefault(this.currentUser).subscribe();
-                this.settingsService.getUser(currentUser.id).subscribe(user => { this.currentUser = user; });
-                this.UpdateUserInfoAndPages();
-              });
-            }
-          });
-        }
-      }
-    });
-
     return GridsterLayoutService.instance = GridsterLayoutService.instance || this;
+  }
+
+  InitializeUserInfoWithAuth0ProfileName(profileName: string){
+    this.settingsService.getUsers().subscribe(users => {                                // Get user id's
+      let currentUser: UserShort = users.find(x => x.name == profileName);
+      if (currentUser != undefined) {
+        this.settingsService.getUser(currentUser.id).subscribe(user => {                 // Get user object
+          this.currentUser = user;
+          this.UpdateUserInfoAndPages();
+        });
+      }  
+      else
+      {
+        let newUser: User = new User(0, [], profileName, new Date(), 1);
+        this.settingsService.updateUser(newUser).subscribe( () => {                     // Add user
+          this.settingsService.getUsers().subscribe(updatedUsers => {                   // Get new user id's
+            let currentUser: UserShort = updatedUsers.find(x => x.name == profileName);
+            this.settingsService.getUser(currentUser.id).subscribe(user => {            // Get user object
+              this.currentUser = user;
+              this.settingsService.setUserToDefault(this.currentUser).subscribe(() => { // Add default pages
+                this.settingsService.getUser(currentUser.id).subscribe(user => {        // Get user object with added default pages
+                  this.currentUser = user;
+                  this.UpdateUserInfoAndPages();
+                });
+              }); 
+            });     
+          });
+        });   
+      }
+    });   
   }
 
   UpdateUserInfoAndPages() {
@@ -157,13 +151,6 @@ export class GridsterLayoutService {
     this.currentUser.login_count++;
     this.settingsService.updateUser(this.currentUser).subscribe();
 
-    /* Check if already pages exist: */
-    if (this.currentUser.Page.length == 0) {
-          /*this.settingsService.updatePage(new Page(0, [], this.currentUser.id, 'Page 1', this.getNexPagePosition())).subscribe(() => { this.UpdateCurrentUser(); });*/ /* Add empty frame for user */
-          /*this.settingsService.setUserToDefault(this.currentUser).subscribe();*/
-          this.settingsService.getUser(this.currentUser.id).subscribe(user => { this.currentUser = user; });
-    } 
-    
     if (this.currentUser.Page.length > 0)
     {
       let sortedPages = this.currentUser.Page.sort( function(a, b) { 
@@ -176,6 +163,10 @@ export class GridsterLayoutService {
 
     this.RebuildLayout(this.currentPage);
 
+    this.pagesLoadedEvent.emit();
+  }
+
+  UpdateNavigationBar(){
     this.pagesLoadedEvent.emit();
   }
 
@@ -299,17 +290,10 @@ export class GridsterLayoutService {
 
     console.log("search for name == gridsterItem.id: ", gridsterItem.id);
     console.log("in  == this.currentPage.Frame: ", this.currentPage.Frame);
+
     let frame: Frame = this.currentPage.Frame.find(x => x.name == gridsterItem.id);
 
     console.log("frame before: ", frame);
-
-    if (frame == undefined){
-      this.UpdateCurrentPage();
-      console.log("in  == this.currentPage.Frame: ", this.currentPage.Frame);
-      frame = this.currentPage.Frame.find(x => x.name == gridsterItem.id);
-    }
-
-    console.log("frame before 2: ", frame);
 
     if (frame) {
       frame.X = gridsterItem.x;
@@ -321,27 +305,6 @@ export class GridsterLayoutService {
 
       this.settingsService.updateFrame(frame).subscribe();
     }
-  }
-
-  UpdateCurrentUser() {
-    this.settingsService.getUser(this.currentUser.id).subscribe(user => {
-      this.currentUser = user;
-    });
-  }
-
-  UpdateCurrentPage() {
-    this.settingsService.getPage(this.currentPage.page_id).subscribe(page => {
-      this.currentPage = page;
-    });
-  }
-
-  UpdateCurrentUserAndPage() {
-    this.settingsService.getUser(this.currentUser.id).subscribe(user => {
-      this.currentUser = user;
-      this.settingsService.getPage(this.currentPage.page_id).subscribe(page => {
-        this.currentPage = page;
-      });      
-    });
   }
 
   updateItem(frameGUID: string, title: string, lspiList: Lspi[], type: string) {
@@ -393,19 +356,59 @@ export class GridsterLayoutService {
     }
 
     /* Update settings: */
+
     frameItem.title = title;
     frameItem.frame_type = frame_type;
-    frameItem.Frame_Element.forEach(frameElement => {
-      this.settingsService.deleteFrame_Element(frameElement.id).subscribe(() => { this.UpdateCurrentPage() });
-    });
+
+    console.log('updated frameItem.title: ' + frameItem.title);
+
+    let elementsToDelete = frameItem.Frame_Element.length;
+
+    console.log('elementsToDelete: ' + elementsToDelete);
+
+
+    this.settingsService.updateFrame(frameItem).subscribe();
+
+    if(elementsToDelete > 0)
+    {
+      frameItem.Frame_Element.forEach(frameElement => {
+        this.settingsService.deleteFrame_Element(frameElement.id).subscribe(() => { 
+          console.log('deleted a frame element: ' + elementsToDelete);
+          elementsToDelete--;
+          if(elementsToDelete == 0){
+            frameItem.Frame_Element = [];
+            this.addFrameElements(frameItem, lspiList);
+          }  
+        });
+      });
+    }
+    else
+    {
+      this.addFrameElements(frameItem, lspiList);
+    }
+  }
+
+  addFrameElements(frameItem: Frame, lspiList: Lspi[]){
     let position: number = 1;
+    console.log('add new frame element: ');
+
     lspiList.forEach(lspi => {
-      this.settingsService.updateFrame_Element(new Frame_Element(0, frameItem.frame_id, lspi.Location, lspi.Sensor, lspi.Parameter, lspi.Interval, this.startTime, this.endTime, true, 60, 1, 1, position++)).subscribe(() => { this.UpdateCurrentPage() });
-    });
-    this.settingsService.updateFrame(frameItem).subscribe(() => { 
-      this.UpdateCurrentUserAndPage(); 
+
+      console.log('add new frame element: ', lspi);
+
+      let newFrameElement: Frame_Element = new Frame_Element(0, frameItem.frame_id, lspi.Location, lspi.Sensor, lspi.Parameter, lspi.Interval, this.startTime, this.endTime, true, 60, 1, 1, position++);
+      this.settingsService.updateFrame_Element(newFrameElement).subscribe(frame_element_id => {
+
+        console.log('added new frame element: ', frame_element_id);
+
+        newFrameElement.id = frame_element_id;
+        frameItem.Frame_Element.push(newFrameElement);
+
+
+      });
     });
   }
+
 
   addItem(): void {
     var newId: string;
@@ -413,26 +416,28 @@ export class GridsterLayoutService {
 
     let getGetijSeriesData: Array<Serie> = []
 
-    this.layout.push({
-      cols: /*40*/20,
-      id: newId,
-      rows: /*30*/15,
-      x: 0,
-      y: 0,
-      type: 'widgetTimeSeriesChart',
-      serieList: getGetijSeriesData,
-      title: 'nieuw frame'
-    });
 
     /*console.log('addItem:' + newId);*/
 
     let newFrameElements: Frame_Element[] = new Array<Frame_Element>();
 
-    let newGridsterItem: GridsterItem = this.layout.find(x => x.id == newId);
-
     /* Add new frame to page: */
-    this.settingsService.updateFrame(new Frame(0, [], this.currentPage.page_id, newId, 1, newGridsterItem.x, newGridsterItem.y, newGridsterItem.cols, newGridsterItem.rows, "nieuw frame", "", "", "", this.getNexFramePosition())).subscribe(() => {
-      this.UpdateCurrentUserAndPage(); 
+    let newFrame: Frame = new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 20, 15, "nieuw frame", "", "", "", this.getNexFramePosition());
+    
+    this.settingsService.updateFrame(newFrame).subscribe(frame_id =>{
+      newFrame.frame_id = frame_id;
+      this.currentPage.Frame.push(newFrame);
+
+      this.layout.push({
+        cols: /*40*/20,
+        id: newId,
+        rows: /*30*/15,
+        x: 0,
+        y: 0,
+        type: 'widgetTimeSeriesChart',
+        serieList: getGetijSeriesData,
+        title: 'nieuw frame'
+      });
     });
   }
 
@@ -445,20 +450,16 @@ export class GridsterLayoutService {
     this.components.splice(this.components.indexOf(comp), 1);
     
     let currentFrame: Frame = this.currentPage.Frame.find(x => x.name == id)
-    this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
-    
     this.currentPage.Frame.forEach( (item, index) => {
       if(item === currentFrame) this.currentPage.Frame.splice(index,1);
-    });
-  }
-
-  ChangeSettings(id: string): void {
-    /*console.log('ChangeSettings:' + id);*/
+    });    
+    this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
   }
 
   setDropId(dropId: string): void {
     this.dropId = dropId;
   }
+
   dropItem(dragId: string): void {
     const componentlist = this.components;
     const comp: IComponent = componentlist.find(c => c.id === this.dropId);
@@ -470,6 +471,7 @@ export class GridsterLayoutService {
     };
     this.components = Object.assign([], componentlist, { [updateIdx]: componentItem });
   }
+
   getComponentRef(id: string): string {
     const comp = this.components.find(c => c.id === id);
     return comp ? comp.componentRef : null;
