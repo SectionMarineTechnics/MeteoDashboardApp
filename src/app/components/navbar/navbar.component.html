@@ -5,9 +5,20 @@
                 <mat-icon>menu</mat-icon>
             </button>
 
-            <img src="assets/img/logo-otary.svg" width="80" height="60" (click)="ShowOtaryWebSite()">
+            <img src="assets/img/logo-otary.svg" width="70" height="50" (click)="ShowOtaryWebSite()">
     
+
+            <button class="timeFrameButton" mat-button matTooltip="Selecteer pagina:" (click)="loadpages()" *ngIf="isDashboardView() && this.SelectedPage">
+                <mat-icon>description</mat-icon>
+                {{ this.SelectedPage.name }}
+            </button>    
+            <mat-select style="visibility:hidden;width: 0" #myPageSelect single [(ngModel)]="SelectedPage" (selectionChange)="UpdatePage()">
+                <mat-option *ngFor="let page of pages" [value]="page">{{ page.name }}</mat-option>
+            </mat-select>
+
+
             <span fxFlex></span>
+
 
             <div fxShow="true" fxHide.lt-md="true">
                 <!-- The following menu items will be hidden on both SM and XS screen sizes -->
@@ -22,13 +33,6 @@
                 </button>
                 -->
 
-                <button class="timeFrameButton" mat-button matTooltip="Selecteer pagina:" (click)="loadpages()" *ngIf="isDashboardView()">
-                    <mat-icon>description</mat-icon>
-                    {{ this.SelectedPage }}
-                </button>    
-                <mat-select style="visibility:hidden;width: 0" #myPageSelect single [(ngModel)]="SelectedPage" (selectionChange)="UpdatePage()">
-                    <mat-option *ngFor="let page of pages" [value]="page">{{ page }}</mat-option>
-                </mat-select>
                 
                 <button class="timeFrameButton" mat-button matTooltip="Voeg nieuw frame of pagina toe" (click)="myActionSelect1.open()" *ngIf="isDashboardView()"> 
                     <mat-icon>add_box</mat-icon>
@@ -65,46 +69,48 @@
             <!--<span class="menu-spacer"></span>-->
             <span fxFlex></span>
 
-            <div fxShow="true" fxHide.lt-md="true">
-                <button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon>Log In</button>
-                <button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>                
-            </div>
+            <!--div fxShow="true" fxHide.lt-md="true"-->
+            <button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon>Log In</button>
+            <button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>                
+            <!--/div-->
 
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <mat-sidenav-container fxFlexFill>
-        <mat-sidenav #sidenav>
+    <mat-sidenav-container fxFlexFill class="transparent-background">
+        <mat-sidenav #sidenav class="transparent-background">
             <mat-nav-list>
-                <a mat-list-item class="timeFrameButton" (click)="loadpages()" *ngIf="isDashboardView()">
+                <!--a mat-list-item class="timeFrameButton" (click)="loadpages()" *ngIf="isDashboardView()">
                     <mat-icon>description</mat-icon> Selecteer pagina
-                </a>    
-                <mat-select style="visibility:hidden;width: 0" #myPageSelect single [(ngModel)]="SelectedPage" (selectionChange)="UpdatePage()">
+                </a-->    
+                <!--mat-select style="visibility:hidden;width: 0" #myPageSelect single [(ngModel)]="SelectedPage" (selectionChange)="UpdatePage()">
                     <mat-option *ngFor="let page of pages" [value]="page">{{ page }}</mat-option>
-                </mat-select>
+                </mat-select-->
 
-                <a mat-list-item class="timeFrameButton" (click)="myActionSelect2.open()" *ngIf="isDashboardView()">
-                    <mat-icon>add_box</mat-icon> Voeg pagina of frame toe 
-                </a>                
-                <mat-select style="visibility:hidden;width: 0" #myActionSelect2 single [(ngModel)]="SelectedAction">
-                    <mat-option *ngFor="let action of addActions" [value]="action" (click)="UpdateAction()">{{ action }}</mat-option>
-                </mat-select>
+
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="AddFrame()"> 
+                    <mat-icon (click)="AddFrame()">add_box</mat-icon> Voeg frame toe
+                </a>  
+
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="sidenav.toggle();AddPage()"> 
+                    <mat-icon (click)="AddPage()">add_to_photos</mat-icon> Voeg pagina toe
+                </a>                  
   
-                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="GoBackward()">chevron_left</mat-icon> Shuif tijdsvenster terug
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="GoBackward()"> 
+                    <mat-icon (click)="GoBackward()">chevron_left</mat-icon> Terug
                 </a>
-                <a mat-list-item class="timeFrameButton" routerLink="/TimeSelector" *ngIf="isDashboardView()">
-                    <mat-icon>access_time</mat-icon>Configureer tijdsvenster ({{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }})
+                <a mat-list-item class="timeFrameButton" (click)="sidenav.toggle()" routerLink="/TimeSelector" *ngIf="isDashboardView()">
+                    <mat-icon>access_time</mat-icon>{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}
                     <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->
                 </a>
-                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="GoForward()">chevron_right</mat-icon> Shuif tijdsvenster vooruit
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="GoForward()"> 
+                    <mat-icon (click)="GoForward()">chevron_right</mat-icon> Vooruit
                 </a>                
-                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()">
-                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon> Verklein tijdsvenster
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="ZoomIn()">
+                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon> Verklein
                 </a>                
-                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()"> 
-                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon> Vergroot tijdsvenster
+                <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="ZoomOut()"> 
+                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon> Vergroot
                 </a>    
                 <a mat-list-item class="timeFrameButton" (click)="mySelect.open()" *ngIf="isDashboardView()">
                     <mat-icon>loop</mat-icon> Stel scherm-verversing in
@@ -114,8 +120,8 @@
                     <mat-option *ngFor="let refreshState of refreshStates" [value]="refreshState">{{ refreshState }}</mat-option>
                 </mat-select>
 
-                <button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon> Log In</button>
-                <button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon> Log Out</button>                
+                <!--button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon> Log In</button-->
+                <!--button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon> Log Out</button-->                
 
                 <a (click)="sidenav.toggle()" mat-list-item>
                     <mat-icon>close</mat-icon> Close

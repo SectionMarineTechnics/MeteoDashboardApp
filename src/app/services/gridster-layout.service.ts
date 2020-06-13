@@ -185,7 +185,8 @@ export class GridsterLayoutService {
       let newId: string = frame.name;
       let getGetijSeriesData: Array<Serie> = new Array<Serie>();
 
-      frame.Frame_Element.forEach(frameElement => {
+      let sortedFrame_Elements = frame.Frame_Element.sort( function(a, b) { return a.position - b.position; });
+      sortedFrame_Elements.forEach(frameElement => {
 
         if (typeof frameElement.start_time == 'string') {
           frameElement.start_time = new Date(frameElement.start_time);

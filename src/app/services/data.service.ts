@@ -242,9 +242,9 @@ export class DataService {
   getLSPIList(){
     let promise = new Promise((resolve, reject) => {
       /*let apiRequest: string = 'http://localhost:8090/GTSACQ/GetLSPIS';*/
-      let apiRequest: string = 'http://localhost:8090/GTSACQ/GetParameterLocations';
+      /*let apiRequest: string = 'http://localhost:8090/GTSACQ/GetParameterLocations';*/
       /*let apiRequest: string = 'http://10.176.225.16:8090/GTSACQ/GetParameterLocations';*/
-      /*let apiRequest: string = 'https://10.176.225.16/GTSACQ/GetParameterLocations';*/
+      let apiRequest: string = 'https://10.176.225.16/GTSACQ/GetParameterLocations';
       
       /*console.log("Get LSPI list from API: " + apiRequest);*/
 

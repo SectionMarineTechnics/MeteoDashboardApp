@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
   timeIntervals: String[] = ["Custom", "1 hour", "2 hours", "4 hours", "6 hours", "8 hours", "16 hours", "24 hours"];
   refreshStates: String[] = ["Aan", "Uit"];
   addActions: String[] = ["Voeg frame toe", "Voeg pagina toe"];
-  pages: String[] = [];
+  pages: Page[] = [];
 
 
   refreshState: string = "Aan";
@@ -24,8 +24,7 @@ export class NavbarComponent implements OnInit {
   SelectedAction: string = "Voeg frame toe";
   timeInterval: string = "4 hours";
 
-  page: string = "";
-  SelectedPage: string = "";
+  SelectedPage: Page = null;
 
   auth0_profile: any = null;
 
@@ -35,8 +34,6 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     const source = timer(1000, 1000);
-    //const subscribe = source.subscribe(val => this.refreshTimer(val));
-
     this.auth.userProfile$.subscribe(profile => {
       this.auth0_profile = profile;
     }) 
@@ -80,8 +77,6 @@ export class NavbarComponent implements OnInit {
   }
 
   UpdateRefreshState() {
-    /*console.log("UpdateRefreshState()");*/
-
     if (this.SelectedRefreshState == "Aan") {
       this.layoutService.refreshTimerActive = true;
     } else {
@@ -105,11 +100,13 @@ export class NavbarComponent implements OnInit {
   }
 
   GoForward(){
+    console.log("GoForward()");
     this.disableRefresh();    
     this.layoutService.goForward();
   }
 
   GoBackward(){
+    console.log("GoBackward()");
     this.disableRefresh();    
     this.layoutService.goBackward();
   }
@@ -122,10 +119,18 @@ export class NavbarComponent implements OnInit {
     }
   }  
 
+  AddFrame() {
+    this.layoutService.addItem();
+  } 
+
+  AddPage() {
+    this.router.navigateByUrl('/PageSettings');
+  } 
+
   UpdatePage() {
     console.log("UpdatePage(): ", this.SelectedPage);
 
-    this.layoutService.currentPage = this.layoutService.currentUser.Page.find(x => x.name == this.SelectedPage);
+    this.layoutService.currentPage = this.SelectedPage;
     this.layoutService.RebuildLayout(this.layoutService.currentPage);
   }
 
@@ -136,24 +141,23 @@ export class NavbarComponent implements OnInit {
     let sortedPages = this.layoutService.currentUser.Page.sort( function(a, b) { 
       return a.position - b.position;
     });
+    
+    let selectedPageExists: boolean = false;
     sortedPages.forEach((page: Page) => {
-      this.pages.push(page.name);
+      this.pages.push(page);
+      if(page == this.SelectedPage) selectedPageExists = true;
     });
 
-    /*console.log("loadpages(): sortedPages: ", sortedPages);*/
-
-    if (this.SelectedPage == "") {
-      /*this.page = this.layoutService.currentUser.Page[0].name;*/
-      this.page = sortedPages[0].name;
-      this.SelectedPage = this.page;
+    if (this.SelectedPage == null || !selectedPageExists) {
+      this.SelectedPage = sortedPages[0];
+      
+      if(!selectedPageExists) { 
+        this.layoutService.currentPage = this.SelectedPage;
+        this.layoutService.RebuildLayout(this.layoutService.currentPage);
+      }
     }
 
-    if(sortedPages.find(x => x.name == this.SelectedPage) == undefined){
-      this.page = sortedPages[0].name;
-      this.SelectedPage = this.page;      
-    }
-
-    /*console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.page, this.SelectedPage);*/
+    /*console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.SelectedPage);*/
   }
 
   loadpages() {

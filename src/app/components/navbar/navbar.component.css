@@ -18,3 +18,9 @@
 .settingsButton{
     justify-content: flex-end;
 }
+
+.transparent-background { background-color: rgba(255, 255, 255, 0.8); }
+
+.mat-list-item{
+    border-top: 1px solid;
+}
