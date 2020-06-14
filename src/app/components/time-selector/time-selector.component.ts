@@ -29,7 +29,7 @@ export class TimeSelectorComponent implements OnInit {
    }
 
   ngOnInit() {
-    console.log("ngOnInit TimeSelectorComponent", this.layoutService.startTime, this.layoutService.endTime);
+    /*console.log("ngOnInit TimeSelectorComponent", this.layoutService.startTime, this.layoutService.endTime);*/
     
     this.timeInfo_form.get("StartDate").setValue(this.layoutService.startTime);
     this.timeInfo_form.get("EndDate").setValue(this.layoutService.endTime);    
@@ -90,8 +90,8 @@ export class TimeSelectorComponent implements OnInit {
     endDate.setHours(Number(hh));
     endDate.setMinutes(Number(mm));
 
-    console.log("startTime: ", startDate);
-    console.log("endTime: ", endDate);
+    /*console.log("startTime: ", startDate);
+    console.log("endTime: ", endDate);*/
 
     this.layoutService.startTime = startDate;
     this.layoutService.endTime = endDate;

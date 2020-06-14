@@ -34,7 +34,7 @@ export class PageSelectorComponent implements OnInit {
     /*console.log("PageSelectorComponent ngOnInit");*/
     this.auth.userProfile$.subscribe(profile => {
       if (profile) {
-        console.log("PageSelectorComponent ngOnInit profile.name: ", profile.name);
+        /*console.log("PageSelectorComponent ngOnInit profile.name: ", profile.name);*/
 
 
         /*this.layoutService.InitializeUserInfoWithAuth0ProfileName(profile.name);

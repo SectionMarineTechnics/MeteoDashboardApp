@@ -26,7 +26,7 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private dataService: DataService) {
     this.updateChartDataSubscription = dataService.updateChartDataEvent.subscribe(value => {
       if (value.widget == this.widget) {
-        console.log("ValueFrameComponent updateChartDataEvent(value): value = ", value);
+        /*console.log("ValueFrameComponent updateChartDataEvent(value): value = ", value);*/
         this.myChartData = value.ChartData;
         this.myColumnNames = value.ColumnNames;
       }
@@ -34,12 +34,12 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log("ValueFrameComponent ngOnInit");
+    /*console.log("ValueFrameComponent ngOnInit");*/
     if (this.updateTimeEvent != undefined) {
       this.updateTimeSubsription = this.updateTimeEvent.subscribe((event) => {
-        console.log("ValueFrameComponent updateTimeEvent event started from ngOnInit");
+        /*console.log("ValueFrameComponent updateTimeEvent event started from ngOnInit");
         console.log("ValueFrameComponent updateTimeEvent startTime: ", event.startTime);
-        console.log("ValueFrameComponent updateTimeEvent endTime: ", event.endTime);
+        console.log("ValueFrameComponent updateTimeEvent endTime: ", event.endTime);*/
 
         this.loadData();
       });
@@ -49,7 +49,7 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    console.log("ValueComponent ngOnDestroy()");
+    /*console.log("ValueComponent ngOnDestroy()");*/
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
     if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
     if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
@@ -58,15 +58,15 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngAfterViewInit() {
     /*this.RedrawChart();*/
 
-    console.log("ValueFrameComponent ngAfterViewInit()");
+    /*console.log("ValueFrameComponent ngAfterViewInit()");*/
     if (this.resizeEvent != undefined) {
       this.resizeSubsription = this.resizeEvent.subscribe((event) => {
 
-        console.log("ValueFrameComponent Resize event", event);
+        /*console.log("ValueFrameComponent Resize event", event);*/
         if (event.gridsterItem === this.widget) {
-          console.log("ValueFrameComponent Resize event");
+          /*console.log("ValueFrameComponent Resize event");
           console.log("ValueFrameComponent gridsterItem: ", event.gridsterItem);
-          console.log("ValueFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);
+          console.log("ValueFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);*/
 
           this.loadData();
         }
@@ -75,7 +75,7 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadData() {
-    console.log("ValueFrameComponent loadData()");
+    /*console.log("ValueFrameComponent loadData()");*/
     this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
   }  
 

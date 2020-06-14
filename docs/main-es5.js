@@ -497,7 +497,7 @@
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div style=\"height: 100vh;\">\n    <mat-toolbar class=\"toolbar\" color=\"primary\" fxflex>\n        <mat-toolbar-row class=\"toolbarContainer\">\n            <button mat-icon-button (click)=\"sidenav.toggle()\" fxShow=\"true\" fxHide.gt-sm>\n                <mat-icon>menu</mat-icon>\n            </button>\n\n            <img src=\"assets/img/logo-otary.svg\" width=\"80\" height=\"60\" (click)=\"ShowOtaryWebSite()\">\n    \n            <span fxFlex></span>\n\n            <div fxShow=\"true\" fxHide.lt-md=\"true\">\n                <!-- The following menu items will be hidden on both SM and XS screen sizes -->\n                <!--\n                <button mat-button routerLink=\"/Dashboard\">\n                    <mat-icon>dashboard</mat-icon>\n                    Dashboard\n                </button>\n                <button mat-button routerLink=\"/Weather\"> \n                    <mat-icon>show_chart</mat-icon>\n                    Weather\n                </button>\n                -->\n\n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Selecteer pagina:\" (click)=\"loadpages()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>description</mat-icon>\n                    {{ this.SelectedPage }}\n                </button>    \n                <mat-select style=\"visibility:hidden;width: 0\" #myPageSelect single [(ngModel)]=\"SelectedPage\" (selectionChange)=\"UpdatePage()\">\n                    <mat-option *ngFor=\"let page of pages\" [value]=\"page\">{{ page }}</mat-option>\n                </mat-select>\n                \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Voeg nieuw frame of pagina toe\" (click)=\"myActionSelect1.open()\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon>add_box</mat-icon>\n                </button>                \n                <mat-select style=\"visibility:hidden;width: 0\" #myActionSelect1 single [(ngModel)]=\"SelectedAction\">\n                    <mat-option *ngFor=\"let action of addActions\" [value]=\"action\" (click)=\"UpdateAction()\">{{ action }}</mat-option>\n                </mat-select>\n  \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Shuif tijdsvenster terug\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"GoBackward()\">chevron_left</mat-icon>\n                </button>\n                <button class=\"timeFrameButton\" mat-button matTooltip=\"{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}\" routerLink=\"/TimeSelector\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>access_time</mat-icon>\n                    {{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}\n                </button>\n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Shuif tijdsvenster vooruit\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"GoForward()\">chevron_right</mat-icon>\n                </button>                \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Verklein tijdsvenster\" *ngIf=\"isDashboardView()\">\n                    <mat-icon (click)=\"ZoomIn()\">zoom_in</mat-icon>\n                </button>                \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Vergroot tijdsvenster\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"ZoomOut()\">zoom_out</mat-icon>\n                </button>    \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Stel scherm-verversing in: {{ SelectedRefreshState }}\" (click)=\"mySelectToolbar.open()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>loop</mat-icon>\n                </button>    \n               \n                <mat-select style=\"visibility:hidden;width: 0\" #mySelectToolbar single [(ngModel)]=\"SelectedRefreshState\" (selectionChange)=\"UpdateRefreshState()\">\n                    <mat-option *ngFor=\"let refreshState of refreshStates\" [value]=\"refreshState\">{{ refreshState }}</mat-option>\n                </mat-select>\n            </div>\n\n            <!--<span class=\"menu-spacer\"></span>-->\n            <span fxFlex></span>\n\n            <div fxShow=\"true\" fxHide.lt-md=\"true\">\n                <button class=\"settingsButton\" mat-button (click)=\"auth.login()\" *ngIf=\"!auth.loggedIn\"><mat-icon>account_box</mat-icon>Log In</button>\n                <button class=\"settingsButton\" mat-button (click)=\"auth.logout()\" matTooltip=\"Gebruiker: {{ getUserName() }}\" *ngIf=\"auth.loggedIn\"><mat-icon>account_box</mat-icon>Log Out</button>                \n            </div>\n\n        </mat-toolbar-row>\n    </mat-toolbar>\n\n    <mat-sidenav-container fxFlexFill>\n        <mat-sidenav #sidenav>\n            <mat-nav-list>\n                <a mat-list-item class=\"timeFrameButton\" (click)=\"loadpages()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>description</mat-icon> Selecteer pagina\n                </a>    \n                <mat-select style=\"visibility:hidden;width: 0\" #myPageSelect single [(ngModel)]=\"SelectedPage\" (selectionChange)=\"UpdatePage()\">\n                    <mat-option *ngFor=\"let page of pages\" [value]=\"page\">{{ page }}</mat-option>\n                </mat-select>\n\n                <a mat-list-item class=\"timeFrameButton\" (click)=\"myActionSelect2.open()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>add_box</mat-icon> Voeg pagina of frame toe \n                </a>                \n                <mat-select style=\"visibility:hidden;width: 0\" #myActionSelect2 single [(ngModel)]=\"SelectedAction\">\n                    <mat-option *ngFor=\"let action of addActions\" [value]=\"action\" (click)=\"UpdateAction()\">{{ action }}</mat-option>\n                </mat-select>\n  \n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"GoBackward()\">chevron_left</mat-icon> Shuif tijdsvenster terug\n                </a>\n                <a mat-list-item class=\"timeFrameButton\" routerLink=\"/TimeSelector\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>access_time</mat-icon>Configureer tijdsvenster ({{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }})\n                    <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->\n                </a>\n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"GoForward()\">chevron_right</mat-icon> Shuif tijdsvenster vooruit\n                </a>                \n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\">\n                    <mat-icon (click)=\"ZoomIn()\">zoom_in</mat-icon> Verklein tijdsvenster\n                </a>                \n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"ZoomOut()\">zoom_out</mat-icon> Vergroot tijdsvenster\n                </a>    \n                <a mat-list-item class=\"timeFrameButton\" (click)=\"mySelect.open()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>loop</mat-icon> Stel scherm-verversing in\n                </a>    \n               \n                <mat-select style=\"visibility:hidden;width: 0\" #mySelect single [(ngModel)]=\"SelectedRefreshState\" (selectionChange)=\"UpdateRefreshState()\">\n                    <mat-option *ngFor=\"let refreshState of refreshStates\" [value]=\"refreshState\">{{ refreshState }}</mat-option>\n                </mat-select>\n\n                <button class=\"settingsButton\" mat-button (click)=\"auth.login()\" *ngIf=\"!auth.loggedIn\"><mat-icon>account_box</mat-icon> Log In</button>\n                <button class=\"settingsButton\" mat-button (click)=\"auth.logout()\" matTooltip=\"Gebruiker: {{ getUserName() }}\" *ngIf=\"auth.loggedIn\"><mat-icon>account_box</mat-icon> Log Out</button>                \n\n                <a (click)=\"sidenav.toggle()\" mat-list-item>\n                    <mat-icon>close</mat-icon> Close\n                </a>\n            </mat-nav-list>\n        </mat-sidenav>\n        <mat-sidenav-content fxFlexFill>\n            <router-outlet></router-outlet>\n            <!--<app-dashboard [updateTimeEvent]=\"updateTimeEvent\"></app-dashboard>-->\n        </mat-sidenav-content>\n    </mat-sidenav-container>\n</div>";
+    __webpack_exports__["default"] = "<div style=\"height: 100vh;\">\n    <mat-toolbar class=\"toolbar\" color=\"primary\" fxflex>\n        <mat-toolbar-row class=\"toolbarContainer\">\n            <button mat-icon-button (click)=\"sidenav.toggle()\" fxShow=\"true\" fxHide.gt-sm>\n                <mat-icon>menu</mat-icon>\n            </button>\n\n            <img src=\"assets/img/logo-otary.svg\" width=\"70\" height=\"50\" (click)=\"ShowOtaryWebSite()\">\n    \n\n            <button class=\"timeFrameButton\" mat-button matTooltip=\"Selecteer pagina:\" (click)=\"loadpages()\" *ngIf=\"isDashboardView() && this.SelectedPage\">\n                <mat-icon>description</mat-icon>\n                {{ this.SelectedPage.name }}\n            </button>    \n            <mat-select style=\"visibility:hidden;width: 0\" #myPageSelect single [(ngModel)]=\"SelectedPage\" (selectionChange)=\"UpdatePage()\">\n                <mat-option *ngFor=\"let page of pages\" [value]=\"page\">{{ page.name }}</mat-option>\n            </mat-select>\n\n\n            <span fxFlex></span>\n\n\n            <div fxShow=\"true\" fxHide.lt-md=\"true\">\n                <!-- The following menu items will be hidden on both SM and XS screen sizes -->\n                <!--\n                <button mat-button routerLink=\"/Dashboard\">\n                    <mat-icon>dashboard</mat-icon>\n                    Dashboard\n                </button>\n                <button mat-button routerLink=\"/Weather\"> \n                    <mat-icon>show_chart</mat-icon>\n                    Weather\n                </button>\n                -->\n\n                \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Voeg nieuw frame of pagina toe\" (click)=\"myActionSelect1.open()\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon>add_box</mat-icon>\n                </button>                \n                <mat-select style=\"visibility:hidden;width: 0\" #myActionSelect1 single [(ngModel)]=\"SelectedAction\">\n                    <mat-option *ngFor=\"let action of addActions\" [value]=\"action\" (click)=\"UpdateAction()\">{{ action }}</mat-option>\n                </mat-select>\n  \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Shuif tijdsvenster terug\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"GoBackward()\">chevron_left</mat-icon>\n                </button>\n                <button class=\"timeFrameButton\" mat-button matTooltip=\"{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}\" routerLink=\"/TimeSelector\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>access_time</mat-icon>\n                    {{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}\n                </button>\n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Shuif tijdsvenster vooruit\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"GoForward()\">chevron_right</mat-icon>\n                </button>                \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Verklein tijdsvenster\" *ngIf=\"isDashboardView()\">\n                    <mat-icon (click)=\"ZoomIn()\">zoom_in</mat-icon>\n                </button>                \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Vergroot tijdsvenster\" *ngIf=\"isDashboardView()\"> \n                    <mat-icon (click)=\"ZoomOut()\">zoom_out</mat-icon>\n                </button>    \n                <button class=\"timeFrameButton\" mat-button matTooltip=\"Stel scherm-verversing in: {{ SelectedRefreshState }}\" (click)=\"mySelectToolbar.open()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>loop</mat-icon>\n                </button>    \n               \n                <mat-select style=\"visibility:hidden;width: 0\" #mySelectToolbar single [(ngModel)]=\"SelectedRefreshState\" (selectionChange)=\"UpdateRefreshState()\">\n                    <mat-option *ngFor=\"let refreshState of refreshStates\" [value]=\"refreshState\">{{ refreshState }}</mat-option>\n                </mat-select>\n            </div>\n\n            <!--<span class=\"menu-spacer\"></span>-->\n            <span fxFlex></span>\n\n            <!--div fxShow=\"true\" fxHide.lt-md=\"true\"-->\n            <button class=\"settingsButton\" mat-button (click)=\"auth.login()\" *ngIf=\"!auth.loggedIn\"><mat-icon>account_box</mat-icon>Log In</button>\n            <button class=\"settingsButton\" mat-button (click)=\"auth.logout()\" matTooltip=\"Gebruiker: {{ getUserName() }}\" *ngIf=\"auth.loggedIn\"><mat-icon>account_box</mat-icon>Log Out</button>                \n            <!--/div-->\n\n        </mat-toolbar-row>\n    </mat-toolbar>\n\n    <mat-sidenav-container fxFlexFill class=\"transparent-background\">\n        <mat-sidenav #sidenav class=\"transparent-background\">\n            <mat-nav-list> \n                <!--a mat-list-item class=\"timeFrameButton\" (click)=\"loadpages()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>description</mat-icon> Selecteer pagina\n                </a-->    \n                <!--mat-select style=\"visibility:hidden;width: 0\" #myPageSelect single [(ngModel)]=\"SelectedPage\" (selectionChange)=\"UpdatePage()\">\n                    <mat-option *ngFor=\"let page of pages\" [value]=\"page\">{{ page }}</mat-option>\n                </mat-select-->\n\n\n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\" (click)=\"AddFrame()\"> \n                    <mat-icon (click)=\"AddFrame()\">add_box</mat-icon> Voeg frame toe\n                </a>  \n\n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\" (click)=\"sidenav.toggle();AddPage()\"> \n                    <mat-icon (click)=\"AddPage()\">add_to_photos</mat-icon> Voeg pagina toe\n                </a>                  \n  \n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\" (click)=\"GoBackward()\"> \n                    <mat-icon (click)=\"GoBackward()\">chevron_left</mat-icon> Terug\n                </a>\n                <a mat-list-item class=\"timeFrameButton\" (click)=\"sidenav.toggle()\" routerLink=\"/TimeSelector\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>access_time</mat-icon>{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}\n                    <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->\n                </a>\n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\" (click)=\"GoForward()\"> \n                    <mat-icon (click)=\"GoForward()\">chevron_right</mat-icon> Vooruit\n                </a>                \n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\" (click)=\"ZoomIn()\">\n                    <mat-icon (click)=\"ZoomIn()\">zoom_in</mat-icon> Vergroot\n                </a>                \n                <a mat-list-item class=\"timeFrameButton\" *ngIf=\"isDashboardView()\" (click)=\"ZoomOut()\"> \n                    <mat-icon (click)=\"ZoomOut()\">zoom_out</mat-icon> Verklein\n                </a>    \n                <a mat-list-item class=\"timeFrameButton\" (click)=\"ToggleRefreshState()\" *ngIf=\"isDashboardView()\">\n                    <mat-icon>loop</mat-icon> {{ SelectedRefreshState }}\n                </a>    \n               \n                <!--button class=\"settingsButton\" mat-button (click)=\"auth.login()\" *ngIf=\"!auth.loggedIn\"><mat-icon>account_box</mat-icon> Log In</button-->\n                <!--button class=\"settingsButton\" mat-button (click)=\"auth.logout()\" matTooltip=\"Gebruiker: {{ getUserName() }}\" *ngIf=\"auth.loggedIn\"><mat-icon>account_box</mat-icon> Log Out</button-->                \n\n                <a (click)=\"sidenav.toggle()\" mat-list-item>\n                    <mat-icon>close</mat-icon> Close\n                </a>\n            </mat-nav-list>\n        </mat-sidenav>\n        <mat-sidenav-content fxFlexFill >\n            <router-outlet></router-outlet>\n            <!--<app-dashboard [updateTimeEvent]=\"updateTimeEvent\"></app-dashboard>-->\n        </mat-sidenav-content>\n    </mat-sidenav-container>\n</div>";
     /***/
   },
 
@@ -517,7 +517,7 @@
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = "<div [formGroup]=\"pageInfo_form\" class=\"wrapper\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n    <div class=\"containerHeader\">\n        <mat-label class=\"header\">\n            <h2>Configuratie pagina's</h2>\n        </mat-label>\n        <span fxFlex></span>\n        <mat-icon class=\"close-button\" (click)=closeForm()>cancel</mat-icon>\n    </div>\n\n    <div cdkDropList class=\"example-list\" (cdkDropListDropped)=\"drop($event)\">\n\n            <div class=\"example-box\" *ngFor=\"let page of pages;let index = index;\" cdkDrag>\n                <!--<div class=\"header\">{{ page.name }}</div>-->\n                <mat-form-field class=\"field-full-width\" floatLabel=\"never\">\n                    <input matInput [value]=\"pages[index].name\" (input)=\"updatePageName(pages[index], $event.target.value)\" formControlName=\"EditPageName\">\n                </mat-form-field>\n\n                <span fxFlex></span>\n                <mat-icon class=\"button\" (click)=deletePage(page)>cancel</mat-icon>\n            </div>\n\n    </div>\n\n    <br>\n\n    <mat-form-field class=\"field-full-width\">\n        <input type=\"text\" placeholder=\"Pagina naam\" aria-label=\"Pagina naam\" matInput formControlName=\"NewPageName\">\n    </mat-form-field>\n\n    <button mat-raised-button (click)=\"addNewPage()\" [disabled]=\"!pageInfo_form.valid||pageExist()\">Voeg pagina toe</button>\n\n    <br>\n\n    <button mat-raised-button (click)=\"addDefaultPagesToCurrentUser()\">Voeg default pagina's toe</button>\n\n    <br>\n\n    <button mat-raised-button (click)=\"submit()\">Bevestig</button>\n</div>";
+    __webpack_exports__["default"] = "<div [formGroup]=\"pageInfo_form\" class=\"wrapper\" fxLayout=\"column\" fxLayoutAlign=\"start stretch\">\n    <div class=\"containerHeader\">\n        <mat-label class=\"header\">\n            <h2>Configuratie pagina's</h2>\n        </mat-label>\n        <span fxFlex></span>\n        <mat-icon class=\"close-button\" (click)=closeForm()>cancel</mat-icon>\n    </div>\n\n    <div cdkDropList class=\"example-list\" (cdkDropListDropped)=\"drop($event)\">\n\n            <div class=\"example-box\" *ngFor=\"let page of pages;let index = index;\" cdkDrag>\n                <!--<div class=\"header\">{{ page.name }}</div>-->\n                <mat-form-field class=\"field-full-width\" floatLabel=\"never\">\n                    <input matInput [value]=\"pages[index].name\" (input)=\"updatePageName(pages[index], $event.target.value)\" formControlName=\"EditPageName\">\n                </mat-form-field>\n\n                <span fxFlex></span>\n                <mat-icon class=\"button\" (click)=deletePage(page)>cancel</mat-icon>\n            </div>\n\n    </div>\n\n    <br>\n\n    <mat-form-field class=\"field-full-width\">\n        <input type=\"text\" placeholder=\"Pagina naam\" aria-label=\"Pagina naam\" matInput formControlName=\"NewPageName\">\n    </mat-form-field>\n\n    <button mat-raised-button (click)=\"addNewPage()\" [disabled]=\"!pageInfo_form.valid||pageExist()\">Voeg pagina toe</button>\n\n    <div style=\"margin: 10px 0 10px 0;\"></div>\n\n    <button mat-raised-button (click)=\"addDefaultPagesToCurrentUser()\">Voeg default pagina's toe</button>\n\n    <div style=\"margin: 10px 0 10px 0;\"></div>\n\n    <button mat-raised-button (click)=\"submit()\">Bevestig</button>\n</div>";
     /***/
   },
 
@@ -2319,7 +2319,7 @@
       }
 
       ngOnDestroy() {
-        console.log("ValueComponent ngOnDestroy()");
+        /*console.log("ValueComponent ngOnDestroy()");*/
         if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
         if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
         if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
@@ -2705,7 +2705,7 @@
         this.dataService = dataService;
         this.updateChartDataSubscription = dataService.updateChartDataEvent.subscribe(value => {
           if (value.widget == this.widget) {
-            console.log("ValueFrameComponent updateChartDataEvent(value): value = ", value);
+            /*console.log("ValueFrameComponent updateChartDataEvent(value): value = ", value);*/
             this.myChartData = value.ChartData;
             this.myColumnNames = value.ColumnNames;
           }
@@ -2713,13 +2713,12 @@
       }
 
       ngOnInit() {
-        console.log("ValueFrameComponent ngOnInit");
-
+        /*console.log("ValueFrameComponent ngOnInit");*/
         if (this.updateTimeEvent != undefined) {
           this.updateTimeSubsription = this.updateTimeEvent.subscribe(event => {
-            console.log("ValueFrameComponent updateTimeEvent event started from ngOnInit");
+            /*console.log("ValueFrameComponent updateTimeEvent event started from ngOnInit");
             console.log("ValueFrameComponent updateTimeEvent startTime: ", event.startTime);
-            console.log("ValueFrameComponent updateTimeEvent endTime: ", event.endTime);
+            console.log("ValueFrameComponent updateTimeEvent endTime: ", event.endTime);*/
             this.loadData();
           });
         }
@@ -2728,7 +2727,7 @@
       }
 
       ngOnDestroy() {
-        console.log("ValueComponent ngOnDestroy()");
+        /*console.log("ValueComponent ngOnDestroy()");*/
         if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
         if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
         if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
@@ -2736,16 +2735,15 @@
 
       ngAfterViewInit() {
         /*this.RedrawChart();*/
-        console.log("ValueFrameComponent ngAfterViewInit()");
 
+        /*console.log("ValueFrameComponent ngAfterViewInit()");*/
         if (this.resizeEvent != undefined) {
           this.resizeSubsription = this.resizeEvent.subscribe(event => {
-            console.log("ValueFrameComponent Resize event", event);
-
+            /*console.log("ValueFrameComponent Resize event", event);*/
             if (event.gridsterItem === this.widget) {
-              console.log("ValueFrameComponent Resize event");
+              /*console.log("ValueFrameComponent Resize event");
               console.log("ValueFrameComponent gridsterItem: ", event.gridsterItem);
-              console.log("ValueFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);
+              console.log("ValueFrameComponent gridsterItemComponent: ", event.gridsterItemComponent);*/
               this.loadData();
             }
           });
@@ -2753,7 +2751,7 @@
       }
 
       loadData() {
-        console.log("ValueFrameComponent loadData()");
+        /*console.log("ValueFrameComponent loadData()");*/
         this.dataService.GetData(this.widget, 1, this.serieList[0].StartTime, this.serieList[0].EndTime, this.serieList);
       }
 
@@ -2836,7 +2834,7 @@
     /* harmony default export */
 
 
-    __webpack_exports__["default"] = " \r\n.menu-spacer {\r\n    -webkit-box-flex: 1;\r\n            flex: 1 1 auto;\r\n}\r\n\r\n.toolbar{\r\n    display: -webkit-box;\r\n    display: flex;\r\n}\r\n\r\n.toolbarContainer {\r\n    display: -webkit-box;\r\n    display: flex;\r\n}\r\n\r\n.timeFrameButton{\r\n    -webkit-box-pack: center;\r\n            justify-content: center;\r\n}\r\n\r\n.settingsButton{\r\n    -webkit-box-pack: end;\r\n            justify-content: flex-end;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC9jb21wb25lbnRzL25hdmJhci9uYXZiYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQ0E7SUFDSSxtQkFBYztZQUFkLGNBQWM7QUFDbEI7O0FBRUE7SUFDSSxvQkFBYTtJQUFiLGFBQWE7QUFDakI7O0FBRUE7SUFDSSxvQkFBYTtJQUFiLGFBQWE7QUFDakI7O0FBRUE7SUFDSSx3QkFBdUI7WUFBdkIsdUJBQXVCO0FBQzNCOztBQUVBO0lBQ0kscUJBQXlCO1lBQXpCLHlCQUF5QjtBQUM3QiIsImZpbGUiOiJhcHAvY29tcG9uZW50cy9uYXZiYXIvbmF2YmFyLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIgXHJcbi5tZW51LXNwYWNlciB7XHJcbiAgICBmbGV4OiAxIDEgYXV0bztcclxufVxyXG5cclxuLnRvb2xiYXJ7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG59XHJcblxyXG4udG9vbGJhckNvbnRhaW5lciB7XHJcbiAgICBkaXNwbGF5OiBmbGV4O1xyXG59XHJcblxyXG4udGltZUZyYW1lQnV0dG9ue1xyXG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XHJcbn1cclxuXHJcbi5zZXR0aW5nc0J1dHRvbntcclxuICAgIGp1c3RpZnktY29udGVudDogZmxleC1lbmQ7XHJcbn1cclxuIl19 */";
+    __webpack_exports__["default"] = " \r\n.menu-spacer {\r\n    -webkit-box-flex: 1;\r\n            flex: 1 1 auto;\r\n}\r\n\r\n.toolbar{\r\n    display: -webkit-box;\r\n    display: flex;\r\n}\r\n\r\n.toolbarContainer {\r\n    display: -webkit-box;\r\n    display: flex;\r\n}\r\n\r\n.timeFrameButton{\r\n    -webkit-box-pack: center;\r\n            justify-content: center;\r\n}\r\n\r\n.settingsButton{\r\n    -webkit-box-pack: end;\r\n            justify-content: flex-end;\r\n}\r\n\r\n.transparent-background { background-color: rgba(255, 255, 255, 0.8); }\r\n\r\n.mat-list-item{\r\n    border-top: 1px solid;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFwcC9jb21wb25lbnRzL25hdmJhci9uYXZiYXIuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQ0E7SUFDSSxtQkFBYztZQUFkLGNBQWM7QUFDbEI7O0FBRUE7SUFDSSxvQkFBYTtJQUFiLGFBQWE7QUFDakI7O0FBRUE7SUFDSSxvQkFBYTtJQUFiLGFBQWE7QUFDakI7O0FBRUE7SUFDSSx3QkFBdUI7WUFBdkIsdUJBQXVCO0FBQzNCOztBQUVBO0lBQ0kscUJBQXlCO1lBQXpCLHlCQUF5QjtBQUM3Qjs7QUFFQSwwQkFBMEIsMENBQTBDLEVBQUU7O0FBRXRFO0lBQ0kscUJBQXFCO0FBQ3pCIiwiZmlsZSI6ImFwcC9jb21wb25lbnRzL25hdmJhci9uYXZiYXIuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIiBcclxuLm1lbnUtc3BhY2VyIHtcclxuICAgIGZsZXg6IDEgMSBhdXRvO1xyXG59XHJcblxyXG4udG9vbGJhcntcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcbn1cclxuXHJcbi50b29sYmFyQ29udGFpbmVyIHtcclxuICAgIGRpc3BsYXk6IGZsZXg7XHJcbn1cclxuXHJcbi50aW1lRnJhbWVCdXR0b257XHJcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcclxufVxyXG5cclxuLnNldHRpbmdzQnV0dG9ue1xyXG4gICAganVzdGlmeS1jb250ZW50OiBmbGV4LWVuZDtcclxufVxyXG5cclxuLnRyYW5zcGFyZW50LWJhY2tncm91bmQgeyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuOCk7IH1cclxuXHJcbi5tYXQtbGlzdC1pdGVte1xyXG4gICAgYm9yZGVyLXRvcDogMXB4IHNvbGlkO1xyXG59Il19 */";
     /***/
   },
 
@@ -2909,14 +2907,12 @@
         this.SelectedRefreshState = "Aan";
         this.SelectedAction = "Voeg frame toe";
         this.timeInterval = "4 hours";
-        this.page = "";
-        this.SelectedPage = "";
+        this.SelectedPage = null;
         this.auth0_profile = null;
       }
 
       ngOnInit() {
-        const source = Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["timer"])(1000, 1000); //const subscribe = source.subscribe(val => this.refreshTimer(val));
-
+        const source = Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["timer"])(1000, 1000);
         this.auth.userProfile$.subscribe(profile => {
           this.auth0_profile = profile;
         });
@@ -2958,11 +2954,20 @@
       }
 
       UpdateRefreshState() {
-        /*console.log("UpdateRefreshState()");*/
         if (this.SelectedRefreshState == "Aan") {
           this.layoutService.refreshTimerActive = true;
         } else {
           this.layoutService.refreshTimerActive = false;
+        }
+      }
+
+      ToggleRefreshState() {
+        if (this.SelectedRefreshState == "Aan") {
+          this.layoutService.refreshTimerActive = false;
+          this.SelectedRefreshState = "Uit";
+        } else {
+          this.layoutService.refreshTimerActive = true;
+          this.SelectedRefreshState = "Aan";
         }
       }
 
@@ -2999,9 +3004,17 @@
         }
       }
 
+      AddFrame() {
+        this.layoutService.addItem();
+      }
+
+      AddPage() {
+        this.router.navigateByUrl('/PageSettings');
+      }
+
       UpdatePage() {
-        console.log("UpdatePage(): ", this.SelectedPage);
-        this.layoutService.currentPage = this.layoutService.currentUser.Page.find(x => x.name == this.SelectedPage);
+        /*console.log("UpdatePage(): ", this.SelectedPage);*/
+        this.layoutService.currentPage = this.SelectedPage;
         this.layoutService.RebuildLayout(this.layoutService.currentPage);
       }
 
@@ -3011,22 +3024,21 @@
         let sortedPages = this.layoutService.currentUser.Page.sort(function (a, b) {
           return a.position - b.position;
         });
+        let selectedPageExists = false;
         sortedPages.forEach(page => {
-          this.pages.push(page.name);
+          this.pages.push(page);
+          if (page == this.SelectedPage) selectedPageExists = true;
         });
-        /*console.log("loadpages(): sortedPages: ", sortedPages);*/
 
-        if (this.SelectedPage == "") {
-          /*this.page = this.layoutService.currentUser.Page[0].name;*/
-          this.page = sortedPages[0].name;
-          this.SelectedPage = this.page;
-        }
+        if (this.SelectedPage == null || !selectedPageExists) {
+          this.SelectedPage = sortedPages[0];
 
-        if (sortedPages.find(x => x.name == this.SelectedPage) == undefined) {
-          this.page = sortedPages[0].name;
-          this.SelectedPage = this.page;
+          if (!selectedPageExists) {
+            this.layoutService.currentPage = this.SelectedPage;
+            this.layoutService.RebuildLayout(this.layoutService.currentPage);
+          }
         }
-        /*console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.page, this.SelectedPage);*/
+        /*console.log("loadpages(): call myPageSelect.open(): ", this.pages, this.SelectedPage);*/
 
       }
 
@@ -3173,31 +3185,31 @@
       }
 
       ngOnInit() {
-        console.log("PageSelectorComponent ngOnInit");
+        /*console.log("PageSelectorComponent ngOnInit");*/
         this.auth.userProfile$.subscribe(profile => {
           if (profile) {
-            console.log("PageSelectorComponent ngOnInit profile.name: ", profile.name);
+            /*console.log("PageSelectorComponent ngOnInit profile.name: ", profile.name);*/
+
             /*this.layoutService.InitializeUserInfoWithAuth0ProfileName(profile.name);
             
             console.log("PageSelectorComponent ngOnInit InitializeUserInfoWithAuth0ProfileName");*/
-
             if (this.layoutService.currentUser == undefined) {
               this.router.navigateByUrl('/');
             } else {
               this.UpdatePages();
             }
+            /*console.log("PageSelectorComponent ngOnInit UpdatePages");*/
 
-            console.log("PageSelectorComponent ngOnInit UpdatePages");
           }
         });
       }
 
       ngOnDestroy() {
-        console.log("PageSelectorComponent ngOnDestroy()");
+        /*console.log("PageSelectorComponent ngOnDestroy()");*/
       }
 
       drop(event) {
-        console.log("drop page position");
+        /*console.log("drop page position");*/
         Object(_angular_cdk_drag_drop__WEBPACK_IMPORTED_MODULE_4__["moveItemInArray"])(this.layoutService.currentUser.Page, event.previousIndex, event.currentIndex);
         let position = 1;
         this.layoutService.currentUser.Page.forEach(page => {
@@ -3220,15 +3232,15 @@
       }
 
       UpdatePages() {
-        console.log("UpdatePages: ", this.layoutService.currentUser.Page);
+        /*console.log("UpdatePages: ", this.layoutService.currentUser.Page);*/
         this.pages = this.layoutService.currentUser.Page.sort(function (a, b) {
           return a.position - b.position;
         });
-        console.log("UpdatePages: ", this.pages);
+        /*console.log("UpdatePages: ", this.pages);*/
       }
 
       deletePage(page) {
-        console.log("deletePage()");
+        /*console.log("deletePage()");*/
         const index = this.layoutService.currentUser.Page.indexOf(page);
 
         if (index !== -1) {
@@ -3420,7 +3432,7 @@
       }
 
       setInitialValue() {
-        console.log("this.dataService.lspis: ", this.dataService.lspis);
+        /*console.log("this.dataService.lspis: ", this.dataService.lspis);*/
         this.options = [];
         this.dataService.lspis.forEach(lspi => {
           if (lspi.Interval > 1) this.options.push(lspi);
@@ -3428,11 +3440,12 @@
         this.filteredOptions = this.serieInfo_form.get("LspiSelector").valueChanges.pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(value => typeof value === 'string' ? value : value.name), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(name => name ? this._filter(name) : this.options.slice()));
         this.route.params.subscribe(params => {
           this.frameId = params['id'];
-          console.log("SourceSelectorComponent route parameter: ", this.frameId);
+          /*console.log("SourceSelectorComponent route parameter: ", this.frameId)*/
+
           let gridsterItem = this.layoutService.layout.find(d => d.id === this.frameId);
 
           if (gridsterItem != undefined) {
-            console.log("gridsterItem.type: ", gridsterItem.type);
+            /*console.log("gridsterItem.type: ", gridsterItem.type);*/
             gridsterItem.serieList.forEach(item => {
               /*
               console.log("SourceSelectorComponent lookup LSPI: ", item, this.options);
@@ -3514,7 +3527,7 @@
       }
 
       submit() {
-        console.log("SourceSelectorComponent submit: ", this.selectedLspis);
+        /*console.log("SourceSelectorComponent submit: ", this.selectedLspis);*/
         this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Titel").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
         this.router.navigateByUrl('/');
       }
@@ -3645,7 +3658,7 @@
       }
 
       ngOnInit() {
-        console.log("ngOnInit TimeSelectorComponent", this.layoutService.startTime, this.layoutService.endTime);
+        /*console.log("ngOnInit TimeSelectorComponent", this.layoutService.startTime, this.layoutService.endTime);*/
         this.timeInfo_form.get("StartDate").setValue(this.layoutService.startTime);
         this.timeInfo_form.get("EndDate").setValue(this.layoutService.endTime);
         var hh = this.layoutService.startTime.getHours();
@@ -3697,8 +3710,9 @@
 
         endDate.setHours(Number(hh));
         endDate.setMinutes(Number(mm));
-        console.log("startTime: ", startDate);
-        console.log("endTime: ", endDate);
+        /*console.log("startTime: ", startDate);
+        console.log("endTime: ", endDate);*/
+
         this.layoutService.startTime = startDate;
         this.layoutService.endTime = endDate;
         this.layoutService.updateTime();
@@ -5232,7 +5246,10 @@
         page.Frame.forEach(frame => {
           let newId = frame.name;
           let getGetijSeriesData = new Array();
-          frame.Frame_Element.forEach(frameElement => {
+          let sortedFrame_Elements = frame.Frame_Element.sort(function (a, b) {
+            return a.position - b.position;
+          });
+          sortedFrame_Elements.forEach(frameElement => {
             if (typeof frameElement.start_time == 'string') {
               frameElement.start_time = new Date(frameElement.start_time);
             }
@@ -5333,21 +5350,23 @@
       }
 
       ChangeCallback(gridsterItem, gridsterItemComponent) {
-        console.log("GridsterLayoutService ChangeCallback event: ");
+        /*console.log("GridsterLayoutService ChangeCallback event: ");
         console.log("gridsterItem: ", gridsterItem);
         console.log("gridsterItemComponent: ", gridsterItemComponent);
-        console.log("this: ", this);
-        console.log("search for name == gridsterItem.id: ", gridsterItem.id);
-        console.log("in  == this.currentPage.Frame: ", this.currentPage.Frame);
+        console.log("this: ", this);*/
+
+        /*console.log("search for name == gridsterItem.id: ", gridsterItem.id);
+        console.log("in  == this.currentPage.Frame: ", this.currentPage.Frame);*/
         let frame = this.currentPage.Frame.find(x => x.name == gridsterItem.id);
-        console.log("frame before: ", frame);
+        /*console.log("frame before: ", frame);*/
 
         if (frame) {
           frame.X = gridsterItem.x;
           frame.Y = gridsterItem.y;
           frame.width = gridsterItem.cols;
           frame.height = gridsterItem.rows;
-          console.log("frame send: ", frame);
+          /*console.log("frame send: ", frame);*/
+
           this.settingsService.updateFrame(frame).subscribe();
         }
       }
@@ -5412,15 +5431,17 @@
 
         frameItem.title = title;
         frameItem.frame_type = frame_type;
-        console.log('updated frameItem.title: ' + frameItem.title);
+        /*console.log('updated frameItem.title: ' + frameItem.title);*/
+
         let elementsToDelete = frameItem.Frame_Element.length;
-        console.log('elementsToDelete: ' + elementsToDelete);
+        /*console.log('elementsToDelete: ' + elementsToDelete);*/
+
         this.settingsService.updateFrame(frameItem).subscribe();
 
         if (elementsToDelete > 0) {
           frameItem.Frame_Element.forEach(frameElement => {
             this.settingsService.deleteFrame_Element(frameElement.id).subscribe(() => {
-              console.log('deleted a frame element: ' + elementsToDelete);
+              /*console.log('deleted a frame element: ' + elementsToDelete);*/
               elementsToDelete--;
 
               if (elementsToDelete == 0) {
@@ -5436,12 +5457,13 @@
 
       addFrameElements(frameItem, lspiList) {
         let position = 1;
-        console.log('add new frame element: ');
+        /*console.log('add new frame element: ');*/
+
         lspiList.forEach(lspi => {
-          console.log('add new frame element: ', lspi);
+          /*console.log('add new frame element: ', lspi);*/
           let newFrameElement = new _models_Frame_Element__WEBPACK_IMPORTED_MODULE_10__["Frame_Element"](0, frameItem.frame_id, lspi.Location, lspi.Sensor, lspi.Parameter, lspi.Interval, this.startTime, this.endTime, true, 60, 1, 1, position++);
           this.settingsService.updateFrame_Element(newFrameElement).subscribe(frame_element_id => {
-            console.log('added new frame element: ', frame_element_id);
+            /*console.log('added new frame element: ', frame_element_id);*/
             newFrameElement.id = frame_element_id;
             frameItem.Frame_Element.push(newFrameElement);
           });
@@ -5480,15 +5502,17 @@
 
       deleteItem(id) {
         /*console.log('deleteItem:' + id);*/
-        const item = this.layout.find(d => d.id === id);
-        this.layout.splice(this.layout.indexOf(item), 1);
-        const comp = this.components.find(c => c.id === id);
-        this.components.splice(this.components.indexOf(comp), 1);
-        let currentFrame = this.currentPage.Frame.find(x => x.name == id);
-        this.currentPage.Frame.forEach((item, index) => {
-          if (item === currentFrame) this.currentPage.Frame.splice(index, 1);
-        });
-        this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
+        setTimeout(() => {
+          const item = this.layout.find(d => d.id === id);
+          this.layout.splice(this.layout.indexOf(item), 1);
+          const comp = this.components.find(c => c.id === id);
+          this.components.splice(this.components.indexOf(comp), 1);
+          let currentFrame = this.currentPage.Frame.find(x => x.name == id);
+          this.currentPage.Frame.forEach((item, index) => {
+            if (item === currentFrame) this.currentPage.Frame.splice(index, 1);
+          });
+          this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
+        }, 0);
       }
 
       setDropId(dropId) {

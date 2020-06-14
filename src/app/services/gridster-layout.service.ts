@@ -444,17 +444,18 @@ export class GridsterLayoutService {
 
   deleteItem(id: string): void {
     /*console.log('deleteItem:' + id);*/
-
-    const item = this.layout.find(d => d.id === id);
-    this.layout.splice(this.layout.indexOf(item), 1);
-    const comp = this.components.find(c => c.id === id);
-    this.components.splice(this.components.indexOf(comp), 1);
+    setTimeout(() => {
+      const item = this.layout.find(d => d.id === id);
+      this.layout.splice(this.layout.indexOf(item), 1);
+      const comp = this.components.find(c => c.id === id);
+      this.components.splice(this.components.indexOf(comp), 1);
     
-    let currentFrame: Frame = this.currentPage.Frame.find(x => x.name == id)
-    this.currentPage.Frame.forEach( (item, index) => {
-      if(item === currentFrame) this.currentPage.Frame.splice(index,1);
-    });    
-    this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
+      let currentFrame: Frame = this.currentPage.Frame.find(x => x.name == id)
+      this.currentPage.Frame.forEach( (item, index) => {
+        if(item === currentFrame) this.currentPage.Frame.splice(index,1);
+      });    
+      this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
+    }, 0);
   }
 
   setDropId(dropId: string): void {
