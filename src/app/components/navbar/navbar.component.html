@@ -79,7 +79,7 @@
 
     <mat-sidenav-container fxFlexFill class="transparent-background">
         <mat-sidenav #sidenav class="transparent-background">
-            <mat-nav-list>
+            <mat-nav-list> 
                 <!--a mat-list-item class="timeFrameButton" (click)="loadpages()" *ngIf="isDashboardView()">
                     <mat-icon>description</mat-icon> Selecteer pagina
                 </a-->    
@@ -107,19 +107,15 @@
                     <mat-icon (click)="GoForward()">chevron_right</mat-icon> Vooruit
                 </a>                
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="ZoomIn()">
-                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon> Verklein
+                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon> Vergroot
                 </a>                
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="ZoomOut()"> 
-                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon> Vergroot
+                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon> Verklein
                 </a>    
-                <a mat-list-item class="timeFrameButton" (click)="mySelect.open()" *ngIf="isDashboardView()">
-                    <mat-icon>loop</mat-icon> Stel scherm-verversing in
+                <a mat-list-item class="timeFrameButton" (click)="ToggleRefreshState()" *ngIf="isDashboardView()">
+                    <mat-icon>loop</mat-icon> {{ SelectedRefreshState }}
                 </a>    
                
-                <mat-select style="visibility:hidden;width: 0" #mySelect single [(ngModel)]="SelectedRefreshState" (selectionChange)="UpdateRefreshState()">
-                    <mat-option *ngFor="let refreshState of refreshStates" [value]="refreshState">{{ refreshState }}</mat-option>
-                </mat-select>
-
                 <!--button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon> Log In</button-->
                 <!--button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon> Log Out</button-->                
 
@@ -128,7 +124,7 @@
                 </a>
             </mat-nav-list>
         </mat-sidenav>
-        <mat-sidenav-content fxFlexFill>
+        <mat-sidenav-content fxFlexFill >
             <router-outlet></router-outlet>
             <!--<app-dashboard [updateTimeEvent]="updateTimeEvent"></app-dashboard>-->
         </mat-sidenav-content>

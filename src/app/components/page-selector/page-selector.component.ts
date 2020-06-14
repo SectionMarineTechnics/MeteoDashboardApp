@@ -31,7 +31,7 @@ export class PageSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("PageSelectorComponent ngOnInit");
+    /*console.log("PageSelectorComponent ngOnInit");*/
     this.auth.userProfile$.subscribe(profile => {
       if (profile) {
         console.log("PageSelectorComponent ngOnInit profile.name: ", profile.name);
@@ -50,17 +50,17 @@ export class PageSelectorComponent implements OnInit {
           this.UpdatePages();
         }
 
-        console.log("PageSelectorComponent ngOnInit UpdatePages");
+        /*console.log("PageSelectorComponent ngOnInit UpdatePages");*/
       }
     });
   }
 
   ngOnDestroy() {
-    console.log("PageSelectorComponent ngOnDestroy()");
+    /*console.log("PageSelectorComponent ngOnDestroy()");*/
   }    
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log("drop page position");
+    /*console.log("drop page position");*/
     moveItemInArray(this.layoutService.currentUser.Page, event.previousIndex, event.currentIndex);
 
     let position: number = 1;
@@ -86,18 +86,18 @@ export class PageSelectorComponent implements OnInit {
   }
 
   UpdatePages() {
-    console.log("UpdatePages: ", this.layoutService.currentUser.Page);
+    /*console.log("UpdatePages: ", this.layoutService.currentUser.Page);*/
 
 
     this.pages = this.layoutService.currentUser.Page.sort(function (a, b) {
       return a.position - b.position;
     });
 
-    console.log("UpdatePages: ", this.pages);
+    /*console.log("UpdatePages: ", this.pages);*/
   }
 
   deletePage(page: Page){
-    console.log("deletePage()");
+    /*console.log("deletePage()");*/
     
     const index: number = this.layoutService.currentUser.Page.indexOf(page);
     if (index !== -1) {

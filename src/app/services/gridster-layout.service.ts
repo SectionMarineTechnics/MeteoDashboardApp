@@ -283,18 +283,18 @@ export class GridsterLayoutService {
 
   ChangeCallback(gridsterItem: any, gridsterItemComponent: any) {
     
-    console.log("GridsterLayoutService ChangeCallback event: ");
+    /*console.log("GridsterLayoutService ChangeCallback event: ");
     console.log("gridsterItem: ", gridsterItem);
     console.log("gridsterItemComponent: ", gridsterItemComponent);
-    console.log("this: ", this);
+    console.log("this: ", this);*/
     
 
-    console.log("search for name == gridsterItem.id: ", gridsterItem.id);
-    console.log("in  == this.currentPage.Frame: ", this.currentPage.Frame);
+    /*console.log("search for name == gridsterItem.id: ", gridsterItem.id);
+    console.log("in  == this.currentPage.Frame: ", this.currentPage.Frame);*/
 
     let frame: Frame = this.currentPage.Frame.find(x => x.name == gridsterItem.id);
 
-    console.log("frame before: ", frame);
+    /*console.log("frame before: ", frame);*/
 
     if (frame) {
       frame.X = gridsterItem.x;
@@ -302,7 +302,7 @@ export class GridsterLayoutService {
       frame.width = gridsterItem.cols;
       frame.height = gridsterItem.rows;
 
-      console.log("frame send: ", frame);
+      /*console.log("frame send: ", frame);*/
 
       this.settingsService.updateFrame(frame).subscribe();
     }
@@ -361,11 +361,11 @@ export class GridsterLayoutService {
     frameItem.title = title;
     frameItem.frame_type = frame_type;
 
-    console.log('updated frameItem.title: ' + frameItem.title);
+    /*console.log('updated frameItem.title: ' + frameItem.title);*/
 
     let elementsToDelete = frameItem.Frame_Element.length;
 
-    console.log('elementsToDelete: ' + elementsToDelete);
+    /*console.log('elementsToDelete: ' + elementsToDelete);*/
 
 
     this.settingsService.updateFrame(frameItem).subscribe();
@@ -374,7 +374,7 @@ export class GridsterLayoutService {
     {
       frameItem.Frame_Element.forEach(frameElement => {
         this.settingsService.deleteFrame_Element(frameElement.id).subscribe(() => { 
-          console.log('deleted a frame element: ' + elementsToDelete);
+          /*console.log('deleted a frame element: ' + elementsToDelete);*/
           elementsToDelete--;
           if(elementsToDelete == 0){
             frameItem.Frame_Element = [];
@@ -391,16 +391,16 @@ export class GridsterLayoutService {
 
   addFrameElements(frameItem: Frame, lspiList: Lspi[]){
     let position: number = 1;
-    console.log('add new frame element: ');
+    /*console.log('add new frame element: ');*/
 
     lspiList.forEach(lspi => {
 
-      console.log('add new frame element: ', lspi);
+      /*console.log('add new frame element: ', lspi);*/
 
       let newFrameElement: Frame_Element = new Frame_Element(0, frameItem.frame_id, lspi.Location, lspi.Sensor, lspi.Parameter, lspi.Interval, this.startTime, this.endTime, true, 60, 1, 1, position++);
       this.settingsService.updateFrame_Element(newFrameElement).subscribe(frame_element_id => {
 
-        console.log('added new frame element: ', frame_element_id);
+        /*console.log('added new frame element: ', frame_element_id);*/
 
         newFrameElement.id = frame_element_id;
         frameItem.Frame_Element.push(newFrameElement);

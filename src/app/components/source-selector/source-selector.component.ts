@@ -59,7 +59,7 @@ export class SourceSelectorComponent implements OnInit {
   }
 
   setInitialValue(){
-    console.log("this.dataService.lspis: ", this.dataService.lspis);
+    /*console.log("this.dataService.lspis: ", this.dataService.lspis);*/
 
     this.options = [];
     this.dataService.lspis.forEach(lspi => {
@@ -75,11 +75,11 @@ export class SourceSelectorComponent implements OnInit {
       
       this.route.params.subscribe(params => {
         this.frameId = params['id'];      
-        console.log("SourceSelectorComponent route parameter: ", this.frameId)
+        /*console.log("SourceSelectorComponent route parameter: ", this.frameId)*/
   
         let gridsterItem = this.layoutService.layout.find(d => d.id === this.frameId);
         if(gridsterItem != undefined){
-          console.log("gridsterItem.type: ", gridsterItem.type);
+          /*console.log("gridsterItem.type: ", gridsterItem.type);*/
   
           gridsterItem.serieList.forEach(item => {
             
@@ -157,7 +157,7 @@ export class SourceSelectorComponent implements OnInit {
   }
 
   submit(){
-    console.log("SourceSelectorComponent submit: ", this.selectedLspis);
+    /*console.log("SourceSelectorComponent submit: ", this.selectedLspis);*/
     this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Titel").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
     this.router.navigateByUrl('/');
   }

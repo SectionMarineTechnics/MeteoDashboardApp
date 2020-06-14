@@ -84,6 +84,16 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  ToggleRefreshState() {
+    if (this.SelectedRefreshState == "Aan") {
+      this.layoutService.refreshTimerActive = false;
+      this.SelectedRefreshState = "Uit";
+    } else {
+      this.layoutService.refreshTimerActive = true;
+      this.SelectedRefreshState = "Aan";      
+    }
+  }  
+
   disableRefresh() {
     this.SelectedRefreshState = "Uit";
     this.layoutService.refreshTimerActive = false;
@@ -100,13 +110,11 @@ export class NavbarComponent implements OnInit {
   }
 
   GoForward(){
-    console.log("GoForward()");
     this.disableRefresh();    
     this.layoutService.goForward();
   }
 
   GoBackward(){
-    console.log("GoBackward()");
     this.disableRefresh();    
     this.layoutService.goBackward();
   }
@@ -128,7 +136,7 @@ export class NavbarComponent implements OnInit {
   } 
 
   UpdatePage() {
-    console.log("UpdatePage(): ", this.SelectedPage);
+    /*console.log("UpdatePage(): ", this.SelectedPage);*/
 
     this.layoutService.currentPage = this.SelectedPage;
     this.layoutService.RebuildLayout(this.layoutService.currentPage);

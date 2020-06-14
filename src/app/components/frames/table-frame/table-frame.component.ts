@@ -70,7 +70,7 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    console.log("ValueComponent ngOnDestroy()");
+    /*console.log("ValueComponent ngOnDestroy()");*/
     if (this.updateTimeSubsription != undefined) this.updateTimeSubsription.unsubscribe();
     if (this.resizeSubsription != undefined) this.resizeSubsription.unsubscribe();
     if (this.updateChartDataSubscription != undefined) this.updateChartDataSubscription.unsubscribe();
