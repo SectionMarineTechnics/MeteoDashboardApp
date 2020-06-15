@@ -556,6 +556,7 @@ export class GridsterLayoutService {
       });
     });
     
+    /*console.log('updateTime(): starttime - endtime', startTime, ' - ', endTime);*/
     this.updateTimeEvent.emit({ startTime, endTime });
   }
 

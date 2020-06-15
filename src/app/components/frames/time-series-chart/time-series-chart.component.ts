@@ -63,7 +63,7 @@ export class TimeSeriesChartComponent implements OnInit, OnDestroy, AfterViewIni
 
     if (this.updateTimeEvent != undefined) {
       this.updateTimeSubsription = this.updateTimeEvent.subscribe((event) => {
-        /*console.log("TimeSeriesChartComponent updateTimeEvent event", event);*/
+        /*console.log("TimeSeriesChartComponent updateTimeEvent event: ", event.startTime, ' - ', event.endTime);*/
 
         let update: boolean = false;
         this.serieList.forEach((element, index) => {
