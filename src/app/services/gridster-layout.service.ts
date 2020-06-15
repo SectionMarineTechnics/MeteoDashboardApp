@@ -60,7 +60,8 @@ export class GridsterLayoutService {
     outerMarginBottom: null,
     outerMarginLeft: null,
     gridType: GridType.Fit,
-    keepFixedHeightInMobile: false,
+    keepFixedHeightInMobile: true,
+    fixedRowHeight: 10,
     keepFixedWidthInMobile: false
   };
 
@@ -126,7 +127,7 @@ export class GridsterLayoutService {
       }  
       else
       {
-        let newUser: User = new User(0, [], profileName, new Date(), 1);
+        let newUser: User = new User(0, [], profileName, new Date(), 1, null);
         this.settingsService.updateUser(newUser).subscribe( () => {                     // Add user
           this.settingsService.getUsers().subscribe(updatedUsers => {                   // Get new user id's
             let currentUser: UserShort = updatedUsers.find(x => x.name == profileName);
@@ -149,15 +150,29 @@ export class GridsterLayoutService {
     /*console.log('Update this.currentUser login_time to now: ', this.currentUser);*/
     this.currentUser.login_time = new Date();
     this.currentUser.login_count++;
-    this.settingsService.updateUser(this.currentUser).subscribe();
+    
 
     if (this.currentUser.Page.length > 0)
     {
       let sortedPages = this.currentUser.Page.sort( function(a, b) { 
         return a.position - b.position;
       });
+
+
+      let logtest: number = this.currentUser.last_page;
+
       this.currentPage = sortedPages[0];
+      if(this.currentUser.last_page != null){
+        let last_page: Page = this.currentUser.Page.find(x => x.page_id == this.currentUser.last_page);
+        if(last_page != undefined) this.currentPage = last_page;
+        else this.currentUser.last_page = this.currentPage.page_id;
+      }
+      else
+      {
+        this.currentUser.last_page = this.currentPage.page_id;
+      }
     }
+    this.settingsService.updateUser(this.currentUser).subscribe();
 
     /*console.log('Current page set to: ', this.currentPage);*/
 
@@ -180,7 +195,10 @@ export class GridsterLayoutService {
 
   RebuildLayoutStep2(page: Page) {
     this.layout = [];
-    
+
+    this.currentUser.last_page = page.page_id;
+    this.settingsService.updateUser(this.currentUser).subscribe();
+
     page.Frame.forEach(frame => {
       let newId: string = frame.name;
       let getGetijSeriesData: Array<Serie> = new Array<Serie>();

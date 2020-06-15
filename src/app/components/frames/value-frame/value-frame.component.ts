@@ -22,6 +22,7 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   myChartData: Array<Array<any>>;
   myColumnNames: string[];
+  showingLastValue: boolean = true;
 
   constructor(private dataService: DataService) {
     this.updateChartDataSubscription = dataService.updateChartDataEvent.subscribe(value => {
@@ -84,7 +85,8 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   lastTime() {
-    return this.timeToStr(this.myChartData[this.myChartData.length-1][0]);
+    if(this.showingLastValue) return this.timeToStr(this.myChartData[this.myChartData.length-1][0]);
+    else return this.timeToStr(this.myChartData[this.myChartData.length-2][0]);
   }
 
   unit() {
@@ -98,7 +100,24 @@ export class ValueFrameComponent implements OnInit, OnDestroy, AfterViewInit {
   lastValue() {
     /*let value: number = Math.trunc( this.myChartData[this.myChartData.length-1][1] * 100);*/
     /*return value / 100;*/
-    return this.myChartData[this.myChartData.length-1][1].toFixed(2);
+    let value: number = this.myChartData[this.myChartData.length-1][1];
+    if(value != undefined && value != null)
+    {
+      this.showingLastValue = true;
+      return value.toFixed(2);
+    }
+    else
+    {
+      /* try second oldest:*/
+      value = this.myChartData[this.myChartData.length-2][1];
+      if(value != undefined && value != null)
+      {
+        this.showingLastValue = false;
+        return value.toFixed(2);      
+      }
+    }
+    this.showingLastValue = true;
+    return "Unknown";
   }
 
   lastValueWithUnit(){

@@ -6,6 +6,7 @@ export class User {
 
       public name: string,
       public login_time: Date,
-      public login_count: number
+      public login_count: number,
+      public last_page: number
     ) {}
   }

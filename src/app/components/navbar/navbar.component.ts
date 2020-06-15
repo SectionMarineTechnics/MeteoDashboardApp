@@ -146,6 +146,8 @@ export class NavbarComponent implements OnInit {
     /*console.log("loadpages(): this.layoutService.currentUser.Page: ", this.layoutService.currentUser.Page);*/
     this.pages = [];
 
+    this.SelectedPage = this.layoutService.currentPage;
+
     let sortedPages = this.layoutService.currentUser.Page.sort( function(a, b) { 
       return a.position - b.position;
     });
