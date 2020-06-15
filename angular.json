@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "MeteoDashboardApp"
+  "defaultProject": "MeteoDashboardApp",
+  "cli": {
+    "analytics": "355b4bcd-9462-4269-ad3a-bb96cda3df9a"
+  }
 }
