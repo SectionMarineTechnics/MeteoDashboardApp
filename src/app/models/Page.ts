@@ -1,4 +1,4 @@
-import { Frame } from './frame';
+import { Frame } from './Frame';
 export class Page {
     constructor(
       public page_id: number,
