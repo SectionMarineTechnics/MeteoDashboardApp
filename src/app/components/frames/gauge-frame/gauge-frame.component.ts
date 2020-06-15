@@ -28,7 +28,7 @@ export class GaugeFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private chartHandle: GoogleChartComponent;
 
-  @ViewChild('GoogleChart', { static: false }) set content(content: GoogleChartComponent) {
+  @ViewChild('GoogleChart') set content(content: GoogleChartComponent) {
     this.chartHandle = content;
   }
 
