@@ -97,10 +97,10 @@ export class GridsterLayoutService {
     this.endTime = new Date(this.endTime.getUTCFullYear(), this.endTime.getUTCMonth(), this.endTime.getUTCDate(), this.endTime.getUTCHours(), this.endTime.getUTCMinutes(), 0, 0);
     this.startTime = new Date(this.startTime.getUTCFullYear(), this.startTime.getUTCMonth(), this.startTime.getUTCDate(), this.startTime.getUTCHours(), this.startTime.getUTCMinutes(), 0, 0);
 
-    /*
-    console.log("intial startTime: ", this.startTime);
-    console.log("intial endTime: ", this.endTime);
-    */
+    
+    /*console.log("intial startTime: ", this.startTime);
+    console.log("intial endTime: ", this.endTime);*/
+    
 
     this.refreshTimerActive = true;
 
@@ -290,10 +290,10 @@ export class GridsterLayoutService {
         //this.endTime = new Date(this.endTime.getUTCFullYear(), this.endTime.getUTCMonth(), this.endTime.getUTCDate(), this.endTime.getUTCHours(), this.endTime.getUTCMinutes(), 0, 0);
         //this.startTime = new Date(this.startTime.getUTCFullYear(), this.startTime.getUTCMonth(), this.startTime.getUTCDate(), this.startTime.getUTCHours(), this.startTime.getUTCMinutes(), 0, 0);
 
-        /*
-        console.log("New start time: ", this.startTime);
-        console.log("New end time: ", this.endTime);
-        */
+        
+        /*console.log("New start time: ", this.startTime);
+        console.log("New end time: ", this.endTime);*/
+        
         this.updateTime();
       }
     }
@@ -462,18 +462,20 @@ export class GridsterLayoutService {
 
   deleteItem(id: string): void {
     /*console.log('deleteItem:' + id);*/
-    setTimeout(() => {
-      const item = this.layout.find(d => d.id === id);
-      this.layout.splice(this.layout.indexOf(item), 1);
-      const comp = this.components.find(c => c.id === id);
-      this.components.splice(this.components.indexOf(comp), 1);
+    if(confirm("Ben je zeker dat je het frame " + this.currentPage.Frame.find(x => x.name == id).title + " definitief wil verwijderen?")) {
+      setTimeout(() => {
+        const item = this.layout.find(d => d.id === id);
+        this.layout.splice(this.layout.indexOf(item), 1);
+        const comp = this.components.find(c => c.id === id);
+        this.components.splice(this.components.indexOf(comp), 1);
     
-      let currentFrame: Frame = this.currentPage.Frame.find(x => x.name == id)
-      this.currentPage.Frame.forEach( (item, index) => {
-        if(item === currentFrame) this.currentPage.Frame.splice(index,1);
-      });    
-      this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
-    }, 0);
+        let currentFrame: Frame = this.currentPage.Frame.find(x => x.name == id)
+        this.currentPage.Frame.forEach( (item, index) => {
+          if(item === currentFrame) this.currentPage.Frame.splice(index,1);
+        });    
+        this.settingsService.deleteFrame(currentFrame.frame_id).subscribe();
+      }, 0);
+    }
   }
 
   setDropId(dropId: string): void {

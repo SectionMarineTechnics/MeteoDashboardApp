@@ -98,15 +98,16 @@ export class PageSelectorComponent implements OnInit {
 
   deletePage(page: Page){
     /*console.log("deletePage()");*/
-    
-    const index: number = this.layoutService.currentUser.Page.indexOf(page);
-    if (index !== -1) {
-      this.layoutService.currentUser.Page.splice(index, 1);
-      this.settingsService.deletePage(page.page_id).subscribe();
-      this.UpdatePages();      
-    } 
+    if(confirm("Ben je zeker dat je de pagina " + page.name + " definitief wil verwijderen?")) {
+      const index: number = this.layoutService.currentUser.Page.indexOf(page);
+      if (index !== -1) {
+        this.layoutService.currentUser.Page.splice(index, 1);
+        this.settingsService.deletePage(page.page_id).subscribe();
+        this.UpdatePages();      
+      } 
 
-    this.layoutService.UpdateNavigationBar();
+      this.layoutService.UpdateNavigationBar();
+    }
   }
 
   updatePageName(page: Page, name: string){

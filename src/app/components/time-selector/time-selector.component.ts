@@ -63,35 +63,46 @@ export class TimeSelectorComponent implements OnInit {
     let mm: string = startTime.substring(3,5);
     let startDateInput: any = this.timeInfo_form.get("StartDate").value;
     
+    /*console.log("this.timeInfo_form.get(\"StartTime\").value: ", startTime);
+    console.log("this.timeInfo_form.get(\"StartDate\").value: ", startDateInput);*/
+    
     let startDate: Date = new Date();
+    /*console.log("startDateInput.__proto__.constructor.name : ", startDateInput.__proto__.constructor.name );*/
     if(startDateInput.__proto__.constructor.name == "Date"){
       startDate = new Date(startDateInput.getFullYear(), startDateInput.getMonth(), startDateInput.getDate(), 0, 0, 0, 0);
+      /*console.log("Created new startDate based on Date object: ", startDate);*/
     }
-    else if(startDateInput.__proto__.constructor.name == "Moment"){
+    else /*if(startDateInput.__proto__.constructor.name == "Moment")*/{
+      /*console.log("startDateInput.year(): ", startDateInput.year());
+      console.log("startDateInput.month(): ", startDateInput.month());
+      console.log("startDateInput.date(): ", startDateInput.date());*/
       startDate = new Date(startDateInput.year(), startDateInput.month(), startDateInput.date(), 0, 0, 0, 0);
+      /*console.log("Created new startDate based on Moment object: ", startDate);*/
     }
     
     startDate.setHours(Number(hh));
     startDate.setMinutes(Number(mm));
+
+    /*console.log("startDate with update hh en mm: ", startDate);*/
 
     let endTime: string = this.timeInfo_form.get("EndTime").value;
     hh = endTime.substring(0,2);
     mm = endTime.substring(3,5);
     let endDateInput: any = this.timeInfo_form.get("EndDate").value;
 
+    /*console.log("this.timeInfo_form.get(\"EndTime\").value: ", endTime);
+    console.log("this.timeInfo_form.get(\"EndDate\").value: ", endDateInput); */
+
     let endDate: Date = new Date();
     if(endDateInput.__proto__.constructor.name == "Date"){
       endDate = new Date(endDateInput.getFullYear(), endDateInput.getMonth(), endDateInput.getDate(), 0, 0, 0, 0);
     }
-    else if(endDateInput.__proto__.constructor.name == "Moment"){
+    else /*if(endDateInput.__proto__.constructor.name == "Moment"*/{
       endDate = new Date(endDateInput.year(), endDateInput.month(), endDateInput.date(), 0, 0, 0, 0);
     }
 
     endDate.setHours(Number(hh));
     endDate.setMinutes(Number(mm));
-
-    /*console.log("startTime: ", startDate);
-    console.log("endTime: ", endDate);*/
 
     this.layoutService.startTime = startDate;
     this.layoutService.endTime = endDate;
