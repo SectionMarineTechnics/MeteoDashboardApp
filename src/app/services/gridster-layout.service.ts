@@ -186,11 +186,15 @@ export class GridsterLayoutService {
   }
 
   RebuildLayout(page: Page) {
-    this.dataService.getLSPIList()
-          .then(_ => (this.lspis = this.dataService.lspis) )
-          .then(result => {
-            this.RebuildLayoutStep2(page);
-          });
+    if(this.lspis == undefined){
+      this.dataService.getLSPIList()
+            .then(_ => (this.lspis = this.dataService.lspis) )
+            .then(result => {
+              this.RebuildLayoutStep2(page);
+      });
+    }else{
+      this.RebuildLayoutStep2(page);
+    }
   }
 
   RebuildLayoutStep2(page: Page) {

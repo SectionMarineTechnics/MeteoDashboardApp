@@ -44,10 +44,60 @@ export class DataService {
       let cacheLines: DataCacheLine[] = this.dataCache.filter( element => element.Lspi.LspiName() == serie.Lspi.LspiName() )
 
       let found:boolean = false;
+
+
+      /*console.log("NUMBER OF CACHELINES: ", this.dataCache.length);   
+      let totaldatapointsincache: number = 0;
+      this.dataCache.forEach( (cacheLine, cacheIndex) => { 
+        console.log("CACHELINE[" + cacheIndex + "]: LSPI=" + cacheLine.Lspi.Name() + ", Lastupdate=" + cacheLine.LastUpDate + ", StartTime=" + cacheLine.StartTime + " ,EndTime=" + cacheLine.EndTime + ", MostRecentDataPointTime=" + cacheLine.MostRecentDataPointTime); 
+        totaldatapointsincache = totaldatapointsincache + Object.keys(cacheLine.Data).length;
+      });
+      console.log("TOTAL CACHE SIZE: ", totaldatapointsincache); 
+
+
+      console.log("cacheLines SCAN for serie: ", serie.Lspi.LspiName());*/      
       cacheLines.forEach( (cacheLine, cacheIndex) => { 
         // Check if cacheline exist with needed data:
+
+        let temp_serie_StartTime: Date = serie.StartTime;
+        let temp_serie_EndTime: Date = serie.EndTime;
+        let temp_cacheLine_StartTime: Date = new Date(cacheLine.StartTime.getTime());
+
+        /*console.log("cacheLine with index: ", cacheLine, cacheIndex);
+        console.log("cacheLine.StartTime: ", temp_cacheLine_StartTime);
+        console.log("serie.StartTime: ", temp_serie_StartTime);
+        console.log("serie.EndTime: ", temp_serie_EndTime);*/
+
         if(!found){
-          if( serie.StartTime.getTime() == cacheLine.StartTime.getTime() ){
+          if( serie.StartTime.getTime() >= cacheLine.StartTime.getTime() ){
+            if( serie.StartTime.getTime() > cacheLine.StartTime.getTime() ){
+              /*let first: boolean = true;
+              for(let key in cacheLine.Data){
+                if(first) {
+                  console.log("Startkey before: ", key, cacheLine.Data[key]);
+                  console.log("Element count before: ", Object.keys(cacheLine.Data).length);
+                  first = false;
+                }
+              };*/ 
+
+              for(let key in cacheLine.Data){
+                let dataValue = cacheLine.Data[key];
+                if((Number)(key) < serie.StartTime.getTime()){
+                  delete cacheLine.Data[key];
+                }
+              };
+
+              /*first = true;
+              for(let key in cacheLine.Data){
+                if(first) {
+                  console.log("Startkey after: ", key, cacheLine.Data[key]);
+                  console.log("Element count after: ", Object.keys(cacheLine.Data).length);
+                  first = false;
+                }
+              };*/ 
+              cacheLine.StartTime = serie.StartTime;
+            }
+
             // Check if all data is avaible ? 
             if( cacheLine.EndTime.getTime() >= serie.EndTime.getTime() ){ 
               // Reqeusted data was already completely requested from database and put in the cache 
@@ -62,15 +112,24 @@ export class DataService {
                 cacheLine.LastUpDate = new Date(Date.now()); // Update time stamp
                 completeCacheLines.push(cacheLine);
               }
-              found = true;
             }
             else{ 
               // Some of the requested data is missing in the cache:
               cacheLine.LastUpDate = new Date(Date.now()); // Update time stamp
               inCompleteCacheLines.push(cacheLine);
-              found = true;
             }
+            found = true;
+       
           }
+          else
+          {
+            this.dataCache.splice(this.dataCache.indexOf(cacheLine), 1) 
+            
+          }
+        }
+        else
+        {
+          this.dataCache.splice(this.dataCache.indexOf(cacheLine), 1)
         }
       });
       if(!found){
@@ -81,9 +140,9 @@ export class DataService {
 
     let startTimeInCompleteCacheLines: Date = EndTime;
     inCompleteCacheLines.forEach( (cacheLine, cacheIndex) => { 
-      if(cacheLine.EndTime < startTimeInCompleteCacheLines)
+      if(cacheLine.MostRecentDataPointTime < startTimeInCompleteCacheLines)
       {
-        startTimeInCompleteCacheLines = cacheLine.EndTime;
+        startTimeInCompleteCacheLines = cacheLine.MostRecentDataPointTime;
       }
     });
 
@@ -114,10 +173,10 @@ export class DataService {
     ColumnNames = [];
     ChartData = [];
 
-    /*
-    console.log("updateChartFromCache -> SerieList: ", SerieList);        
-    console.log("updateChartFromCache -> DataCache: ", DataCache);
-    */
+    
+    /*console.log("updateChartFromCache -> SerieList: ", SerieList);        
+    console.log("updateChartFromCache -> DataCache: ", DataCache);*/
+    
 
     ColumnNames.push("Time");
     //ChartData.push([]);
@@ -141,7 +200,10 @@ export class DataService {
       //let cacheLineIndex: number = 1;
       let cacheLineIndex: number = 0;
       let highestDateKey: number = 0;
-      for(let key in cacheLine.Data){
+
+      var sorted_keys = Object.keys(cacheLine.Data).sort();
+      /*for(let key of cacheLine.Data){*/
+      for(let key of sorted_keys){
         let dataValue = cacheLine.Data[key];
         if(Number(key) > highestDateKey){
           highestDateKey = Number(key);
@@ -175,7 +237,7 @@ export class DataService {
       lspiList.push(cacheLine.Lspi);
     });    
 
-    //console.log("loadDataFromServerInDataCache: ", DataCache, lspiList, lspiList.length);
+    /*console.log("loadDataFromServerInDataCache: ", DataCache, lspiList, lspiList.length);*/
 
     if(lspiList.length > 0){
       this.getDataFrameWithLspiList(Version, StartTime, EndTime, lspiList).then((dataFrame: any) => { 
@@ -185,7 +247,7 @@ export class DataService {
           dataFrame.forEach( (arrayItem, index) => {
             //console.log("loadDataFromServerInDataCache: dataFrame.forEach: ", arrayItem);
             let time: Date;
-            for (var key in arrayItem) {
+            for (let key in arrayItem) {
               if(key == 'Time'){
                 time = new Date(arrayItem[key]);
                 //console.log("loadDataFromServerInDataCache: time: ", time);

@@ -46,16 +46,23 @@ export class SourceSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.layoutService.currentUser == undefined)
+    { 
+      this.router.navigateByUrl('/');
+    }
+
+    if(this.dataService.lspis == undefined){
     this.dataService.getLSPIList()
           .then(_ => (this.options = this.dataService.lspis) )
           .then(result => {
             this.setInitialValue();
           });
-
-    if(this.layoutService.currentUser == undefined)
-    { 
-      this.router.navigateByUrl('/');
     }
+    else
+    {
+      this.setInitialValue();
+    }
+
   }
 
   setInitialValue(){

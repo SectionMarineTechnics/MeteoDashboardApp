@@ -11,6 +11,6 @@ export class DataCacheLine {
       public StartTime: Date, 
       public EndTime: Date, 
       public MostRecentDataPointTime: Date,     
-      public Data: IDataPoints
+      public Data: any
     ) {}
   }
