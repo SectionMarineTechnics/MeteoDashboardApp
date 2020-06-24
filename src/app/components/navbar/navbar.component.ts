@@ -28,6 +28,8 @@ export class NavbarComponent implements OnInit {
 
   auth0_profile: any = null;
 
+  firstLogin: boolean = true;
+
   @ViewChild('myPageSelect', { static: true }) myPageSelect: MatSelect;
 
   constructor(public layoutService: GridsterLayoutService, public auth: AuthService, private router: Router) { }
@@ -41,6 +43,8 @@ export class NavbarComponent implements OnInit {
     this.layoutService.pagesLoadedEvent.subscribe((event) => {
         this.reloadpages();
     });
+
+
   }
 
   ngOnDestroy() {

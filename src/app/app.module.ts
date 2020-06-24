@@ -56,6 +56,7 @@ import { GaugeFrameComponent } from './components/frames/gauge-frame/gauge-frame
 import { LineChartComponent } from './components/dashboard/line-chart/line-chart.component';
 
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     ValueFrameComponent,
     TableFrameComponent,
     GaugeFrameComponent,
-    LineChartComponent
+    LineChartComponent,
+    DisclaimerComponent
   ],
   imports: [
     BrowserModule,
