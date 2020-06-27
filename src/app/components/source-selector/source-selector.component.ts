@@ -30,16 +30,16 @@ export class SourceSelectorComponent implements OnInit {
 
   constructor(private dataService: DataService, private layoutService: GridsterLayoutService, private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router) { 
     this.panelTypes = [
-      {value: 'chart', viewValue: 'Grafiek'},
-      {value: 'value', viewValue: 'Waarde'},
-      {value: 'table', viewValue: 'Tabel'},
-      {value: 'gauge', viewValue: 'Wijzerplaat'},
+      {value: 'chart', viewValue: 'Chart'},
+      {value: 'value', viewValue: 'Value'},
+      {value: 'table', viewValue: 'Table'},
+      {value: 'gauge', viewValue: 'Gauge'},
     ];
 
     this.selectedType = this.panelTypes[0];
     
     this.serieInfo_form = this.formBuilder.group({
-      Titel: new FormControl("",Validators.required),
+      Title: new FormControl("",Validators.required),
       Type: new FormControl("",Validators.required),
       LspiSelector: new FormControl("")
    });
@@ -102,7 +102,7 @@ export class SourceSelectorComponent implements OnInit {
 
           });
    
-          this.serieInfo_form.get("Titel").setValue(gridsterItem.title);
+          this.serieInfo_form.get("Title").setValue(gridsterItem.title);
   
           switch(gridsterItem.type) { 
             case 'widgetTimeSeriesChart': { 
@@ -165,7 +165,7 @@ export class SourceSelectorComponent implements OnInit {
 
   submit(){
     /*console.log("SourceSelectorComponent submit: ", this.selectedLspis);*/
-    this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Titel").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
+    this.layoutService.updateItem(this.frameId, this.serieInfo_form.get("Title").value, this.selectedLspis, this.serieInfo_form.get("Type").value);
     this.router.navigateByUrl('/');
   }
 }

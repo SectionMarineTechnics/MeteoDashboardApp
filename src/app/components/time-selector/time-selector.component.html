@@ -1,7 +1,7 @@
 <div [formGroup]="timeInfo_form" class="wrapper" fxLayout="column" fxLayoutAlign="start stretch">
     <div class="containerHeader">
         <mat-label class="header">
-            <h2>Configuratie tijdsvenster</h2>
+            <h2>Time window configuration</h2>
         </mat-label>
         <span fxFlex></span>
         <mat-icon class="close-button" (click)=closeForm()>cancel</mat-icon>
@@ -9,26 +9,26 @@
 
     <div class="flexboxContainer">
         <mat-form-field class="left-field">
-            <input matInput [matDatepicker]="startDatePicker" placeholder="Start datum" formControlName="StartDate">
+            <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="StartDate">
             <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #startDatePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="right-field">
-            <input matInput type="time" placeholder="Start tijd" formControlName="StartTime">
+            <input matInput type="time" placeholder="Start time" formControlName="StartTime">
         </mat-form-field>
     </div>
 
     <div class="flexboxContainer">
         <mat-form-field class="left-field">
-            <input matInput [matDatepicker]="endDatePicker" placeholder="Eind datum" formControlName="EndDate">
+            <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="EndDate">
             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #endDatePicker></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="right-field">
-            <input matInput type="time" placeholder="Eind tijd" formControlName="EndTime">
+            <input matInput type="time" placeholder="End time" formControlName="EndTime">
         </mat-form-field>
     </div>
 
-    <button mat-raised-button (click)="submit()" [disabled]="!timeInfo_form.valid">Bevestig</button>
+    <button mat-raised-button (click)="submit()" [disabled]="!timeInfo_form.valid">Confirm</button>
 
 </div>

@@ -33,7 +33,7 @@ export class TableFrameComponent implements OnInit, OnDestroy, AfterViewInit {
 
         /* Convert chartdata from value array to object array for mat-table compability: */
         value.ColumnNames.forEach((column, index) => {
-          if (column == 'Time') value.ColumnNames[index] = 'Tijd';
+          if (column == 'Time') value.ColumnNames[index] = 'Time';
         });
         this.myChartData = new Array<DataPoint>();
         value.ChartData.forEach(element => {

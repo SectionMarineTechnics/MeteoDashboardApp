@@ -2,7 +2,7 @@
     <text x="0" y="15">{{ lastValue() }}</text>
 </svg>-->
 <div class="flexcontainter">
-    <div *ngIf="!showData()">Configureer een data bron</div>
+    <div *ngIf="!showData()">Configure a data source</div>
 
         <svg viewBox="0 0 90 18" attr.viewBox ="{{ numberOfCharInlastValueWithUnit() }}" *ngIf="showData()">
             <text x="3" y="15">{{ lastValueWithUnit() }}</text><title>{{ lastTime() }}</title>

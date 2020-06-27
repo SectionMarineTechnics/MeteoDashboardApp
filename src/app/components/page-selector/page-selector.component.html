@@ -1,7 +1,7 @@
 <div [formGroup]="pageInfo_form" class="wrapper" fxLayout="column" fxLayoutAlign="start stretch">
     <div class="containerHeader">
         <mat-label class="header">
-            <h2>Configuratie pagina's</h2>
+            <h2>Pages configuration</h2>
         </mat-label>
         <span fxFlex></span>
         <mat-icon class="close-button" (click)=closeForm()>cancel</mat-icon>
@@ -27,13 +27,13 @@
         <input type="text" placeholder="Pagina naam" aria-label="Pagina naam" matInput formControlName="NewPageName">
     </mat-form-field>
 
-    <button mat-raised-button (click)="addNewPage()" [disabled]="!pageInfo_form.valid||pageExist()">Voeg pagina toe</button>
+    <button mat-raised-button (click)="addNewPage()" [disabled]="!pageInfo_form.valid||pageExist()">Add page</button>
 
     <div style="margin: 10px 0 10px 0;"></div>
 
-    <button mat-raised-button (click)="addDefaultPagesToCurrentUser()">Voeg default pagina's toe</button>
+    <button mat-raised-button (click)="addDefaultPagesToCurrentUser()">Add default pages</button>
 
     <div style="margin: 10px 0 10px 0;"></div>
 
-    <button mat-raised-button (click)="submit()">Bevestig</button>
+    <button mat-raised-button (click)="submit()">Confirm</button>
 </div>

@@ -1,4 +1,4 @@
 <div class="chart-container" >
     <google-chart #GoogleChart class="google-chart" id="chart_div" type="Gauge" [data]="myChartData" *ngIf="showData()" (ready)="chartReady(GoogleChart)"></google-chart>
-    <div *ngIf="!showData()">Configureer een data bron</div>
+    <div *ngIf="!showData()">Configure a data source</div>
 </div>

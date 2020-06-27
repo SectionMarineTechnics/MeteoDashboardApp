@@ -14,14 +14,14 @@ import { MatSelect } from '@angular/material/select';
 })
 export class NavbarComponent implements OnInit {
   timeIntervals: String[] = ["Custom", "1 hour", "2 hours", "4 hours", "6 hours", "8 hours", "16 hours", "24 hours"];
-  refreshStates: String[] = ["Aan", "Uit"];
-  addActions: String[] = ["Voeg frame toe", "Voeg pagina toe"];
+  refreshStates: String[] = ["On", "Off"];
+  addActions: String[] = ["Add new frame", "Add new page"];
   pages: Page[] = [];
 
 
-  refreshState: string = "Aan";
-  SelectedRefreshState: string = "Aan";
-  SelectedAction: string = "Voeg frame toe";
+  refreshState: string = "On";
+  SelectedRefreshState: string = "On";
+  SelectedAction: string = "Add new frame";
   timeInterval: string = "4 hours";
 
   SelectedPage: Page = null;
@@ -81,7 +81,7 @@ export class NavbarComponent implements OnInit {
   }
 
   UpdateRefreshState() {
-    if (this.SelectedRefreshState == "Aan") {
+    if (this.SelectedRefreshState == "On") {
       this.layoutService.refreshTimerActive = true;
     } else {
       this.layoutService.refreshTimerActive = false;
@@ -89,17 +89,17 @@ export class NavbarComponent implements OnInit {
   }
 
   ToggleRefreshState() {
-    if (this.SelectedRefreshState == "Aan") {
+    if (this.SelectedRefreshState == "On") {
       this.layoutService.refreshTimerActive = false;
-      this.SelectedRefreshState = "Uit";
+      this.SelectedRefreshState = "Off";
     } else {
       this.layoutService.refreshTimerActive = true;
-      this.SelectedRefreshState = "Aan";      
+      this.SelectedRefreshState = "On";      
     }
   }  
 
   disableRefresh() {
-    this.SelectedRefreshState = "Uit";
+    this.SelectedRefreshState = "Off";
     this.layoutService.refreshTimerActive = false;
   } 
 
@@ -124,7 +124,7 @@ export class NavbarComponent implements OnInit {
   }
 
   UpdateAction() {
-    if (this.SelectedAction == "Voeg frame toe") {
+    if (this.SelectedAction == "Add new frame") {
       this.layoutService.addItem();
     } else {
       this.router.navigateByUrl('/PageSettings');

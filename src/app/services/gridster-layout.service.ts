@@ -445,7 +445,7 @@ export class GridsterLayoutService {
     let newFrameElements: Frame_Element[] = new Array<Frame_Element>();
 
     /* Add new frame to page: */
-    let newFrame: Frame = new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 20, 15, "nieuw frame", "", "", "", this.getNexFramePosition());
+    let newFrame: Frame = new Frame(0, [], this.currentPage.page_id, newId, 1, 0, 0, 20, 15, "new frame", "", "", "", this.getNexFramePosition());
     
     this.settingsService.updateFrame(newFrame).subscribe(frame_id =>{
       newFrame.frame_id = frame_id;
@@ -459,14 +459,14 @@ export class GridsterLayoutService {
         y: 0,
         type: 'widgetTimeSeriesChart',
         serieList: getGetijSeriesData,
-        title: 'nieuw frame'
+        title: 'new frame'
       });
     });
   }
 
   deleteItem(id: string): void {
     /*console.log('deleteItem:' + id);*/
-    if(confirm("Ben je zeker dat je het frame " + this.currentPage.Frame.find(x => x.name == id).title + " definitief wil verwijderen?")) {
+    if(confirm("Are you sure you want to permanently remove the frame " + this.currentPage.Frame.find(x => x.name == id).title + " ?")) {
       setTimeout(() => {
         const item = this.layout.find(d => d.id === id);
         this.layout.splice(this.layout.indexOf(item), 1);

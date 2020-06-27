@@ -8,7 +8,7 @@
             <img src="assets/img/logo-otary.svg" width="70" height="50" (click)="ShowOtaryWebSite()">
     
 
-            <button class="timeFrameButton" mat-button matTooltip="Selecteer pagina:" (click)="loadpages()" *ngIf="isDashboardView() && this.SelectedPage">
+            <button class="timeFrameButton" mat-button matTooltip="Select page:" (click)="loadpages()" *ngIf="isDashboardView() && this.SelectedPage">
                 <mat-icon>description</mat-icon>
                 {{ this.SelectedPage.name }}
             </button>    
@@ -34,30 +34,30 @@
                 -->
 
                 
-                <button class="timeFrameButton" mat-button matTooltip="Voeg nieuw frame of pagina toe" (click)="myActionSelect1.open()" *ngIf="isDashboardView()"> 
+                <button class="timeFrameButton" mat-button matTooltip="Add a new frame or page" (click)="myActionSelect1.open()" *ngIf="isDashboardView()"> 
                     <mat-icon>add_box</mat-icon>
                 </button>                
                 <mat-select style="visibility:hidden;width: 0" #myActionSelect1 single [(ngModel)]="SelectedAction">
                     <mat-option *ngFor="let action of addActions" [value]="action" (click)="UpdateAction()">{{ action }}</mat-option>
                 </mat-select>
   
-                <button class="timeFrameButton" mat-button matTooltip="Shuif tijdsvenster terug" *ngIf="isDashboardView()"> 
+                <button class="timeFrameButton" mat-button matTooltip="Go back in time" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="GoBackward()">chevron_left</mat-icon>
                 </button>
                 <button class="timeFrameButton" mat-button matTooltip="{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}" routerLink="/TimeSelector" *ngIf="isDashboardView()">
                     <mat-icon>access_time</mat-icon>
                     {{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}
                 </button>
-                <button class="timeFrameButton" mat-button matTooltip="Shuif tijdsvenster vooruit" *ngIf="isDashboardView()"> 
+                <button class="timeFrameButton" mat-button matTooltip="Go forward in time" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="GoForward()">chevron_right</mat-icon>
                 </button>                
-                <button class="timeFrameButton" mat-button matTooltip="Verklein tijdsvenster" *ngIf="isDashboardView()">
+                <button class="timeFrameButton" mat-button matTooltip="Zoom in" *ngIf="isDashboardView()">
                     <mat-icon (click)="ZoomIn()">zoom_in</mat-icon>
                 </button>                
-                <button class="timeFrameButton" mat-button matTooltip="Vergroot tijdsvenster" *ngIf="isDashboardView()"> 
+                <button class="timeFrameButton" mat-button matTooltip="Zoom out" *ngIf="isDashboardView()"> 
                     <mat-icon (click)="ZoomOut()">zoom_out</mat-icon>
                 </button>    
-                <button class="timeFrameButton" mat-button matTooltip="Stel scherm-verversing in: {{ SelectedRefreshState }}" (click)="mySelectToolbar.open()" *ngIf="isDashboardView()">
+                <button class="timeFrameButton" mat-button matTooltip="Automatic data refresh: {{ SelectedRefreshState }}" (click)="mySelectToolbar.open()" *ngIf="isDashboardView()">
                     <mat-icon>loop</mat-icon>
                 </button>    
                
@@ -70,10 +70,12 @@
             <span fxFlex></span>
 
             <!--div fxShow="true" fxHide.lt-md="true"-->
-            <button class="settingsButton" mat-button matTooltip="Disclaimer" routerLink="/Disclaimer"><mat-icon>info</mat-icon></button>
+            <div fxShow="true" fxHide.lt-md="true">
+                <button class="settingsButton" mat-button matTooltip="Disclaimer" routerLink="/Disclaimer"><mat-icon>info</mat-icon></button>
+            </div>
 
             <button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon>Log In</button>
-            <button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>   
+            <button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="User: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon>Log Out</button>   
             
             
 
@@ -94,32 +96,35 @@
 
 
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="AddFrame()"> 
-                    <mat-icon (click)="AddFrame()">add_box</mat-icon> Voeg frame toe
+                    <mat-icon (click)="AddFrame()">add_box</mat-icon> Add new frame
                 </a>  
 
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="sidenav.toggle();AddPage()"> 
-                    <mat-icon (click)="AddPage()">add_to_photos</mat-icon> Voeg pagina toe
+                    <mat-icon (click)="AddPage()">add_to_photos</mat-icon> Add new page
                 </a>                  
   
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="GoBackward()"> 
-                    <mat-icon (click)="GoBackward()">chevron_left</mat-icon> Terug
+                    <mat-icon (click)="GoBackward()">chevron_left</mat-icon> Go back in time
                 </a>
                 <a mat-list-item class="timeFrameButton" (click)="sidenav.toggle()" routerLink="/TimeSelector" *ngIf="isDashboardView()">
                     <mat-icon>access_time</mat-icon>{{ timeToStr(layoutService.startTime) }} - {{ timeToStr(layoutService.endTime) }}
                     <!--{{ timeToStr(startTime) }} - {{ timeToStr(endTime) }}-->
                 </a>
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="GoForward()"> 
-                    <mat-icon (click)="GoForward()">chevron_right</mat-icon> Vooruit
+                    <mat-icon (click)="GoForward()">chevron_right</mat-icon> Go forward in time
                 </a>                
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="ZoomIn()">
-                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon> Vergroot
+                    <mat-icon (click)="ZoomIn()">zoom_in</mat-icon> Zoom in
                 </a>                
                 <a mat-list-item class="timeFrameButton" *ngIf="isDashboardView()" (click)="ZoomOut()"> 
-                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon> Verklein
+                    <mat-icon (click)="ZoomOut()">zoom_out</mat-icon> Zoom out
                 </a>    
                 <a mat-list-item class="timeFrameButton" (click)="ToggleRefreshState()" *ngIf="isDashboardView()">
                     <mat-icon>loop</mat-icon> {{ SelectedRefreshState }}
-                </a>    
+                </a>  
+                <a mat-list-item class="timeFrameButton" (click)="sidenav.toggle()" routerLink="/Disclaimer" *ngIf="isDashboardView()">
+                    <mat-icon>info</mat-icon> Disclaimer
+                </a>                  
                
                 <!--button class="settingsButton" mat-button (click)="auth.login()" *ngIf="!auth.loggedIn"><mat-icon>account_box</mat-icon> Log In</button-->
                 <!--button class="settingsButton" mat-button (click)="auth.logout()" matTooltip="Gebruiker: {{ getUserName() }}" *ngIf="auth.loggedIn"><mat-icon>account_box</mat-icon> Log Out</button-->                

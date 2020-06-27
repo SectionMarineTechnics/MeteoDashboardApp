@@ -1,7 +1,7 @@
 
 <!--<div class="container">-->
 <div class="LineChart-container" (resized)="onChartContainerResized($event)">    
-    <div *ngIf="showNoData()">Configureer een data bron</div>
+    <div *ngIf="showNoData()">Configure a data source</div>
     <!--<mat-spinner *ngIf="showLoading()" class="loading-chart element" diameter="50" strokeWidth="5"></mat-spinner>-->
     <line-chart *ngIf="showData()" class="LineChart" [data]="chartData" [config]="chartConfig" [elementId]="chartElementId" [resizeEvent]="resizeLineChartComponentEvent" [updateEvent]="updateLineChartComponentEvent" (readyNotifyEvent)="readyNotifyEventHandler()"></line-chart>
 </div>
