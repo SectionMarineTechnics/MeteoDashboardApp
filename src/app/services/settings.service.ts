@@ -14,9 +14,10 @@ export class SettingsService {
   public Users: User[] = new Array<User>(0);
 
   /*settingsUrl: string = 'http://localhost:8090/Dashboard';*/
+  settingsUrl: string = 'https://data.stbrieuc.fr/Dashboard';
   /*settingsUrl: string = 'http://10.176.225.16:8090/Dashboard';*/
   /*settingsUrl: string = 'https://10.176.225.16/Dashboard';*/
-  settingsUrl: string = 'https://meteodataservice.otary.be/Dashboard';
+  /*settingsUrl: string = 'https://meteodataservice.otary.be/Dashboard';*/
   
 
   constructor(private httpClient: HttpClient) 

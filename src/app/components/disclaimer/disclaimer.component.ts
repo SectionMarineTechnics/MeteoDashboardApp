@@ -18,7 +18,7 @@ export class DisclaimerComponent implements OnInit {
   }
 
   ShowOtaryWebSite() {
-    let url: string = "https://www.otary.be"
+    let url: string = "https://www.iberdrola.es/"
     window.open(url, "_blank");
   }
 
