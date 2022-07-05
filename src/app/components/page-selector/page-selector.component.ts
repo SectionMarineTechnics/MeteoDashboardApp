@@ -98,15 +98,16 @@ export class PageSelectorComponent implements OnInit {
 
   deletePage(page: Page){
     /*console.log("deletePage()");*/
-    
-    const index: number = this.layoutService.currentUser.Page.indexOf(page);
-    if (index !== -1) {
-      this.layoutService.currentUser.Page.splice(index, 1);
-      this.settingsService.deletePage(page.page_id).subscribe();
-      this.UpdatePages();      
-    } 
+    if(confirm("Are you sure to permanently remove " + page.name + " ?")) {
+      const index: number = this.layoutService.currentUser.Page.indexOf(page);
+      if (index !== -1) {
+        this.layoutService.currentUser.Page.splice(index, 1);
+        this.settingsService.deletePage(page.page_id).subscribe();
+        this.UpdatePages();      
+      } 
 
-    this.layoutService.UpdateNavigationBar();
+      this.layoutService.UpdateNavigationBar();
+    }
   }
 
   updatePageName(page: Page, name: string){
@@ -124,7 +125,7 @@ export class PageSelectorComponent implements OnInit {
   }
 
   addDefaultPagesToCurrentUser() {
-    if(confirm("Wens je de default pagina's toe te voegen?")) {
+    if(confirm("Are you sure to add the default pages ?")) {
       this.settingsService.setUserToDefault(this.layoutService.currentUser).subscribe( data => {
         this.settingsService.getUser(this.layoutService.currentUser.id).subscribe(user => { 
           this.layoutService.currentUser = user;

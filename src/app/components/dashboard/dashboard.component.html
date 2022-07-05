@@ -8,13 +8,13 @@
           <mat-toolbar-row style="cursor: pointer">
             <span>{{ item.title }}</span>
             <span class="toolbar-spacer"></span>
-            <button matTooltip="Frameinstellingen" mat-icon-button [routerLink]="['/SourceSelector', item.id]">
+            <button matTooltip="Frame settings" mat-icon-button [routerLink]="['/SourceSelector', item.id]">
               <mat-icon>settings</mat-icon>
             </button>
             <!--<button matTooltip="Verkleinen" mat-icon-button>
               <mat-icon>minimize</mat-icon>
             </button>-->
-            <button matTooltip="Verwijder frame" mat-icon-button (click)="layoutService.deleteItem(item.id)">
+            <button matTooltip="Remove frame" mat-icon-button (click)="layoutService.deleteItem(item.id)">
               <mat-icon>close</mat-icon>
             </button>
           </mat-toolbar-row>

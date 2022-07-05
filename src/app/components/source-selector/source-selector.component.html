@@ -1,12 +1,12 @@
 <div [formGroup]="serieInfo_form" class="wrapper" fxLayout="column" fxLayoutAlign="start stretch">
     <div class="containerHeader">
-        <mat-label class="header"><h2>Configuratie panel</h2></mat-label>
+        <mat-label class="header"><h2>Frame configuration</h2></mat-label>
         <span fxFlex></span>
         <mat-icon class="close-button" (click)=closeForm()>cancel</mat-icon>
     </div>
 
     <mat-form-field class="field-full-width">
-        <input type="text" placeholder="Titel" aria-label="Titel" matInput formControlName="Titel">
+        <input type="text" placeholder="Title" aria-label="Title" matInput formControlName="Title">
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
@@ -19,7 +19,7 @@
     </mat-form-field>
 
     <mat-form-field class="field-full-width">
-        <input type="text" placeholder="Bron data" aria-label="Bron data" [matAutocomplete]="auto" matInput
+        <input type="text" placeholder="Source data" aria-label="Source data" [matAutocomplete]="auto" matInput
             formControlName="LspiSelector">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
@@ -28,7 +28,7 @@
         </mat-autocomplete>
     </mat-form-field>
 
-    <button mat-raised-button (click)="addLspi()" [disabled]="!LspiSelectorHasValue()">Voeg bron toe</button>
+    <button mat-raised-button (click)="addLspi()" [disabled]="!LspiSelectorHasValue()">Add source data</button>
 
     <mat-list>
         <mat-list-item *ngFor="let lspi of selectedLspis">
@@ -40,5 +40,5 @@
         </mat-list-item>
     </mat-list>
 
-    <button mat-raised-button (click)="submit()" [disabled]="!serieInfo_form.valid || !lspiElementsSelected()">Bevestig</button>
+    <button mat-raised-button (click)="submit()" [disabled]="!serieInfo_form.valid || !lspiElementsSelected()">Confirm</button>
 </div>

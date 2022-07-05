@@ -7,11 +7,13 @@ import { SourceSelectorComponent } from './components/source-selector/source-sel
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { PageSelectorComponent } from './components/page-selector/page-selector.component';
+import { DisclaimerComponent } from './components/disclaimer/disclaimer.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'SourceSelector/:id', component: SourceSelectorComponent },
   { path: 'TimeSelector', component: TimeSelectorComponent },
+  { path: 'Disclaimer', component: DisclaimerComponent },
   { path: 'PageSettings', component: PageSelectorComponent },
   { path: 'Dashboard', component: DashboardComponent/*, canActivate: [AuthGuard]*/ },
   { path: 'Weather', component: WeatherComponent/*, canActivate: [AuthGuard]*/ },

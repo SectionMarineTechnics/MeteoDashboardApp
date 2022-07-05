@@ -95,4 +95,12 @@ mat-icon {
   .header{
     display: flex;
     justify-content: flex-left;
-}  
+  }
+  
+  .matInput{
+    color: black;
+  }
+
+  .mat-form-field{
+    color: black;
+  }
